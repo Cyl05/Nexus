@@ -15,4 +15,27 @@ async function createCommunity(req, res) {
     }
 }
 
-export { createCommunity };
+async function editCommunity (req, res) {
+    try {
+        const communityId = req.params.communityId;
+        const newName = req.body.name;
+        const response = await db.query("UPDATE test_communities SET name=$1, edited_at=$2 WHERE id=$3 RETURNING *", [newName, new Date(), communityId]);
+        res.status(200).json({message: "Updated community", community_data: response.rows});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: "Internal Server Error"});
+    }
+}
+
+async function deleteCommunity (req, res) {
+    try {
+        const communityId = req.params.communityId;
+        await db.query("DELETE FROM test_communities WHERE id=$1", [communityId]);
+        res.status(200).json({message: "Community deleted"});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: "Internal Server Error"});
+    }
+}
+
+export { createCommunity, editCommunity, deleteCommunity };

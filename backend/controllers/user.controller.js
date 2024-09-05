@@ -12,7 +12,7 @@ function getLogout(req, res) {
 		if (err) {
 			console.error(err);
 		}
-		res.redirect('/login');
+		res.redirect('/user/login');
 	});
 }
 
