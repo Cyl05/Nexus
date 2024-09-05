@@ -69,4 +69,29 @@ async function registerUser(req, res) {
 	}
 }
 
-export { getLogin, getLogout, loginUser, registerUser };
+async function joinCommunity (req, res) {
+	try {
+		const communityId = req.params.communityId;
+		await db.query("INSERT INTO user_communities (user_id, community_id) VALUES ($1, $2)", [req.session.user.id, communityId]);
+		res.status(200).json({message: "Joined community successfully"});
+	} catch (error) {
+		if (error.detail.includes("already exists")) {
+			return res.status(400).json({message: "You are already part of this community"});
+		}
+		console.log(error);
+		res.status(500).json({message: "Internal Server error"});
+	}
+}
+
+async function showUserCommunities (req, res) {
+	try {
+		const userId = req.session.user.id;
+		const response = await db.query("SELECT tc.name FROM test_communities tc INNER JOIN user_communities uc ON tc.id = uc.community_id WHERE uc.user_id = $1;", [userId]);
+		res.status(200).json({message: "Retrieved communities successfully", data: response.rows});
+	} catch (error) {
+		console.log(error);
+		res.status(500).json({message: "Internal Server Error"});
+	}
+}
+
+export { getLogin, getLogout, loginUser, registerUser, joinCommunity, showUserCommunities };

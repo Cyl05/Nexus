@@ -20,7 +20,7 @@ async function editCommunity (req, res) {
         const communityId = req.params.communityId;
         const newName = req.body.name;
         const response = await db.query("UPDATE test_communities SET name=$1, edited_at=$2 WHERE id=$3 RETURNING *", [newName, new Date(), communityId]);
-        res.status(200).json({message: "Updated community", community_data: response.rows});
+        res.status(200).json({message: "Updated community", data: response.rows});
     } catch (error) {
         console.log(error);
         res.status(500).json({message: "Internal Server Error"});
