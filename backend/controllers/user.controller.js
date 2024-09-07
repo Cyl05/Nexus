@@ -86,7 +86,7 @@ async function joinCommunity (req, res) {
 async function showUserCommunities (req, res) {
 	try {
 		const userId = req.session.user.id;
-		const response = await db.query("SELECT tc.name FROM test_communities tc INNER JOIN user_communities uc ON tc.id = uc.community_id WHERE uc.user_id = $1;", [userId]);
+		const response = await db.query("SELECT tc.name FROM communities tc INNER JOIN user_communities uc ON tc.id = uc.community_id WHERE uc.user_id = $1;", [userId]);
 		res.status(200).json({message: "Retrieved communities successfully", data: response.rows});
 	} catch (error) {
 		console.log(error);
@@ -94,4 +94,14 @@ async function showUserCommunities (req, res) {
 	}
 }
 
-export { getLogin, getLogout, loginUser, registerUser, joinCommunity, showUserCommunities };
+async function getPosts (req, res) {
+	try {
+		const response = await db.query("SELECT * FROM posts WHERE author_name=$1", [req.session.user.username]);
+		return res.status(200).json({message: "Retrieved all posts", data: response.rows});
+	} catch (error) {
+		console.log(error);
+        return res.status(500).json({message: "Internal Server Error"});
+	}
+}
+
+export { getLogin, getLogout, loginUser, registerUser, joinCommunity, showUserCommunities, getPosts };
