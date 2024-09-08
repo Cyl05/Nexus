@@ -1,4 +1,5 @@
 import { db } from "../server.js";
+import { votePost } from "../utils/utils.js";
 
 async function createPost(req, res) {
     const { postTitle, postContent, image, communityId } = req.body;
@@ -31,48 +32,14 @@ async function viewPost(req, res) {
 
 async function upvotePost(req, res) {
     const postId = req.params.postId;
-    try {
-        const response = await db.query("SELECT * FROM votes WHERE post_id=$1 AND user_id=$2 AND vote_type=$3", [postId, req.session.user.id, false]);
-        if (response.rows.length !== 0) {
-            await db.query("UPDATE votes SET vote_type=$1 WHERE post_id=$2 AND user_id=$3", [postId, req.session.user.id, true]);
-            return res.status(200).json({ message: "Upvote successful" });
-        }
-        await db.query(
-            "INSERT INTO votes (post_id, user_id, vote_type, created_at) VALUES ($1, $2, $3, $4)",
-            [postId, req.session.user.id, true, new Date()],
-        )
-        res.status(200).json({ message: "Upvote successful" });
-    } catch (error) {
-        console.log(error);
-        if (error.detail.includes("already")) {
-            await db.query("DELETE FROM votes WHERE post_id=$1 AND user_id=$2", [postId, req.session.user.id]);
-            return res.status(200).json({ message: "Upvote removed" });
-        }
-        return res.status(500).json({ message: "Internal Server Error" });
-    }
+    const { statusCode, message } = await votePost("post", postId, req.session.user.id, true, "Upvote");
+    return res.status(statusCode).json({message: message});
 }
 
 async function downvotePost(req, res) {
     const postId = req.params.postId;
-    try {
-        const response = await db.query("SELECT * FROM votes WHERE post_id=$1 AND user_id=$2 AND vote_type=$3", [postId, req.session.user.id, true]);
-        if (response.rows.length !== 0) {
-            await db.query("UPDATE votes SET vote_type=$1 WHERE post_id=$2 AND user_id=$3", [false, postId, req.session.user.id]);
-            return res.status(200).json({ message: "Downvote successful" });
-        }
-        await db.query(
-            "INSERT INTO votes (post_id, user_id, vote_type, created_at) VALUES ($1, $2, $3, $4)",
-            [postId, req.session.user.id, false, new Date()],
-        )
-        res.status(200).json({ message: "Downvote successful" });
-    } catch (error) {
-        console.log(error);
-        if (error.detail.includes("already")) {
-            await db.query("DELETE FROM votes WHERE post_id=$1 AND user_id=$2", [postId, req.session.user.id]);
-            return res.status(200).json({ message: "Downvote removed" });
-        }
-        return res.status(500).json({ message: "Internal Server Error" });
-    }
+    const { statusCode, message } = await votePost("post", postId, req.session.user.id, false, "Downvote");
+    return res.status(statusCode).json({message: message});
 }
 
 async function getVoteCount(req, res) {
@@ -83,7 +50,7 @@ async function getVoteCount(req, res) {
             `SELECT
                 COALESCE(SUM(CASE WHEN v.vote_type THEN 1 ELSE -1 END), 0) AS upvote_count
             FROM posts p
-            LEFT JOIN votes v ON p.id = v.post_id
+            LEFT JOIN post_votes v ON p.id = v.post_id
             WHERE p.id = $1
             GROUP BY p.id`,
             [postId]
