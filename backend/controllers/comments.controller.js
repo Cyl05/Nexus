@@ -1,4 +1,5 @@
 import { db } from "../server.js";
+import { getCount, votePost } from "../utils/utils.js";
 
 async function createComment (req, res) {
     const postId = req.params.postId;
@@ -31,4 +32,26 @@ async function viewPostComments (req, res) {
     }
 }
 
-export { createComment, viewPostComments }
+async function upvoteComment (req, res) {
+    const commentId = req.params.commentId;
+    const { statusCode, message } = await votePost("comment", commentId, req.session.user.id, true, "Upvote");
+    return res.status(statusCode).json({message: message});
+}
+
+async function downvoteComment(req, res) {
+    const commentId = req.params.commentId;
+    const { statusCode, message } = await votePost("comment", commentId, req.session.user.id, false, "Downvote");
+    return res.status(statusCode).json({message: message});
+}
+
+async function getCommentVoteCount(req, res) {
+    const commentId = req.params.commentId;
+    const response = await getCount("comment", commentId);
+    if (!response.data) {
+        res.status(response.statusCode).json({message: response.message});
+    } else {
+        res.status(response.statusCode).json({upvote_count: response.data});
+    }
+}
+
+export { createComment, viewPostComments, upvoteComment, downvoteComment, getCommentVoteCount }

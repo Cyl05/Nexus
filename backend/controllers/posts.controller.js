@@ -1,5 +1,5 @@
 import { db } from "../server.js";
-import { votePost } from "../utils/utils.js";
+import { votePost, getCount } from "../utils/utils.js";
 
 async function createPost(req, res) {
     const { postTitle, postContent, image, communityId } = req.body;
@@ -44,29 +44,11 @@ async function downvotePost(req, res) {
 
 async function getVoteCount(req, res) {
     const { postId } = req.params;
-    
-    try {
-        const result = await db.query(
-            `SELECT
-                COALESCE(SUM(CASE WHEN v.vote_type THEN 1 ELSE -1 END), 0) AS upvote_count
-            FROM posts p
-            LEFT JOIN post_votes v ON p.id = v.post_id
-            WHERE p.id = $1
-            GROUP BY p.id`,
-            [postId]
-        );
-
-        console.log(result.rows);
-        
-        if (result.rows.length === 0) {
-            return res.status(404).json({ message: "Post not found" });
-        }
-
-        const voteCount = result.rows[0].upvote_count;
-        res.status(200).json({ data: { upvote_count: voteCount } });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: "Internal Server Error" });
+    const response = await getCount("post", postId);
+    if (!response.data) {
+        res.status(response.statusCode).json({message: response.message});
+    } else {
+        res.status(response.statusCode).json({upvote_count: response.data});
     }
 }
 
