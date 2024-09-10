@@ -14,6 +14,6 @@ router.post("/:postId/comment", isAuthenticated, createComment);
 router.get("/:postId/comment", viewPostComments);
 router.post("/comment/:commentId/upvote", isAuthenticated, upvoteComment);
 router.post("/comment/:commentId/downvote", isAuthenticated, downvoteComment);
-router.get("/comment/:commentId/count", getCommentVoteCount)
+router.get("/comment/:commentId/count", getCommentVoteCount);
 
 export default router;

@@ -4,6 +4,7 @@ import session from "express-session";
 import userRoutes from "./routes/user.routes.js";
 import communityRoutes from "./routes/community.routes.js";
 import postRoutes from "./routes/posts.routes.js";
+import commentRoutes from "./routes/comments.routes.js";
 import { isAuthenticated } from "./utils/utils.js";
 import connectDB from "./database/db.config.js";
 
@@ -24,6 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/user", userRoutes);
 app.use("/community", communityRoutes);
 app.use("/post", postRoutes);
+app.use("/comment", commentRoutes);
 
 app.get("/", async (req, res) => {
     const response = await db.query("SELECT * FROM users");
