@@ -7,6 +7,7 @@ import postRoutes from "./routes/posts.routes.js";
 import commentRoutes from "./routes/comments.routes.js";
 import { isAuthenticated } from "./utils/utils.js";
 import connectDB from "./database/db.config.js";
+import cors from "cors";
 
 env.config();
 const app = express();
@@ -14,13 +15,16 @@ const port = process.env.PORT || 3000;
 export const db = connectDB();
 
 // configuring of sessions middleware
+app.use(cors());
 app.use(session({
     secret: 'your-secret-key',
     resave: false,
     saveUninitialized: true,
     cookie: { secure: false }
 }));
-app.use(express.urlencoded({ extended: true }));
+// app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 
 app.use("/user", userRoutes);
 app.use("/community", communityRoutes);
@@ -32,8 +36,12 @@ app.get("/", async (req, res) => {
     res.json(response.rows);
 });
 
-app.get('/dashboard', isAuthenticated, (req, res) => {
-    res.send(`Welcome, ${req.session.user.username}!`);
+app.get('/getSession', (req, res) => {
+    if (req.session.user) {
+        res.send(req.session.user);
+    } else {
+        res.json({message: "Login required"});
+    }
 });
 
 app.listen(port, () => {

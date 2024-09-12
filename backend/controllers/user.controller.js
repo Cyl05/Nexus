@@ -25,7 +25,8 @@ async function loginUser(req, res) {
 		return res.status(404).json({ message: "User not found" });
 	}
 	// if provided credentials are valid
-	const { password: hash, id } = response.rows[0];
+	const user = response.rows[0];
+	const { password: hash, id } = user;
 	bcrypt.compare(password, hash, (err, result) => {
 		if (err) {
 			res.status(500).json({ message: "Internal Server Error" });
@@ -33,7 +34,7 @@ async function loginUser(req, res) {
 		} else {
 			// if password matches
 			if (result) {
-				req.session.user = { id, username, password };
+				req.session.user = user;
 				res.json(`Password matches: ${password} ${hash}`);
 			}
 			// if password does not match
@@ -50,7 +51,7 @@ async function registerUser(req, res) {
 		const response = await db.query("SELECT * FROM users WHERE username=$1", [username]);
 		// if account already exists with same username
 		if (response.rows.length > 0) {
-			res.status(500).json({ message: "Username already exists" });
+			res.status(500).json({ isSuccess: false, message: "Username already exists" });
 		} else {
 			bcrypt.hash(password, saltRounds, async (err, hash) => {
 				if (err) {
@@ -60,12 +61,12 @@ async function registerUser(req, res) {
 					const response = await db.query("INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *", [username, hash]);
 					const { id } = response.rows[0];
 					req.session.user = { id, username, password };
-					res.status(200).json({ message: "User registered" });
+					res.status(200).json({ isSuccess: true, message: "User registered" });
 				}
 			})
 		}
 	} catch (error) {
-		res.status(500).json({ message: "Internal server error" });
+		res.status(500).json({ isSuccess: false, message: "Internal server error" });
 	}
 }
 
