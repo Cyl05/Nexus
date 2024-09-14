@@ -22,24 +22,24 @@ async function loginUser(req, res) {
 
 	// if invalid username is given
 	if (response.rows.length === 0) {
-		return res.status(404).json({ message: "User not found" });
+		return res.status(404).json({ isSuccess: false, message: "User not found" });
 	}
 	// if provided credentials are valid
 	const user = response.rows[0];
 	const { password: hash, id } = user;
 	bcrypt.compare(password, hash, (err, result) => {
 		if (err) {
-			res.status(500).json({ message: "Internal Server Error" });
+			res.status(500).json({ isSuccess: false, message: "Internal Server Error" });
 			console.log("Error occurred: " + err);
 		} else {
 			// if password matches
 			if (result) {
 				req.session.user = user;
-				res.json(`Password matches: ${password} ${hash}`);
+				res.status(200).json({ isSuccess: true, message: "Logging in..." });
 			}
 			// if password does not match
 			else {
-				res.status(401).json({ message: "Invalid credentials" });
+				res.status(401).json({ isSuccess: false, message: "Password mismatch" });
 			}
 		}
 	});

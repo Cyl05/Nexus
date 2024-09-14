@@ -31,10 +31,10 @@ app.use("/community", communityRoutes);
 app.use("/post", postRoutes);
 app.use("/comment", commentRoutes);
 
-app.get("/", async (req, res) => {
-    const response = await db.query("SELECT * FROM users");
-    res.json(response.rows);
-});
+// app.get("/", async (req, res) => {
+//     const response = await db.query("SELECT * FROM users");
+//     res.json(response.rows);
+// });
 
 app.get('/getSession', (req, res) => {
     if (req.session.user) {
