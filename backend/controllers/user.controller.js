@@ -35,6 +35,11 @@ async function loginUser(req, res) {
 			// if password matches
 			if (result) {
 				req.session.user = user;
+				req.session.save(err => {
+					if (err) {
+						return res.status(500).json({ isSuccess: false, message: 'Session save error' });
+					}
+				});
 				res.status(200).json({ isSuccess: true, message: "Logging in..." });
 			}
 			// if password does not match

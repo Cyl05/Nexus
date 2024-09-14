@@ -3,8 +3,12 @@ import { create } from "zustand";
 export const useUserStore = create((set) => ({
     currentUser: [],
     fetchUser: async () => {
-        const response = await fetch("http://localhost:3000/getSession");
+        const response = await fetch("http://localhost:3000/getSession", {
+            method: 'GET',
+            credentials: 'include'
+        });
         const user = await response.json();
+        console.log(user);
         return user;
     },
     registerUser: async(userData) => {
