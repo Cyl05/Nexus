@@ -14,6 +14,20 @@ env.config({
   path: `${__dirname}/../../.env`
 });
 
+async function getUser(req, res) {
+	const id = req.params.userId;
+	try {
+		const response = await db.query("SELECT * FROM users WHERE id=$1", [id]);
+		if (response.rows.length === 0) {
+			return res.status(404).json({isSuccess: false, message: "User not found"});
+		}
+		return res.status(200).json({isSuccess: true, message: "User found", data: response.rows[0]});
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({isSuccess: false, message: "Internal Server Error"});
+	}
+}
+
 function getLogin(req, res) {
 	res.json("Login ra");
 }
@@ -45,7 +59,7 @@ async function loginUser(req, res) {
 		} else {
 			// if password matches
 			if (result) {
-				const token = jwt.sign(user, process.env.JWT_SECRET, {
+				const token = jwt.sign({id}, process.env.JWT_SECRET, {
 					expiresIn: 300
 				});
 
@@ -80,7 +94,7 @@ async function registerUser(req, res) {
 
 					req.session.user = { id, username, password };
 
-					const token = jwt.sign(user, process.env.JWT_SECRET, {
+					const token = jwt.sign({id}, process.env.JWT_SECRET, {
 						expiresIn: 300
 					});
 
@@ -128,4 +142,4 @@ async function getPosts (req, res) {
 	}
 }
 
-export { getLogin, getLogout, loginUser, registerUser, joinCommunity, showUserCommunities, getPosts };
+export { getUser, getLogin, getLogout, loginUser, registerUser, joinCommunity, showUserCommunities, getPosts };

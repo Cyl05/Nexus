@@ -21,16 +21,13 @@ export const useUserStore = create((set) => ({
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            const user = await response.json();
-            console.log("Fetched user data:");
-            console.log(user.data);
-            
-            console.log("setting the value of currentUser to ");
-            console.log(user.data);
-            localStorage.setItem("user", JSON.stringify(user.data));
-            set({currentUser: user.data});
-
-            return user;
+            const responseJSON = await response.json();
+            localStorage.setItem("user", JSON.stringify(responseJSON.data));
+            // set({currentUser: responseJSON.data});
+            const user = await fetch(`http://localhost:3000/user/${responseJSON.data.id}`);
+            const userJSON = await user.json();
+            set({currentUser: userJSON.data});
+            return userJSON.data;
         } catch (error) {
             console.error("Failed to fetch user:", error);
         }
