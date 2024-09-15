@@ -11,7 +11,7 @@ function LoginPage() {
         username: "",
         password: ""
     });
-    const { loginUser } = useUserStore();
+    const { currentUser, loginUser, fetchUser } = useUserStore();
     const toast = useToast();
     const navigate = useNavigate();
 
@@ -45,7 +45,7 @@ function LoginPage() {
                     password: "",
                     confirmPassword: ""
                 });
-                // const username = await fetchUser();
+                fetchUser(response.token);
                 // console.log(username);
                 navigate('/');
             }

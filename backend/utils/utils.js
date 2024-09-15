@@ -1,10 +1,30 @@
 import { db } from "../server.js";
+import env from "dotenv";
+import jwt from "jsonwebtoken";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+env.config({
+  path: `${__dirname}/../../.env`
+});
 
 export function isAuthenticated(req, res, next) {
-    if (req.session.user) {
-        next();
+    const token = req.headers["x-access-token"];
+    if (!token) {
+        res.redirect("/user/login");
     } else {
-        res.redirect('/user/login');
+        jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+            if (err) {
+                res.status(401).json({isSuccess: false, message: "Failed to authenticate"});
+            } else {
+                res.status(200).json({isSuccess: true, message: "Verified", data: decoded});
+                req.user = decoded;
+                next();
+            }
+        })
     }
 }
 

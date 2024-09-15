@@ -5,9 +5,9 @@ import { useUserStore } from '../../store/user.js';
 import { FaPlus } from "react-icons/fa6";
 
 function Navbar() {
-    const { fetchUser } = useUserStore();
-    const user = fetchUser();
-    console.log(user);
+    const { currentUser } = useUserStore();
+
+
     return (
         <Container minW={"100%"} py={4} px={10} borderBottom={"2px solid #3c4b67"} boxShadow={'lg'}>
             <HStack justifyContent={"space-between"}>
@@ -27,7 +27,9 @@ function Navbar() {
                             variant='solid'
                             aria-label='Done'
                             fontSize='20px'
-                            backgroundImage={user.profile_picture}
+                            backgroundImage={currentUser ? currentUser.profile_picture : null}
+                            bgSize="cover"
+                            bgPos="center"
                         />
                     </HStack>
                 </Box>

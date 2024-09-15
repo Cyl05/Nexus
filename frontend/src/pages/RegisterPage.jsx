@@ -1,7 +1,7 @@
 import React from 'react';
 import { AbsoluteCenter, Box, Button, Heading, HStack, Image, Input, InputGroup, InputLeftElement, InputRightElement, useToast, VStack } from '@chakra-ui/react';
-import { FaUser, FaLock, FaEye, FaEyeSlash } from "react-icons/fa";
 import { useUserStore } from '../../store/user';
+import { useNavigate } from 'react-router-dom';
 import PasswordField from '../components/PasswordField.jsx';
 import InputField from '../components/InputField.jsx';
 
@@ -11,8 +11,9 @@ function RegisterPage() {
         password: "",
         confirmPassword: ""
     });
-    const { registerUser } = useUserStore();
+    const { registerUser, fetchUser } = useUserStore();
     const toast = useToast();
+    const navigate = useNavigate();
 
     function handleChange(event) {
         const {name, value} = event.target;
@@ -45,11 +46,16 @@ function RegisterPage() {
                 duration: 2000,
                 isClosable: true
             });
-            setUserInput({
-                username: "",
-                password: "",
-                confirmPassword: ""
-            });
+            if (response.isSuccess) {
+                setUserInput({
+                    username: "",
+                    password: "",
+                    confirmPassword: ""
+                });
+                fetchUser(response.token);
+                // console.log(username);
+                navigate('/');
+            }
         }
     }
 

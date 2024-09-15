@@ -7,7 +7,7 @@ import postRoutes from "./routes/posts.routes.js";
 import commentRoutes from "./routes/comments.routes.js";
 import connectDB from "./database/db.config.js";
 import cors from "cors";
-import jwt from "jsonwebtoken";
+import { isAuthenticated } from "./utils/utils.js";
 
 env.config();
 const app = express();
@@ -40,12 +40,8 @@ app.use("/comment", commentRoutes);
 //     res.json(response.rows);
 // });
 
-app.get('/getSession', (req, res) => {
-    if (req.session.user) {
-        res.send(req.session.user);
-    } else {
-        res.json({message: "Login required"});
-    }
+app.get('/getSession', isAuthenticated, (req, res) => {
+    res.json(req.session.user);
 });
 
 app.listen(port, () => {

@@ -1,7 +1,18 @@
 import { db } from "../server.js";
 import bcrypt from "bcryptjs";
+import env from "dotenv";
+import jwt from "jsonwebtoken";
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
 
 const saltRounds = 10;
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+env.config({
+  path: `${__dirname}/../../.env`
+});
 
 function getLogin(req, res) {
 	res.json("Login ra");
@@ -34,13 +45,13 @@ async function loginUser(req, res) {
 		} else {
 			// if password matches
 			if (result) {
-				req.session.user = user;
-				req.session.save(err => {
-					if (err) {
-						return res.status(500).json({ isSuccess: false, message: 'Session save error' });
-					}
+				const token = jwt.sign(user, process.env.JWT_SECRET, {
+					expiresIn: 300
 				});
-				res.status(200).json({ isSuccess: true, message: "Logging in..." });
+
+				req.session.user = user;
+
+				res.status(200).json({ isSuccess: true, message: "Logging in...", token: token});
 			}
 			// if password does not match
 			else {
@@ -64,9 +75,16 @@ async function registerUser(req, res) {
 					res.status(500).json({ message: "Internal server error" });
 				} else {
 					const response = await db.query("INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *", [username, hash]);
-					const { id } = response.rows[0];
+					const user = response.rows[0];
+					const { id } = user;
+
 					req.session.user = { id, username, password };
-					res.status(200).json({ isSuccess: true, message: "User registered" });
+
+					const token = jwt.sign(user, process.env.JWT_SECRET, {
+						expiresIn: 300
+					});
+
+					res.status(200).json({ isSuccess: true, message: "User registered", token: token });
 				}
 			})
 		}
