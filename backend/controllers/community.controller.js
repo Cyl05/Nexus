@@ -1,6 +1,20 @@
 import { db } from "../server.js";
 
-async function createCommunity(req, res) {
+async function getCommunity (req, res) {
+    let communityId = req.params.communityId;
+    try {
+        const response = await db.query("SELECT * FROM communities WHERE id=$1", [communityId]);
+        if (response.rows.length === 0) {
+            return res.status(404).json({isSuccess: false, message: "Community not found"});
+        }
+        return res.status(200).json({isSuccess: true, message: "Community found", data: response.rows[0]});
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({isSuccess: false, message: "Internal Server Error"});
+    }
+}
+
+async function createCommunity (req, res) {
     let missingValue = false;
     const { name, icon, descTitle, desc } = req.body;
     Object.entries(req.body).map(([key, value]) => {
@@ -48,4 +62,4 @@ async function deleteCommunity (req, res) {
     }
 }
 
-export { createCommunity, editCommunity, deleteCommunity };
+export { getCommunity, createCommunity, editCommunity, deleteCommunity };

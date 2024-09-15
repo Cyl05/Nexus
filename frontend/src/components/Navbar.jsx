@@ -5,8 +5,17 @@ import { useUserStore } from '../../store/user.js';
 import { FaPlus } from "react-icons/fa6";
 
 function Navbar() {
-    const { currentUser } = useUserStore();
-
+    const { currentUser, getUserData } = useUserStore();
+    const [user, setUser] = React.useState(null);
+    React.useEffect(() => {
+        async function getData () {
+            if (currentUser) {
+                const user = await getUserData(currentUser.id);
+                setUser(user);
+            }
+        }
+        getData();
+    }, [user]);
 
     return (
         <Container minW={"100%"} py={4} px={10} borderBottom={"2px solid #3c4b67"} boxShadow={'lg'}>
@@ -27,7 +36,7 @@ function Navbar() {
                             variant='solid'
                             aria-label='Done'
                             fontSize='20px'
-                            backgroundImage={currentUser ? currentUser.profile_picture : null}
+                            backgroundImage={user ? user.profile_picture : null}
                             bgSize="cover"
                             bgPos="center"
                         />

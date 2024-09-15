@@ -16,7 +16,7 @@ function RegisterPage() {
     const navigate = useNavigate();
 
     function handleChange(event) {
-        const {name, value} = event.target;
+        const { name, value } = event.target;
         setUserInput({
             ...userInput,
             [name]: value
@@ -52,7 +52,7 @@ function RegisterPage() {
                     password: "",
                     confirmPassword: ""
                 });
-                fetchUser(response.token);
+                await fetchUser(response.token);
                 // console.log(username);
                 navigate('/');
             }
