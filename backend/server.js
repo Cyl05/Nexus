@@ -1,10 +1,7 @@
 import express from "express";
 import env from "dotenv";
 import session from "express-session";
-import userRoutes from "./routes/user.routes.js";
-import communityRoutes from "./routes/community.routes.js";
-import postRoutes from "./routes/posts.routes.js";
-import commentRoutes from "./routes/comments.routes.js";
+import routes from "./routes/main.routes.js";
 import connectDB from "./database/db.config.js";
 import cors from "cors";
 import { isAuthenticated } from "./utils/utils.js";
@@ -29,11 +26,7 @@ app.use(session({
 // app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-
-app.use("/user", userRoutes);
-app.use("/community", communityRoutes);
-app.use("/post", postRoutes);
-app.use("/comment", commentRoutes);
+app.use("/api", routes);
 
 // app.get("/", async (req, res) => {
 //     const response = await db.query("SELECT * FROM users");

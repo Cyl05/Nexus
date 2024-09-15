@@ -24,7 +24,7 @@ export const useUserStore = create((set) => ({
             const responseJSON = await response.json();
             localStorage.setItem("user", JSON.stringify(responseJSON.data));
             // set({currentUser: responseJSON.data});
-            const user = await fetch(`http://localhost:3000/user/${responseJSON.data.id}`);
+            const user = await fetch(`http://localhost:3000/api/user/${responseJSON.data.id}`);
             const userJSON = await user.json();
             set({currentUser: userJSON.data});
             return userJSON.data;
@@ -33,7 +33,7 @@ export const useUserStore = create((set) => ({
         }
     },
     registerUser: async(userData) => {
-        const response = await fetch("http://localhost:3000/user/register", {
+        const response = await fetch("http://localhost:3000/api/user/register", {
             method: 'POST',
             body: JSON.stringify(userData),
             headers: {
@@ -44,7 +44,7 @@ export const useUserStore = create((set) => ({
         return response_data;
     },
     loginUser: async(userData) => {
-        const response = await fetch("http://localhost:3000/user/login", {
+        const response = await fetch("http://localhost:3000/api/user/login", {
             method: 'POST',
             body: JSON.stringify(userData),
             headers: {
