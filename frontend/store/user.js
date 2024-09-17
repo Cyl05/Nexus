@@ -2,12 +2,13 @@ import { create } from "zustand";
 
 export const useUserStore = create((set) => ({
     currentUser: JSON.parse(localStorage.getItem("user")),
+    currentToken: JSON.parse(localStorage.getItem("token")),
     setUser: (data) => {
         localStorage.setItem("user", JSON.stringify(data));
-        set({currentUser: data});
+        set((prevState) => ({...prevState, currentUser: data}));
     },
     getUserData: async (userId) => {
-        const user = await fetch(`http://localhost:3000/api/user/${userId}`);
+        const user = await fetch(`http://localhost:3000/api/user/getUser/${userId}`);
         const userJSON = await user.json();
         return userJSON.data;
     },
@@ -28,7 +29,9 @@ export const useUserStore = create((set) => ({
 
             const responseJSON = await response.json();
             localStorage.setItem("user", JSON.stringify(responseJSON.data));
-            // set({currentUser: responseJSON.data});
+            localStorage.setItem("token", JSON.stringify(token));
+            console.log(responseJSON);
+            set((prevState) => ({...prevState, currentUser: responseJSON.data}));
             return responseJSON.data;
         } catch (error) {
             console.error("Failed to fetch user:", error);

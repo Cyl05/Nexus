@@ -5,7 +5,7 @@ import { isAuthenticated } from "../utils/utils.js";
 const router = express.Router();
 
 // configuring of routes
-router.get("/:userId", getUser);
+router.get("/getUser/:userId", getUser);
 router.get("/login", getLogin);
 router.get("/logout", getLogout);
 router.get("/posts", isAuthenticated, getPosts);

@@ -18,6 +18,7 @@ export function isAuthenticated(req, res, next) {
     } else {
         jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
             if (err) {
+                console.log(err);
                 res.status(401).json({isSuccess: false, message: "Failed to authenticate"});
             } else {
                 res.status(200).json({isSuccess: true, message: "Verified", data: decoded});

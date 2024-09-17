@@ -4,9 +4,9 @@ import { getCommunity, createCommunity, editCommunity, deleteCommunity } from ".
 
 const router = express.Router();
 
-router.get("/:communityId", getCommunity);
+router.get("/getCommunity/:communityId", getCommunity);
 router.post("/create", isAuthenticated, createCommunity);
-router.put("/:communityId/edit", isAuthenticated, editCommunity);
-router.delete("/:communityId/delete", isAuthenticated, deleteCommunity);
+router.put("/editCommunity/:communityId", isAuthenticated, editCommunity);
+router.delete("/deleteCommunity/:communityId", isAuthenticated, deleteCommunity);
 
 export default router;

@@ -18,7 +18,19 @@ function Navbar() {
     }, [user]);
 
     return (
-        <Container minW={"100%"} py={4} px={10} borderBottom={"2px solid #3c4b67"} boxShadow={'lg'}>
+        <Container
+            w={"100vw"}
+            h={'10vh'}
+            py={4}
+            px={10}
+            borderBottom={"2px solid #3c4b67"}
+            boxShadow={'lg'}
+            pos={'fixed'}
+            top={0}
+            left={0}
+            right={0}
+            maxW={'100%'}
+        >
             <HStack justifyContent={"space-between"}>
                 <Box>
                     <HStack>

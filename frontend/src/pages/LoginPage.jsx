@@ -48,7 +48,7 @@ function LoginPage() {
                 await fetchUser(response.token);
                 // console.log(username);
                 navigate('/');
-                window.location.reload();
+                // window.location.reload();
             }
         }
     }

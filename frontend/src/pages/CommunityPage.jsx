@@ -3,6 +3,8 @@ import { useCommunityStore } from '../../store/community';
 import { useParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import { Box } from '@chakra-ui/react';
+import SideBar from '../components/SideBar.jsx';
+import MainContent from '../components/MainContent.jsx';
 
 
 function CommunityPage() {
@@ -22,7 +24,10 @@ function CommunityPage() {
 	return (
 		<Box>
 			<Navbar />
-			<div>{ community ? community.name : "null" }</div>
+			<SideBar />
+			<MainContent>
+				<Box color={'white'}>{ community ? community.name : "null" }</Box>
+			</MainContent>
 		</Box>
 	)
 }
