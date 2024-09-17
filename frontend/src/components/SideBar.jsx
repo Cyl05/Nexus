@@ -7,9 +7,9 @@ import { useCommunityStore } from '../../store/community';
 
 function SideBar() {
 
-	const { currentUser, currentToken } = useUserStore();
+	const { currentUser, accessToken } = useUserStore();
 	const { fetchUserCommunities } = useCommunityStore();
-	// fetchUserCommunities(currentUser.id, currentToken);
+	fetchUserCommunities(currentUser.userId, accessToken);
 
 	return (
 		<Box w={'20%'} h={'90vh'} pos={'fixed'} top={'10vh'} borderRight={'2px solid #3c4b67'}>

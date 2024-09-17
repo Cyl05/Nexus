@@ -4,6 +4,7 @@ import env from "dotenv";
 import jwt from "jsonwebtoken";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import { createAccessToken, createRefreshToken, refreshAccessToken } from "../utils/utils.js";
 
 const saltRounds = 10;
 
@@ -59,13 +60,10 @@ async function loginUser(req, res) {
 		} else {
 			// if password matches
 			if (result) {
-				const token = jwt.sign({id}, process.env.JWT_SECRET, {
-					expiresIn: 300
-				});
+				const accessToken = createAccessToken(id);
+				const refreshToken = createRefreshToken(id);
 
-				req.session.user = user;
-
-				res.status(200).json({ isSuccess: true, message: "Logging in...", token: token});
+				res.status(200).json({ isSuccess: true, message: "Logging in...", accessToken: accessToken, refreshToken: refreshToken});
 			}
 			// if password does not match
 			else {
@@ -92,13 +90,14 @@ async function registerUser(req, res) {
 					const user = response.rows[0];
 					const { id } = user;
 
-					req.session.user = { id, username, password };
+					// const token = jwt.sign({id}, process.env.JWT_SECRET, {
+					// 	expiresIn: 300
+					// });
 
-					const token = jwt.sign({id}, process.env.JWT_SECRET, {
-						expiresIn: 300
-					});
+					const accessToken = createAccessToken(id);
+					const refreshToken = createRefreshToken(id);
 
-					res.status(200).json({ isSuccess: true, message: "User registered", token: token });
+					res.status(200).json({ isSuccess: true, message: "User registered", accessToken: accessToken, refreshToken: refreshToken });
 				}
 			})
 		}
@@ -123,7 +122,7 @@ async function joinCommunity (req, res) {
 
 async function showUserCommunities (req, res) {
 	try {
-		const userId = req.session.user.id;
+		const userId = req.body.userId;
 		const response = await db.query("SELECT tc.name FROM communities tc INNER JOIN user_communities uc ON tc.id = uc.community_id WHERE uc.user_id = $1;", [userId]);
 		res.status(200).json({message: "Retrieved communities successfully", data: response.rows});
 	} catch (error) {
@@ -142,4 +141,15 @@ async function getPosts (req, res) {
 	}
 }
 
-export { getUser, getLogin, getLogout, loginUser, registerUser, joinCommunity, showUserCommunities, getPosts };
+async function refreshToken (req, res) {
+	const { refreshToken } = req.body;
+  
+  try {
+    const newAccessToken = refreshAccessToken(refreshToken);
+    res.json({ accessToken: newAccessToken });
+  } catch (err) {
+    res.status(401).json({ error: 'Failed to refresh token' });
+  }
+}
+
+export { getUser, getLogin, getLogout, loginUser, registerUser, joinCommunity, showUserCommunities, getPosts, refreshToken };

@@ -2,7 +2,8 @@ import { create } from "zustand";
 
 export const useUserStore = create((set) => ({
     currentUser: JSON.parse(localStorage.getItem("user")),
-    currentToken: JSON.parse(localStorage.getItem("token")),
+    accessToken: JSON.parse(localStorage.getItem("accessToken")),
+    refreshToken: JSON.parse(localStorage.getItem("refreshToken")),
     setUser: (data) => {
         localStorage.setItem("user", JSON.stringify(data));
         set((prevState) => ({...prevState, currentUser: data}));
@@ -12,14 +13,15 @@ export const useUserStore = create((set) => ({
         const userJSON = await user.json();
         return userJSON.data;
     },
-    fetchUser: async (token) => {
+    fetchUser: async (accessToken, refreshToken) => {
         try {
             const response = await fetch("http://localhost:3000/getSession", {
-                method: 'GET',
+                method: 'POST',
                 credentials: 'include',
+                body: JSON.stringify({'accessToken': accessToken}),
                 headers: {
                     "Content-Type": 'application/json',
-                    "x-access-token": token
+                    "x-access-token": accessToken
                 }
             });
 
@@ -28,10 +30,10 @@ export const useUserStore = create((set) => ({
             }
 
             const responseJSON = await response.json();
-            localStorage.setItem("user", JSON.stringify(responseJSON.data));
-            localStorage.setItem("token", JSON.stringify(token));
-            console.log(responseJSON);
-            set((prevState) => ({...prevState, currentUser: responseJSON.data}));
+            localStorage.setItem("user", JSON.stringify(responseJSON));
+            localStorage.setItem("accessToken", JSON.stringify(accessToken));
+            localStorage.setItem("refreshToken", JSON.stringify(refreshToken));
+            set((prevState) => ({...prevState, currentUser: responseJSON}));
             return responseJSON.data;
         } catch (error) {
             console.error("Failed to fetch user:", error);

@@ -1,5 +1,5 @@
 import express from "express";
-import { getLogin, getLogout, loginUser, registerUser, joinCommunity, showUserCommunities, getPosts, getUser } from "../controllers/user.controller.js";
+import { getLogin, getLogout, loginUser, registerUser, joinCommunity, showUserCommunities, getPosts, getUser, refreshToken } from "../controllers/user.controller.js";
 import { isAuthenticated } from "../utils/utils.js";
 
 const router = express.Router();
@@ -13,5 +13,6 @@ router.post("/login", loginUser);
 router.post("/register", registerUser);
 router.get("/join/:communityId", isAuthenticated, joinCommunity);
 router.get("/communities", isAuthenticated, showUserCommunities);
+router.post("/refreshToken", refreshToken);
 
 export default router;

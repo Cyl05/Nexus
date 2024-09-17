@@ -10,7 +10,7 @@ function Navbar() {
     React.useEffect(() => {
         async function getData () {
             if (currentUser) {
-                const user = await getUserData(currentUser.id);
+                const user = await getUserData(currentUser.userId);
                 setUser(user);
             }
         }

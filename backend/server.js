@@ -5,6 +5,7 @@ import routes from "./routes/main.routes.js";
 import connectDB from "./database/db.config.js";
 import cors from "cors";
 import { isAuthenticated } from "./utils/utils.js";
+import jwt from "jsonwebtoken";
 
 env.config();
 const app = express();
@@ -33,8 +34,11 @@ app.use("/api", routes);
 //     res.json(response.rows);
 // });
 
-app.get('/getSession', isAuthenticated, (req, res) => {
-    res.json(req.session.user);
+app.post('/getSession', isAuthenticated, (req, res) => {
+    // res.json(req.session.user);
+    const accessToken = req.body.accessToken;
+    const { userId } = jwt.verify(accessToken, process.env.JWT_SECRET);
+    res.json({userId: userId});
 });
 
 app.listen(port, () => {

@@ -11,6 +11,38 @@ env.config({
   path: `${__dirname}/../../.env`
 });
 
+export function createAccessToken(userId) {
+    const payload = {
+        userId: userId,
+        exp: Math.floor(Date.now() / 1000) + (60 * 60), // expires in 1 hour
+    };
+    return jwt.sign(payload, process.env.JWT_SECRET);
+}
+
+export function createRefreshToken(userId) {
+    const payload = {
+        userId: userId,
+        exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 30), // expires in 30 days
+      };
+      return jwt.sign(payload, process.env.JWT_SECRET);
+}
+
+export async function refreshAccessToken(refreshToken) {
+    try {
+        const { userId } = jwt.verify(refreshToken, process.env.JWT_SECRET);
+        const response = await db.query("SELECT * FROM users WHERE id=$1", [userId]);
+        if (response.rows.length === 0) {
+            return res.status(404).json({isSuccess: false, message: "User not found"});
+        } else {
+            const accessToken = createAccessToken(userId);
+            return res.status(200).json({isSuccess: true, message: "Generated access token", token: accessToken});
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({isSuccess: false, message: "Internal Server Error"});
+    }
+}
+
 export function isAuthenticated(req, res, next) {
     const token = req.headers["x-access-token"];
     if (!token) {
@@ -21,8 +53,11 @@ export function isAuthenticated(req, res, next) {
                 console.log(err);
                 res.status(401).json({isSuccess: false, message: "Failed to authenticate"});
             } else {
-                res.status(200).json({isSuccess: true, message: "Verified", data: decoded});
-                req.user = decoded;
+                console.log("User authenticated");
+                console.log(decoded);
+                res.locals.authData = decoded;
+                // res.status(200).json({isSuccess: true, message: "Verified", data: decoded});
+                // req.user = decoded;
                 next();
             }
         })

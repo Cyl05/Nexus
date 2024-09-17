@@ -45,7 +45,7 @@ function LoginPage() {
                     password: "",
                     confirmPassword: ""
                 });
-                await fetchUser(response.token);
+                await fetchUser(response.accessToken, response.refreshToken);
                 // console.log(username);
                 navigate('/');
                 // window.location.reload();
