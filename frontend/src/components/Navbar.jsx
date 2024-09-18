@@ -2,11 +2,14 @@ import React from 'react';
 import { Box, Button, Container, HStack, Icon, IconButton, Text } from "@chakra-ui/react";
 import { CgInfinity } from "react-icons/cg";
 import { useUserStore } from '../../store/user.js';
+import { useNavigate } from 'react-router-dom';
 import { FaPlus } from "react-icons/fa6";
 
 function Navbar() {
     const { currentUser, getUserData } = useUserStore();
     const [user, setUser] = React.useState(null);
+    const navigate = useNavigate();
+
     React.useEffect(() => {
         async function getData () {
             if (currentUser) {
@@ -40,18 +43,27 @@ function Navbar() {
                 </Box>
                 <Box>
                     <HStack spacing={'10px'}>
-                        <Button leftIcon={<FaPlus />} colorScheme='teal' variant={'outline'} borderRadius={'20px'}>
-                            Create
-                        </Button>
-                        <IconButton
-                            isRound={true}
-                            variant='solid'
-                            aria-label='Done'
-                            fontSize='20px'
-                            backgroundImage={user ? user.profile_picture : null}
-                            bgSize="cover"
-                            bgPos="center"
-                        />
+                        {
+                            user ?
+                            <Box>
+                                <Button leftIcon={<FaPlus />} colorScheme='teal' variant={'outline'} borderRadius={'20px'}>
+                                    Create
+                                </Button>
+                                <IconButton
+                                    isRound={true}
+                                    variant='solid'
+                                    aria-label='Done'
+                                    fontSize='20px'
+                                    backgroundImage={user ? user.profile_picture : null}
+                                    bgSize="cover"
+                                    bgPos="center"
+                                />
+                            </Box>
+                            :
+                            <Button colorScheme='teal' borderRadius={'20px'} onClick={() => navigate("/login")}>Login</Button>
+                        }
+                        
+                        
                     </HStack>
                 </Box>
             </HStack>

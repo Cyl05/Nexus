@@ -1,9 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AbsoluteCenter, Box, Button, Heading, HStack, Image, useToast, VStack } from '@chakra-ui/react';
+import { AbsoluteCenter, Box, Button, Heading, HStack, Image, Link, Text, textDecoration, useToast, VStack } from '@chakra-ui/react';
 import { useUserStore } from '../../store/user.js';
 import InputField from '../components/InputField.jsx';
 import PasswordField from '../components/PasswordField.jsx';
+import { color } from 'framer-motion';
 
 
 function LoginPage() {
@@ -46,9 +47,7 @@ function LoginPage() {
                     confirmPassword: ""
                 });
                 await fetchUser(response.accessToken, response.refreshToken);
-                // console.log(username);
                 navigate('/');
-                // window.location.reload();
             }
         }
     }
@@ -76,6 +75,7 @@ function LoginPage() {
                         <Button colorScheme='teal' mt={4} onClick={handleSubmit}>
                             Submit
                         </Button>
+                        <Text>Don't have an account? <Link href="http://localhost:5173/register" style={{color: '#81E6D9'}}> Register </Link> </Text>
                     </VStack>
                 </Box>
                 <Image

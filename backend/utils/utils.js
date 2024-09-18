@@ -53,11 +53,7 @@ export function isAuthenticated(req, res, next) {
                 console.log(err);
                 res.status(401).json({isSuccess: false, message: "Failed to authenticate"});
             } else {
-                console.log("User authenticated");
-                console.log(decoded);
                 res.locals.authData = decoded;
-                // res.status(200).json({isSuccess: true, message: "Verified", data: decoded});
-                // req.user = decoded;
                 next();
             }
         })

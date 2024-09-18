@@ -1,7 +1,6 @@
 import { db } from "../server.js";
 import bcrypt from "bcryptjs";
 import env from "dotenv";
-import jwt from "jsonwebtoken";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import { createAccessToken, createRefreshToken, refreshAccessToken } from "../utils/utils.js";

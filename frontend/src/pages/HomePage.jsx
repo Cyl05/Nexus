@@ -4,7 +4,6 @@ import { useUserStore } from '../../store/user.js';
 
 function HomePage() {
   const { currentUser } = useUserStore();
-  console.log(currentUser);
   return (
     <Navbar />
   )

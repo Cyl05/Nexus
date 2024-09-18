@@ -1,5 +1,5 @@
 import React from 'react';
-import { AbsoluteCenter, Box, Button, Heading, HStack, Image, Input, InputGroup, InputLeftElement, InputRightElement, useToast, VStack } from '@chakra-ui/react';
+import { AbsoluteCenter, Box, Button, Heading, HStack, Image, Input, InputGroup, InputLeftElement, InputRightElement, Link, Text, useToast, VStack } from '@chakra-ui/react';
 import { useUserStore } from '../../store/user';
 import { useNavigate } from 'react-router-dom';
 import PasswordField from '../components/PasswordField.jsx';
@@ -52,8 +52,7 @@ function RegisterPage() {
                     password: "",
                     confirmPassword: ""
                 });
-                await fetchUser(response.token);
-                // console.log(username);
+                await fetchUser(response.accessToken, response.refreshToken);
                 navigate('/');
             }
         }
@@ -95,6 +94,7 @@ function RegisterPage() {
                         <Button colorScheme='teal' mt={4} onClick={handleSubmit}>
                             Submit
                         </Button>
+                        <Text>Already have an account? <Link href="http://localhost:5173/login" style={{color: '#81E6D9'}}>Login</Link></Text>
                     </VStack>
                 </Box>
             </HStack>
