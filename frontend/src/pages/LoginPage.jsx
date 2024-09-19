@@ -4,7 +4,7 @@ import { AbsoluteCenter, Box, Button, Heading, HStack, Image, Link, Text, textDe
 import { useUserStore } from '../../store/user.js';
 import InputField from '../components/InputField.jsx';
 import PasswordField from '../components/PasswordField.jsx';
-import { color } from 'framer-motion';
+import LinkText from '../components/LinkText.jsx';
 
 
 function LoginPage() {
@@ -75,7 +75,7 @@ function LoginPage() {
                         <Button colorScheme='teal' mt={4} onClick={handleSubmit}>
                             Submit
                         </Button>
-                        <Text>Don't have an account? <Link href="http://localhost:5173/register" style={{color: '#81E6D9'}}> Register </Link> </Text>
+                        <Text>Already have an account? <LinkText url='/register' color='#81E6D9' text="Register" /></Text>
                     </VStack>
                 </Box>
                 <Image

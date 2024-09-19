@@ -4,6 +4,7 @@ import { useUserStore } from '../../store/user';
 import { useNavigate } from 'react-router-dom';
 import PasswordField from '../components/PasswordField.jsx';
 import InputField from '../components/InputField.jsx';
+import LinkText from '../components/LinkText.jsx';
 
 function RegisterPage() {
     const [userInput, setUserInput] = React.useState({
@@ -94,7 +95,7 @@ function RegisterPage() {
                         <Button colorScheme='teal' mt={4} onClick={handleSubmit}>
                             Submit
                         </Button>
-                        <Text>Already have an account? <Link href="http://localhost:5173/login" style={{color: '#81E6D9'}}>Login</Link></Text>
+                        <Text>Already have an account? <LinkText url='/login' color='#81E6D9' text="Login" /></Text>
                     </VStack>
                 </Box>
             </HStack>

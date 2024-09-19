@@ -45,7 +45,7 @@ function Navbar() {
                     <HStack spacing={'10px'}>
                         {
                             user ?
-                            <Box>
+                            <HStack spacing={'10px'}>
                                 <Button leftIcon={<FaPlus />} colorScheme='teal' variant={'outline'} borderRadius={'20px'}>
                                     Create
                                 </Button>
@@ -58,7 +58,7 @@ function Navbar() {
                                     bgSize="cover"
                                     bgPos="center"
                                 />
-                            </Box>
+                            </HStack>
                             :
                             <Button colorScheme='teal' borderRadius={'20px'} onClick={() => navigate("/login")}>Login</Button>
                         }

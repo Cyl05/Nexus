@@ -12,7 +12,7 @@ router.get("/posts", isAuthenticated, getPosts);
 router.post("/login", loginUser);
 router.post("/register", registerUser);
 router.get("/join/:communityId", isAuthenticated, joinCommunity);
-router.get("/communities", isAuthenticated, showUserCommunities);
+router.post("/communities", isAuthenticated, showUserCommunities);
 router.post("/refreshToken", refreshToken);
 
 export default router;

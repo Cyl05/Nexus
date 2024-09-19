@@ -14,7 +14,8 @@ export const useCommunityStore = create((set) => ({
     fetchUserCommunities: async (userId, token) => {
         try {
             const response = await fetch(`http://localhost:3000/api/user/communities`, {
-                method: 'GET',
+                method: 'POST',
+                body: JSON.stringify({userId: userId}),
                 headers: {
                     "Content-Type": 'application/json',
                     body: JSON.stringify({userId: userId}),
@@ -22,7 +23,6 @@ export const useCommunityStore = create((set) => ({
                 }
             });
             const responseJSON = await response.json();
-            console.log(responseJSON);
             return responseJSON;
         } catch (error) {
             console.log(error);

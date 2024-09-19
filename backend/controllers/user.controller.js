@@ -122,7 +122,7 @@ async function joinCommunity (req, res) {
 async function showUserCommunities (req, res) {
 	try {
 		const userId = req.body.userId;
-		const response = await db.query("SELECT tc.name FROM communities tc INNER JOIN user_communities uc ON tc.id = uc.community_id WHERE uc.user_id = $1;", [userId]);
+		const response = await db.query("SELECT c.id, c.name FROM communities c INNER JOIN user_communities uc ON c.id = uc.community_id WHERE uc.user_id = $1;", [userId]);
 		res.status(200).json({message: "Retrieved communities successfully", data: response.rows});
 	} catch (error) {
 		console.log(error);
