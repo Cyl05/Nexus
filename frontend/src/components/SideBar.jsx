@@ -8,11 +8,13 @@ import LinkText from './LinkText';
 
 function SideBar() {
 	const [communitiesList, setCommunitiesList] = useState([]);
-	const { currentUser, accessToken } = useUserStore();
+	const { currentUser, refreshToken } = useUserStore();
 	const { fetchUserCommunities } = useCommunityStore();
+
 	React.useEffect(() => {
 		async function fetchCommunities() {
-			if (currentUser) {
+			const accessToken = await refreshToken()
+			if (currentUser && accessToken) {
 				const communitiesResponse = await fetchUserCommunities(currentUser.userId, accessToken);
 				setCommunitiesList(communitiesResponse.data);
 			}

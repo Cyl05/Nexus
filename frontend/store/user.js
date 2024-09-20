@@ -31,8 +31,8 @@ export const useUserStore = create((set) => ({
 
             const responseJSON = await response.json();
             localStorage.setItem("user", JSON.stringify(responseJSON));
-            localStorage.setItem("accessToken", JSON.stringify(accessToken));
-            localStorage.setItem("refreshToken", JSON.stringify(refreshToken));
+            localStorage.setItem("accessToken", JSON.stringify({accessToken: accessToken}));
+            localStorage.setItem("refreshToken", JSON.stringify({refreshToken: refreshToken}));
             set((prevState) => ({...prevState, currentUser: responseJSON}));
             return responseJSON.data;
         } catch (error) {
@@ -61,5 +61,18 @@ export const useUserStore = create((set) => ({
         });
         const response_data = await response.json();
         return response_data;
+    },
+    refreshToken: async () => {
+        const refreshToken = JSON.parse(localStorage.getItem("refreshToken"));
+        const response = await fetch('http://localhost:3000/api/user/refreshToken', {
+            method: 'POST',
+            body: JSON.stringify(refreshToken),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        });
+        const responseJSON = await response.json();
+        localStorage.setItem('accessToken', JSON.stringify({accessToken: responseJSON.accessToken}));
+        return responseJSON.accessToken;
     }
 }));

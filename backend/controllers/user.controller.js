@@ -144,8 +144,12 @@ async function refreshToken (req, res) {
 	const { refreshToken } = req.body;
   
   try {
-    const newAccessToken = refreshAccessToken(refreshToken);
-    res.json({ accessToken: newAccessToken });
+    const newAccessToken = await refreshAccessToken(refreshToken);
+	if (newAccessToken) {
+    	res.json({ accessToken: newAccessToken });
+	} else {
+		res.status(401).json({isSuccess: false, message: "Failed to fetch user"});
+	}
   } catch (err) {
     res.status(401).json({ error: 'Failed to refresh token' });
   }
