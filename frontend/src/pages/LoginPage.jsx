@@ -2,9 +2,9 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AbsoluteCenter, Box, Button, Heading, HStack, Image, Link, Text, textDecoration, useToast, VStack } from '@chakra-ui/react';
 import { useUserStore } from '../../store/user.js';
-import InputField from '../components/InputField.jsx';
-import PasswordField from '../components/PasswordField.jsx';
-import LinkText from '../components/LinkText.jsx';
+import InputField from '../components/Input Fields/InputField.jsx';
+import PasswordField from '../components/Input Fields/PasswordField.jsx';
+import LinkText from '../components/Misc/LinkText.jsx';
 
 
 function LoginPage() {

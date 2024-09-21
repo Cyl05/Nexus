@@ -2,9 +2,9 @@ import React from 'react';
 import { AbsoluteCenter, Box, Button, Heading, HStack, Image, Input, InputGroup, InputLeftElement, InputRightElement, Link, Text, useToast, VStack } from '@chakra-ui/react';
 import { useUserStore } from '../../store/user';
 import { useNavigate } from 'react-router-dom';
-import PasswordField from '../components/PasswordField.jsx';
-import InputField from '../components/InputField.jsx';
-import LinkText from '../components/LinkText.jsx';
+import PasswordField from '../components/Input Fields/PasswordField.jsx';
+import InputField from '../components/Input Fields/InputField.jsx';
+import LinkText from '../components/Misc/LinkText.jsx';
 
 function RegisterPage() {
     const [userInput, setUserInput] = React.useState({

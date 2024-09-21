@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Button, Container, HStack, Icon, IconButton, Text } from "@chakra-ui/react";
 import { CgInfinity } from "react-icons/cg";
-import { useUserStore } from '../../store/user.js';
+import { useUserStore } from '../../../store/user.js';
 import { useNavigate } from 'react-router-dom';
 import { FaPlus } from "react-icons/fa6";
 

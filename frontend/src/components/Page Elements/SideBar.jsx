@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Box, Center, Flex, Heading, Text, VStack } from "@chakra-ui/react";
-import WideButton from './WideButton';
+import WideButton from '../Misc/WideButton';
 import { FaHome, FaPlus } from "react-icons/fa";
-import { useUserStore } from '../../store/user';
-import { useCommunityStore } from '../../store/community';
-import LinkText from './LinkText';
+import { useUserStore } from '../../../store/user';
+import { useCommunityStore } from '../../../store/community';
+import LinkText from '../Misc/LinkText';
 
 function SideBar() {
 	const [communitiesList, setCommunitiesList] = useState([]);
