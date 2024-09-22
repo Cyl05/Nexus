@@ -62,7 +62,7 @@ export const useUserStore = create((set) => ({
         const response_data = await response.json();
         return response_data;
     },
-    refreshToken: async () => {
+    refreshAccessToken: async () => {
         const refreshToken = JSON.parse(localStorage.getItem("refreshToken"));
         const response = await fetch('http://localhost:3000/api/user/refreshToken', {
             method: 'POST',
@@ -74,5 +74,24 @@ export const useUserStore = create((set) => ({
         const responseJSON = await response.json();
         localStorage.setItem('accessToken', JSON.stringify({accessToken: responseJSON.accessToken}));
         return responseJSON.accessToken;
+    },
+    joinCommunity: async (userId, communityId, token, membership) => {
+        const action = membership ? "leave" : "join";
+        console.log(membership, action);
+        try {
+            const response = await fetch(`http://localhost:3000/api/user/${action}/${communityId}`, {
+                method: 'POST',
+                body: JSON.stringify({userId: userId}),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-access-token': token
+                }
+            });
+            const responseJSON = await response.json();
+            console.log(responseJSON);
+            return responseJSON;
+        } catch (error) {
+            console.log(error);
+        }
     }
 }));

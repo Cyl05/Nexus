@@ -12,7 +12,7 @@ import { useUserStore } from '../../store/user.js';
 
 function CommunityPage() {
 	const { fetchCommunity, checkMembership } = useCommunityStore();
-	const { currentUser, refreshToken } = useUserStore();
+	const { currentUser, refreshAccessToken, joinCommunity } = useUserStore();
 	const { communityId } = useParams("");
 
 	const [community, setCommunity] = React.useState();
@@ -20,12 +20,12 @@ function CommunityPage() {
 
 	React.useEffect(() => {
 		async function getCommunity() {
-			const accessToken = await refreshToken();
+			const accessToken = await refreshAccessToken();
 			if (currentUser && accessToken) {
 				const response = await fetchCommunity(communityId);
 				setCommunity(response);
 				const membershipResult = await checkMembership(currentUser.userId, communityId, accessToken);
-				if (membershipResult) {
+				if (membershipResult.member) {
 					setMembership(true);
 				}
 			}
@@ -33,13 +33,21 @@ function CommunityPage() {
 		getCommunity();
 	}, []);
 
+	async function handleJoin () {
+        const accessToken = await refreshAccessToken();
+        if (currentUser && accessToken) {
+            const response = await joinCommunity(currentUser.userId, communityId, accessToken, membership);
+			setMembership(prevState => !prevState);
+		}
+    }
+
 	return (
 		<Box>
 			<Navbar />
 			<SideBar />
 			<MainContent>
 				{/* <Box color={'white'}>{ community ? community.name : "null" }</Box> */}
-				<CommunityHeader community={community} membership={membership} />
+				<CommunityHeader community={community} membership={membership} handleJoin={handleJoin} />
 				<CommunityBody community={community} />
 			</MainContent>
 		</Box>

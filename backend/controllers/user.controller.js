@@ -108,8 +108,24 @@ async function registerUser(req, res) {
 async function joinCommunity (req, res) {
 	try {
 		const communityId = req.params.communityId;
-		await db.query("INSERT INTO user_communities (user_id, community_id) VALUES ($1, $2)", [req.session.user.id, communityId]);
+		const userId = req.body.userId;
+		await db.query("INSERT INTO user_communities (user_id, community_id) VALUES ($1, $2)", [userId, communityId]);
 		res.status(200).json({message: "Joined community successfully"});
+	} catch (error) {
+		if (error.detail.includes("already exists")) {
+			return res.status(400).json({message: "You are already part of this community"});
+		}
+		console.log(error);
+		res.status(500).json({message: "Internal Server error"});
+	}
+}
+
+async function leaveCommunity (req, res) {
+	try {
+		const communityId = req.params.communityId;
+		const userId = req.body.userId;
+		await db.query("DELETE FROM user_communities WHERE user_id = $1 AND community_id = $2", [userId, communityId]);
+		res.status(200).json({message: "Left community successfully"});
 	} catch (error) {
 		if (error.detail.includes("already exists")) {
 			return res.status(400).json({message: "You are already part of this community"});
@@ -155,4 +171,4 @@ async function refreshToken (req, res) {
   }
 }
 
-export { getUser, getLogin, getLogout, loginUser, registerUser, joinCommunity, showUserCommunities, getPosts, refreshToken };
+export { getUser, getLogin, getLogout, loginUser, registerUser, joinCommunity, leaveCommunity, showUserCommunities, getPosts, refreshToken };

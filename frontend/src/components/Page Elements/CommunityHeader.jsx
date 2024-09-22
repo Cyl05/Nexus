@@ -1,9 +1,10 @@
 import { Box, Button, HStack, Image, Text } from '@chakra-ui/react';
 import React from 'react';
 import { FaPlus } from "react-icons/fa6";
+import { useUserStore } from '../../../store/user.js';
+import { useParams } from 'react-router-dom';
 
 function CommunityHeader(props) {
-    // console.log(props.community);
     return (
         <Box h={'40vh'}>
             {props.community &&
@@ -57,6 +58,7 @@ function CommunityHeader(props) {
                     variant={'outline'}
                     colorScheme='white'
                     color={'white'}
+                    onClick={props.handleJoin}
                 >Leave</Button>
                 : <Button
                     position={'relative'}
@@ -65,6 +67,7 @@ function CommunityHeader(props) {
                     borderRadius={'full'}
                     bgColor={'white'}
                     color={'#1A202C'}
+                    onClick={props.handleJoin}
                 >Join</Button>
             }
 
