@@ -11,7 +11,7 @@ env.config({
   path: `${__dirname}/../../.env`
 });
 
-export function createAccessToken(userId) {
+function createAccessToken(userId) {
     const payload = {
         userId: userId,
         exp: Math.floor(Date.now() / 1000) + (60), // expires in 1 hour
@@ -19,7 +19,7 @@ export function createAccessToken(userId) {
     return jwt.sign(payload, process.env.JWT_SECRET);
 }
 
-export function createRefreshToken(userId) {
+function createRefreshToken(userId) {
     const payload = {
         userId: userId,
         exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 30), // expires in 30 days
@@ -27,7 +27,7 @@ export function createRefreshToken(userId) {
       return jwt.sign(payload, process.env.JWT_SECRET);
 }
 
-export async function refreshAccessToken(refreshToken) {
+async function refreshAccessToken(refreshToken) {
     try {
         const { userId } = jwt.verify(refreshToken, process.env.JWT_SECRET);
         const response = await db.query("SELECT * FROM users WHERE id=$1", [userId]);
@@ -45,7 +45,7 @@ export async function refreshAccessToken(refreshToken) {
     }
 }
 
-export function isAuthenticated(req, res, next) {
+function isAuthenticated(req, res, next) {
     const token = req.headers["x-access-token"];
     if (!token) {
         res.redirect("/user/login");
@@ -62,7 +62,7 @@ export function isAuthenticated(req, res, next) {
     }
 }
 
-export async function votePost (voteArea, areaId, userId, voteBoolean, voteType) {
+async function votePost (voteArea, areaId, userId, voteBoolean, voteType) {
     try {
         const response = await db.query(`SELECT * FROM ${voteArea}_votes WHERE ${voteArea}_id=$1 AND user_id=$2`, [areaId, userId]);
         if (response.rows.length !== 0 && response.rows[0].vote_type === !voteBoolean) {
@@ -84,7 +84,7 @@ export async function votePost (voteArea, areaId, userId, voteBoolean, voteType)
     }
 }
 
-export async function getCount (voteArea, areaId) {
+async function getCount (voteArea, areaId) {
     try {
         const result = await db.query(
             `SELECT
@@ -110,3 +110,21 @@ export async function getCount (voteArea, areaId) {
         return {statusCode: 500, message: `Internal Server Error`};
     }
 }
+
+function getRandomColor () {
+    const pastelColors = [
+        "#FFD1DC",
+        "#B5E0CD",
+        "#F2B4C9",
+        "#E5C3D7",
+        "#F6E3C3",
+        "#B0D4B5",
+        "#F4D1D8",
+        "#D9E6B9",
+        "#E8C8D7",
+        "#B9E6D2"
+    ];
+    return Math.floor(Math.random() * pastelColors.length);
+}
+
+export { createAccessToken, createRefreshToken, refreshAccessToken, isAuthenticated, votePost, getCount, getRandomColor };

@@ -28,11 +28,13 @@ function Navbar() {
             px={10}
             borderBottom={"2px solid #3c4b67"}
             boxShadow={'lg'}
+            bgColor={'#1A202C'}
             pos={'fixed'}
             top={0}
             left={0}
             right={0}
             maxW={'100%'}
+            zIndex={1000}
         >
             <HStack justifyContent={"space-between"}>
                 <Box>
@@ -46,9 +48,7 @@ function Navbar() {
                         {
                             user ?
                             <HStack spacing={'10px'}>
-                                <Button leftIcon={<FaPlus />} colorScheme='teal' variant={'outline'} borderRadius={'20px'}>
-                                    Create
-                                </Button>
+                                <IconButton icon={<FaPlus />} borderRadius={'full'} variant={'outline'} colorScheme='teal'/>
                                 <IconButton
                                     isRound={true}
                                     variant='solid'

@@ -1,4 +1,5 @@
 import { db } from "../server.js";
+import { getRandomColor } from "../utils/utils.js";
 
 async function getCommunity (req, res) {
     let communityId = req.params.communityId;
@@ -16,7 +17,7 @@ async function getCommunity (req, res) {
 
 async function createCommunity (req, res) {
     let missingValue = false;
-    const { name, icon, descTitle, desc } = req.body;
+    const { name, descTitle, desc } = req.body;
     Object.entries(req.body).map(([key, value]) => {
         if (!value) {
             missingValue = true;
@@ -26,9 +27,9 @@ async function createCommunity (req, res) {
         return res.status(404).json({message: "Fill all mandatory fields"});
     } else {
         await db.query(
-            `INSERT INTO communities (name, icon, description_title, description, created_by)
-            VALUES ($1, $2, $3, $4, $5)`,
-            [name, icon, descTitle, desc, req.session.user.id]
+            `INSERT INTO communities (name, icon, description_title, description, created_by, banner)
+            VALUES ($1, $2, $3, $4, $5, $6)`,
+            [name, icon, descTitle, desc, req.session.user.id, getRandomColor()]
         );
         res.json(Object.entries(req.body));
     }
@@ -62,4 +63,31 @@ async function deleteCommunity (req, res) {
     }
 }
 
-export { getCommunity, createCommunity, editCommunity, deleteCommunity };
+async function getCommunitySize(req, res) {
+    try {
+        const communityId = req.params.communityId;
+        const response = await db.query("SELECT COUNT(*) FROM user_communities WHERE community_id=$1", [communityId]);
+        res.status(200).json({isSuccess: true, message: "Retrieved community size", data: response.rows});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: "Internal Server Error"});
+    }
+}
+
+async function checkMembership(req, res) {
+    try {
+        const userId = req.body.userId;
+        const communityId = req.params.communityId;
+        const response = await db.query("SELECT * FROM user_communities WHERE user_id = $1 AND community_id = $2", [userId, communityId]);
+        if (response.rows[0]) {
+            res.status(200).json({isSuccess: true, message: "Is a member", member: true});
+        } else {
+            res.status(200).json({isSuccess: true, message: "Is not a member", member: false});
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: "Internal Server Error"});
+    }
+}
+
+export { getCommunity, createCommunity, editCommunity, deleteCommunity, getCommunitySize, checkMembership };

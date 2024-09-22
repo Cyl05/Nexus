@@ -13,7 +13,7 @@ function SideBar() {
 
 	React.useEffect(() => {
 		async function fetchCommunities() {
-			const accessToken = await refreshToken()
+			const accessToken = await refreshToken();
 			if (currentUser && accessToken) {
 				const communitiesResponse = await fetchUserCommunities(currentUser.userId, accessToken);
 				setCommunitiesList(communitiesResponse.data);

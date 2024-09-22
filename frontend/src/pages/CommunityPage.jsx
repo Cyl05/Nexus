@@ -5,28 +5,42 @@ import Navbar from '../components/Page Elements/Navbar.jsx';
 import { Box } from '@chakra-ui/react';
 import SideBar from '../components/Page Elements/SideBar.jsx';
 import MainContent from '../components/Page Elements/MainContent.jsx';
+import CommunityHeader from '../components/Page Elements/CommunityHeader.jsx';
+import CommunityBody from '../components/Page Elements/CommunityBody.jsx';
+import { useUserStore } from '../../store/user.js';
 
 
 function CommunityPage() {
-	const { fetchCommunity } = useCommunityStore();
+	const { fetchCommunity, checkMembership } = useCommunityStore();
+	const { currentUser, refreshToken } = useUserStore();
 	const { communityId } = useParams("");
-	
+
 	const [community, setCommunity] = React.useState();
+	const [membership, setMembership] = React.useState(false);
 
 	React.useEffect(() => {
 		async function getCommunity() {
-			const response = await fetchCommunity(communityId);
-			setCommunity(response);
+			const accessToken = await refreshToken();
+			if (currentUser && accessToken) {
+				const response = await fetchCommunity(communityId);
+				setCommunity(response);
+				const membershipResult = await checkMembership(currentUser.userId, communityId, accessToken);
+				if (membershipResult) {
+					setMembership(true);
+				}
+			}
 		}
 		getCommunity();
 	}, []);
-	
+
 	return (
 		<Box>
 			<Navbar />
 			<SideBar />
 			<MainContent>
-				<Box color={'white'}>{ community ? community.name : "null" }</Box>
+				{/* <Box color={'white'}>{ community ? community.name : "null" }</Box> */}
+				<CommunityHeader community={community} membership={membership} />
+				<CommunityBody community={community} />
 			</MainContent>
 		</Box>
 	)
