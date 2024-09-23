@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, Center, Flex, Heading, Text, VStack } from "@chakra-ui/react";
+import { Box, Center, Flex, Heading, HStack, Image, Text, VStack } from "@chakra-ui/react";
 import WideButton from '../Misc/WideButton';
 import { FaHome, FaPlus } from "react-icons/fa";
 import { useUserStore } from '../../../store/user';
@@ -34,10 +34,15 @@ function SideBar() {
 					<Box w={'100%'} mt={4} mx={'auto'} px={12}>
 						<Flex direction={'column'} w={'100%'}>
 							<Heading as={'h1'} fontSize={18} color={'#7D8BB5'}>COMMUNITIES</Heading>
-							<VStack spacing={1} align={'flex-start'} mt={4}>
+							<VStack spacing={1} align={'flex-start'} mt={4} spacing={3}>
 								{currentUser
 									? communitiesList.map((community) => {
-										return <LinkText key={community.id} url={`/community/${community.id}`} text={community.name} color='white' />;
+										return (
+											<HStack key={community.id} spacing={2}>
+												<Image src={community.icon} w={6} display={'inline'} borderRadius={'full'} />
+												<LinkText url={`/community/${community.id}`} text={community.name} color='white' />
+											</HStack>
+										);
 									})
 									: <Text><LinkText url='/login' color='#81E6D9' text="Login" /> to view communities</Text>}
 							</VStack>

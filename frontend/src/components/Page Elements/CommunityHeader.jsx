@@ -1,10 +1,12 @@
-import { Box, Button, HStack, Image, Text } from '@chakra-ui/react';
+import { Box, Button, HStack, Image, Text, useDisclosure, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@chakra-ui/react';
 import React from 'react';
 import { FaPlus } from "react-icons/fa6";
-import { useUserStore } from '../../../store/user.js';
-import { useParams } from 'react-router-dom';
+import LeaveCommunityModal from '../Misc/LeaveCommunityModal.jsx';
 
 function CommunityHeader(props) {
+
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
     return (
         <Box h={'40vh'}>
             {props.community &&
@@ -58,8 +60,9 @@ function CommunityHeader(props) {
                     variant={'outline'}
                     colorScheme='white'
                     color={'white'}
-                    onClick={props.handleJoin}
-                >Leave</Button>
+                    // onClick={props.handleJoin}
+                    onClick={onOpen}
+                >Joined</Button>
                 : <Button
                     position={'relative'}
                     top={'-21vh'}
@@ -70,7 +73,22 @@ function CommunityHeader(props) {
                     onClick={props.handleJoin}
                 >Join</Button>
             }
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                    <ModalHeader>Leave Community?</ModalHeader>
+                    <ModalCloseButton />
+                    <ModalBody>
+                        Are you sure you want to leave {props.community && props.community.name}?
+                    </ModalBody>
 
+                    <ModalFooter>
+                        <Button bgColor='red.700' mr={3} borderRadius={'full'} onClick={() => {onClose(); props.handleJoin();}}>
+                            Leave
+                        </Button>
+                    </ModalFooter>
+                </ModalContent>
+            </Modal>
         </Box>
     )
 }

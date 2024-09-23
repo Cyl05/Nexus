@@ -46,7 +46,6 @@ function CommunityPage() {
 			<Navbar />
 			<SideBar />
 			<MainContent>
-				{/* <Box color={'white'}>{ community ? community.name : "null" }</Box> */}
 				<CommunityHeader community={community} membership={membership} handleJoin={handleJoin} />
 				<CommunityBody community={community} />
 			</MainContent>
