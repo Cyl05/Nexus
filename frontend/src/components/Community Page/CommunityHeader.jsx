@@ -1,7 +1,6 @@
 import { Box, Button, HStack, Image, Text, useDisclosure, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@chakra-ui/react';
 import React from 'react';
 import { FaPlus } from "react-icons/fa6";
-import LeaveCommunityModal from '../Misc/LeaveCommunityModal.jsx';
 
 function CommunityHeader(props) {
 

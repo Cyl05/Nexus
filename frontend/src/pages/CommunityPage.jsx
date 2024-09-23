@@ -5,18 +5,19 @@ import Navbar from '../components/Page Elements/Navbar.jsx';
 import { Box } from '@chakra-ui/react';
 import SideBar from '../components/Page Elements/SideBar.jsx';
 import MainContent from '../components/Page Elements/MainContent.jsx';
-import CommunityHeader from '../components/Page Elements/CommunityHeader.jsx';
-import CommunityBody from '../components/Page Elements/CommunityBody.jsx';
+import CommunityHeader from '../components/Community Page/CommunityHeader.jsx';
+import CommunityBody from '../components/Community Page/CommunityBody.jsx';
 import { useUserStore } from '../../store/user.js';
 
 
 function CommunityPage() {
-	const { fetchCommunity, checkMembership } = useCommunityStore();
+	const { fetchCommunity, checkMembership, fetchCommunityPosts } = useCommunityStore();
 	const { currentUser, refreshAccessToken, joinCommunity } = useUserStore();
 	const { communityId } = useParams("");
 
 	const [community, setCommunity] = React.useState();
 	const [membership, setMembership] = React.useState(false);
+	const [postsList, setPostsList] = React.useState([]);
 
 	React.useEffect(() => {
 		async function getCommunity() {
@@ -30,6 +31,12 @@ function CommunityPage() {
 				}
 			}
 		}
+
+		async function getPosts() {
+			const response = await fetchCommunityPosts(communityId);
+			setPostsList(response);
+		}
+		getPosts();
 		getCommunity();
 	}, []);
 
@@ -47,7 +54,7 @@ function CommunityPage() {
 			<SideBar />
 			<MainContent>
 				<CommunityHeader community={community} membership={membership} handleJoin={handleJoin} />
-				<CommunityBody community={community} />
+				<CommunityBody community={community} posts={postsList} />
 			</MainContent>
 		</Box>
 	)

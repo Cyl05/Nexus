@@ -51,5 +51,14 @@ export const useCommunityStore = create((set) => ({
         } catch (error) {
             console.log(error);
         }
+    },
+    fetchCommunityPosts: async (communityId) => {
+        try {
+            const response = await fetch(`http://localhost:3000/api/community/posts/${communityId}`);
+            const responseJSON = await response.json();
+            return responseJSON.data;
+        } catch (error) {
+            console.log(error);
+        }
     }
 }));

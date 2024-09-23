@@ -34,7 +34,7 @@ function SideBar() {
 					<Box w={'100%'} mt={4} mx={'auto'} px={12}>
 						<Flex direction={'column'} w={'100%'}>
 							<Heading as={'h1'} fontSize={18} color={'#7D8BB5'}>COMMUNITIES</Heading>
-							<VStack spacing={1} align={'flex-start'} mt={4} spacing={3}>
+							<VStack align={'flex-start'} mt={4} spacing={3}>
 								{currentUser
 									? communitiesList.map((community) => {
 										return (

@@ -90,4 +90,15 @@ async function checkMembership(req, res) {
     }
 }
 
-export { getCommunity, createCommunity, editCommunity, deleteCommunity, getCommunitySize, checkMembership };
+async function getCommunityPosts(req, res) {
+    try {
+        const communityId = req.params.communityId;
+        const response = await db.query("SELECT * FROM posts WHERE community_id = $1", [communityId]);
+        res.status(200).json({isSuccess: true, message: "Retrieved community posts", data: response.rows});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({message: "Internal Server Error"});
+    }
+}
+
+export { getCommunity, createCommunity, editCommunity, deleteCommunity, getCommunitySize, checkMembership, getCommunityPosts };
