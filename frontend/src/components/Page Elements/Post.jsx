@@ -2,9 +2,9 @@ import { Box, Button, Heading, HStack, IconButton, Image, Text, VStack } from '@
 import { TriangleUpIcon, TriangleDownIcon } from '@chakra-ui/icons';
 import React from 'react';
 import { useUserStore } from '../../../store/user.js';
-import { useCommunityStore } from '../../../store/community.js';
 import { FaCommentAlt } from "react-icons/fa";
 import { usePostStore } from '../../../store/post.js';
+import { useNavigate } from 'react-router-dom';
 
 function Post(props) {
     const { getUserData } = useUserStore();
@@ -71,6 +71,7 @@ function Post(props) {
     }, []);
 
     return (
+        props.post &&
         <Box w={'95%'} bgColor={'#2D384D'} borderRadius={10} p={5}>
             <HStack align={'flex-start'}>
                 <Box w={'7%'} align={'center'} mr={5} mt={2}>
@@ -87,7 +88,15 @@ function Post(props) {
                         minW={'full'}
                         onClick={() => handleVote("downvote", props.post.id)}
                     />
-                    <Button mt={3} h={'10vh'} borderTopRadius={'full'} borderBottomRadius={'full'} w={'full'}>
+                    <Button
+                        mt={3}
+                        h={'10vh'}
+                        borderTopRadius={'full'}
+                        borderBottomRadius={'full'}
+                        w={'full'}
+                        as={'a'}
+                        href={`/post/${props.post.id}`}
+                    >
                         <VStack>
                             <FaCommentAlt />
                             <Text>{comments}</Text>

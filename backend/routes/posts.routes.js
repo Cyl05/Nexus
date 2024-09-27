@@ -4,7 +4,7 @@ import { createPost, viewPost, upvotePost, downvotePost, getVoteCount, getVoteSt
 
 const router = express.Router();
 
-router.get("/:postId", viewPost);
+router.get("/view/:postId", viewPost);
 router.post("/create", isAuthenticated, createPost);
 router.post("/upvote/:postId", isAuthenticated, upvotePost);
 router.post("/downvote/:postId", isAuthenticated, downvotePost);

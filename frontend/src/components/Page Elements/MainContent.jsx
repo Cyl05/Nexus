@@ -3,7 +3,7 @@ import React from 'react'
 
 function MainContent({ children }) {
 	return (
-		<Box ml={'20%'} mt={'10vh'} w={'80%'} h={'90vh'}>
+		<Box ml={'20%'} mt={'10vh'} w={'80%'} h={'90vh'} p={3}>
 			{children}
 		</Box>
 	)

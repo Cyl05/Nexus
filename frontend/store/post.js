@@ -1,6 +1,15 @@
 import { create } from "zustand";
 
 export const usePostStore = create((set) => ({
+    fetchPost: async (postId) => {
+        try {
+            const response = await fetch(`http://localhost:3000/api/post/view/${postId}`);
+            const responseJSON = await response.json();
+            return responseJSON.data;
+        } catch (error) {
+            console.log(error);
+        }
+    },
     fetchVoteCount: async (postId) => {
         try {
             const response = await fetch(`http://localhost:3000/api/post/count/${postId}`);

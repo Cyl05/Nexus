@@ -77,7 +77,6 @@ export const useUserStore = create((set) => ({
     },
     joinCommunity: async (userId, communityId, token, membership) => {
         const action = membership ? "leave" : "join";
-        console.log(membership, action);
         try {
             const response = await fetch(`http://localhost:3000/api/user/${action}/${communityId}`, {
                 method: 'POST',
@@ -88,7 +87,6 @@ export const useUserStore = create((set) => ({
                 }
             });
             const responseJSON = await response.json();
-            console.log(responseJSON);
             return responseJSON;
         } catch (error) {
             console.log(error);
