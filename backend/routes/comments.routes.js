@@ -1,10 +1,13 @@
 import express from "express";
 import { isAuthenticated } from "../utils/utils.js";
-import { upvoteComment, downvoteComment, getCommentVoteCount } from "../controllers/comments.controller.js";
+import { createComment, upvoteComment, downvoteComment, getCommentVoteCount, viewPostComments } from "../controllers/comments.controller.js";
 
 const router = express.Router();
-router.post("/:commentId/upvote", isAuthenticated, upvoteComment);
-router.post("/:commentId/downvote", isAuthenticated, downvoteComment);
-router.get("/:commentId/count", getCommentVoteCount);
+
+router.get("list/:postId", viewPostComments);
+router.get("/count/:commentId", getCommentVoteCount);
+router.post("/create/:postId", isAuthenticated, createComment);
+router.post("/upvote/:commentId", isAuthenticated, upvoteComment);
+router.post("/downvote/:commentId", isAuthenticated, downvoteComment);
 
 export default router;

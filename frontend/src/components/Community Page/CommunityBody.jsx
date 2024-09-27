@@ -2,10 +2,17 @@ import { Box, Divider, Heading, HStack, Text, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { useCommunityStore } from '../../../store/community';
 import Post from '../Page Elements/Post.jsx';
+import { useUserStore } from '../../../store/user.js';
 
 function CommunityBody(props) {
-    const { fetchCommunitySize } = useCommunityStore();
+    const { fetchCommunitySize, fetchVoteCount, votePost } = useCommunityStore();
+    const { currentUser, refreshAccessToken } = useUserStore();
+
     const [communitySize, setCommunitySize] = React.useState();
+    const [votes, setVotes] = React.useState({});
+
+    
+
     React.useEffect(() => {
         async function getCommunitySize() {
             if (props.community) {
@@ -23,7 +30,7 @@ function CommunityBody(props) {
                     <Heading size={'lg'} mx={16} my={5}>Posts</Heading>
                     <Divider ml={14} w={'90%'} bgColor={'#343E5B'} mb={5} />
                     <VStack spacing={5} w={'90%'} ml={14}>
-                        {props.posts && props.posts.map(post => {
+                        {props.posts && props.posts.map( (post) => {
                             return <Post key={post.id} post={post} />;
                         })}
                     </VStack>

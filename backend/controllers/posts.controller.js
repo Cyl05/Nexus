@@ -32,13 +32,15 @@ async function viewPost(req, res) {
 
 async function upvotePost(req, res) {
     const postId = req.params.postId;
-    const { statusCode, message } = await votePost("post", postId, req.session.user.id, true, "Upvote");
+    const { userId } = req.body;
+    const { statusCode, message } = await votePost("post", postId, userId, true, "Upvote");
     return res.status(statusCode).json({message: message});
 }
 
 async function downvotePost(req, res) {
     const postId = req.params.postId;
-    const { statusCode, message } = await votePost("post", postId, req.session.user.id, false, "Downvote");
+    const userId = req.body.userId;
+    const { statusCode, message } = await votePost("post", postId, userId, false, "Downvote");
     return res.status(statusCode).json({message: message});
 }
 
@@ -52,5 +54,28 @@ async function getVoteCount(req, res) {
     }
 }
 
+async function getVoteState(req, res) {
+    const postId = req.params.postId;
+    const {userId, voteArea} = req.body;
+    try {
+        const response = await db.query(`SELECT * FROM ${voteArea}_votes WHERE user_id = $1 AND post_id=$2`, [userId, postId]);
+        res.status(200).json({isSuccess: true, message: "Retrieved vote state", data: response.rows[0]});
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+}
 
-export { createPost, viewPost, upvotePost, downvotePost, getVoteCount }
+async function getNumberComments (req, res) {
+    const postId = req.params.postId;
+    try {
+        const response = await db.query(`SELECT COUNT(*) FROM comments WHERE post_id = $1`, [postId]);
+        res.status(200).json({isSuccess: true, message: "Retrieved vote state", data: response.rows[0]});
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+}
+
+
+export { createPost, viewPost, upvotePost, downvotePost, getVoteCount, getVoteState, getNumberComments }

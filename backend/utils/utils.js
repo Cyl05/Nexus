@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 env.config({
-  path: `${__dirname}/../../.env`
+    path: `${__dirname}/../../.env`
 });
 
 function createAccessToken(userId) {
@@ -23,8 +23,8 @@ function createRefreshToken(userId) {
     const payload = {
         userId: userId,
         exp: Math.floor(Date.now() / 1000) + (60 * 60 * 24 * 30), // expires in 30 days
-      };
-      return jwt.sign(payload, process.env.JWT_SECRET);
+    };
+    return jwt.sign(payload, process.env.JWT_SECRET);
 }
 
 async function refreshAccessToken(refreshToken) {
@@ -41,7 +41,7 @@ async function refreshAccessToken(refreshToken) {
         }
     } catch (error) {
         console.log(error);
-        res.status(500).json({isSuccess: false, message: "Internal Server Error"});
+        res.status(500).json({ isSuccess: false, message: "Internal Server Error" });
     }
 }
 
@@ -53,7 +53,7 @@ function isAuthenticated(req, res, next) {
         jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
             if (err) {
                 console.log(err);
-                res.status(401).json({isSuccess: false, message: "Failed to authenticate"});
+                res.status(401).json({ isSuccess: false, message: "Failed to authenticate" });
             } else {
                 res.locals.authData = decoded;
                 next();
@@ -62,7 +62,7 @@ function isAuthenticated(req, res, next) {
     }
 }
 
-async function votePost (voteArea, areaId, userId, voteBoolean, voteType) {
+async function votePost(voteArea, areaId, userId, voteBoolean, voteType) {
     try {
         const response = await db.query(`SELECT * FROM ${voteArea}_votes WHERE ${voteArea}_id=$1 AND user_id=$2`, [areaId, userId]);
         if (response.rows.length !== 0 && response.rows[0].vote_type === !voteBoolean) {
@@ -84,34 +84,35 @@ async function votePost (voteArea, areaId, userId, voteBoolean, voteType) {
     }
 }
 
-async function getCount (voteArea, areaId) {
+async function getCount(voteArea, areaId) {
     try {
         const result = await db.query(
             `SELECT
-                COALESCE(SUM(CASE WHEN v.vote_type THEN 1 ELSE -1 END), 0) AS vote_count
+                CASE
+                    WHEN COUNT(v.vote_type) > 0 THEN
+                        SUM(CASE WHEN v.vote_type THEN 1 ELSE -1 END)
+                    ELSE 0
+                END AS vote_count
             FROM ${voteArea}s p
             LEFT JOIN ${voteArea}_votes v ON p.id = v.${voteArea}_id
-            WHERE p.id = $1
-            GROUP BY p.id`,
+            WHERE p.id = $1;
+            `,
             [areaId]
         );
 
-        console.log(result.rows);
-        
         if (result.rows.length === 0) {
-            return {statusCode: 404, message: `${voteArea} not found`};
+            return { statusCode: 404, message: `${voteArea} not found` };
         }
 
         const voteCount = result.rows[0].vote_count;
-        // res.status(200).json({ data: { vote_count: voteCount } });
-        return {statusCode: 200, data: voteCount};
+        return { statusCode: 200, data: voteCount };
     } catch (error) {
         console.error(error);
-        return {statusCode: 500, message: `Internal Server Error`};
+        return { statusCode: 500, message: `Internal Server Error` };
     }
 }
 
-function getRandomColor () {
+function getRandomColor() {
     const pastelColors = [
         "#FFD1DC",
         "#B5E0CD",
