@@ -59,5 +59,15 @@ export const usePostStore = create((set) => ({
         } catch (error) {
             console.log(error);
         }
+    },
+    fetchPostComments: async (postId) => {
+        try {
+            const response = await fetch(`http://localhost:3000/api/comment/list/${postId}`);
+            const responseJSON = await response.json();
+            console.log(responseJSON);
+            return parseInt(responseJSON);
+        } catch (error) {
+            console.log(error);
+        }
     }
 }));

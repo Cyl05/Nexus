@@ -4,7 +4,7 @@ import { createComment, upvoteComment, downvoteComment, getCommentVoteCount, vie
 
 const router = express.Router();
 
-router.get("list/:postId", viewPostComments);
+router.get("/list/:postId", viewPostComments);
 router.get("/count/:commentId", getCommentVoteCount);
 router.post("/create/:postId", isAuthenticated, createComment);
 router.post("/upvote/:commentId", isAuthenticated, upvoteComment);

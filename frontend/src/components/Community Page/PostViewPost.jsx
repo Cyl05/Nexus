@@ -2,6 +2,7 @@ import { Box, Heading, HStack, IconButton, Image, Text, VStack } from '@chakra-u
 import React from 'react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { useUserStore } from '../../../store/user.js';
+import UpvoteDownvote from '../Misc/UpvoteDownvote.jsx';
 
 function PostViewPost(props) {
     const { getUserData } = useUserStore();
@@ -15,18 +16,18 @@ function PostViewPost(props) {
             }
         }
         getUser();
-    }, []);
+    }, [props.post]);
 
     return (
         props.community && props.post ?
-        <Box w={'95%'} bgColor={'#2D384D'} borderRadius={10} p={5}>
+        <Box bgColor={'#2D384D'} borderRadius={10} p={5}>
             <HStack align={'center'} mb={5}>
                 <IconButton icon={<ArrowBackIcon />} borderRadius={'full'} />
                 <HStack align={'center'} as={'a'} href={`/community/${props.community.id}`}>
                     <Image src={props.community.icon} w={10} h={10} borderRadius={'full'} border={'2px solid white'} />
                     <VStack align={'flex-start'} spacing={0}>
                         <Heading size={'sm'}> {props.community.name}</Heading>
-                        <Text display={'block'}>{user && user.username}</Text>
+                        <Text>{user && user.username}</Text>
                     </VStack>
                 </HStack>
             </HStack>
@@ -38,6 +39,7 @@ function PostViewPost(props) {
                 <Box w={'full'} bgColor={'black'} align={'center'} borderRadius={7}>
                     <Image src={props.post.image} />
                 </Box>
+                <UpvoteDownvote post={props.post} horizontalOrientation={true} />
             </VStack>
         </Box>
         : <div>Loading...</div>

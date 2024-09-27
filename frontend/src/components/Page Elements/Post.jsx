@@ -4,59 +4,20 @@ import React from 'react';
 import { useUserStore } from '../../../store/user.js';
 import { FaCommentAlt } from "react-icons/fa";
 import { usePostStore } from '../../../store/post.js';
-import { useNavigate } from 'react-router-dom';
+import UpvoteDownvote from '../Misc/UpvoteDownvote.jsx';
 
 function Post(props) {
     const { getUserData } = useUserStore();
-    const { currentUser, refreshAccessToken } = useUserStore();
-    const { fetchVoteCount, votePost, fetchVoteState, fetchCommentNumber } = usePostStore();
+    
+    const { fetchCommentNumber } = usePostStore();
 
     const [user, setUser] = React.useState();
-    const [votes, setVotes] = React.useState();
-    const [voteState, setVoteState] = React.useState();
     const [comments, setComments] = React.useState();
-
-    async function handleVote(voteType, postId) {
-        const accessToken = await refreshAccessToken();
-        if (currentUser && accessToken) {
-            await votePost(currentUser.userId, voteType, postId, accessToken);
-            if (voteType === "upvote") {
-                if (voteState) {
-                    setVotes(prevState => prevState - 1);
-                } else if (voteState === false) {
-                    setVotes(prevState => prevState + 2);
-                } else {
-                    setVotes(prevState => prevState + 1);
-                }
-                setVoteState(prevState => (prevState ? null : true));
-            } else {
-                if (voteState === false) {
-                    setVotes(prevState => prevState + 1);
-                } else if (voteState === true) {
-                    setVotes(prevState => prevState - 2);
-                } else {
-                    setVotes(prevState => prevState - 1);
-                }
-                setVoteState(prevState => (prevState === false ? null : false));
-            }
-        }
-    }
 
     React.useEffect(() => {
         async function getUser() {
             const userData =  await getUserData(props.post.author_id);
             setUser(userData);
-        }
-
-        async function getVotes() {
-            const voteCount = await fetchVoteCount(props.post.id);
-            setVotes(parseInt(voteCount.upvote_count));
-        }
-
-        async function getVoteState() {
-            const accessToken = await refreshAccessToken();
-            const response = await fetchVoteState(currentUser.userId, "post", props.post.id, accessToken);
-            setVoteState(response ? response.vote_type: null);
         }
 
         async function numberOfComments() {
@@ -65,9 +26,7 @@ function Post(props) {
         }
         
         numberOfComments();
-        getVoteState();
         getUser();
-        getVotes();
     }, []);
 
     return (
@@ -75,19 +34,7 @@ function Post(props) {
         <Box w={'95%'} bgColor={'#2D384D'} borderRadius={10} p={5}>
             <HStack align={'flex-start'}>
                 <Box w={'7%'} align={'center'} mr={5} mt={2}>
-                    <IconButton
-                        icon={<TriangleUpIcon color={voteState ? "red.500" : null} />}
-                        borderTopRadius={'full'}
-                        minW={'full'}
-                        onClick={() => handleVote("upvote", props.post.id)}
-                    />
-                    <Box bgColor={'#3D485B'} w={'full'} p={2}><Text color={voteState ? "red.500" : (voteState === false ? "blue.500" : null)}>{votes}</Text></Box>
-                    <IconButton
-                        icon={<TriangleDownIcon color={voteState === false ? "blue.500" : null} />}
-                        borderBottomRadius={'full'}
-                        minW={'full'}
-                        onClick={() => handleVote("downvote", props.post.id)}
-                    />
+                    <UpvoteDownvote post={props.post} />
                     <Button
                         mt={3}
                         h={'10vh'}
