@@ -3,21 +3,21 @@ import { getCount, votePost } from "../utils/utils.js";
 
 async function createComment (req, res) {
     const postId = req.params.postId;
-    const { content } = req.body;
+    const { content, userId } = req.body;
     if (!content) {
-        return res.status(400).json({ message: "Please type some content" });
+        return res.status(400).json({ isSuccess: false, message: "Please type some content" });
     }
 
     try {
         await db.query(
             `INSERT INTO comments (user_id, content, post_id, created_at)
             VALUES ($1, $2, $3, $4)`,
-            [req.session.user.id, content, postId, new Date()]
+            [userId, content, postId, new Date()]
         );
-        return res.status(200).json({ message: "Commented successfully!" });
+        return res.status(200).json({ isSuccess: true, message: "Commented successfully!" });
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: "Internal Server Error" });
+        return res.status(500).json({ isSuccess: false, message: "Internal Server Error" });
     }
 }
 

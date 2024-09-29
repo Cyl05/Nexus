@@ -2,21 +2,46 @@ import React from 'react';
 import SideBar from '../components/Page Elements/SideBar.jsx';
 import MainContent from '../components/Page Elements/MainContent.jsx';
 import Navbar from "../components/Page Elements/Navbar.jsx";
-import { Box, Divider, Heading, HStack, IconButton, Input, InputGroup, InputRightElement, Text, Textarea } from '@chakra-ui/react';
+import { Box, Divider, Heading, HStack, IconButton, Input, InputGroup, InputRightElement, Text, Textarea, useToast } from '@chakra-ui/react';
 import { useParams } from 'react-router-dom';
 import { useCommunityStore } from '../../store/community.js';
 import { usePostStore } from '../../store/post.js';
 import CommunityDesc from '../components/Community Page/CommunityDesc.jsx';
 import PostViewPost from '../components/Community Page/PostViewPost.jsx';
 import { IoSend } from "react-icons/io5";
+import { useCommentStore } from '../../store/comment.js';
+import { useUserStore } from '../../store/user.js';
 
 function PostViewPage() {
     const { fetchCommunity } = useCommunityStore();
     const { fetchPost } = usePostStore();
+    const { createComment } = useCommentStore();
+    const { currentUser, refreshAccessToken } = useUserStore();
     const { postId } = useParams("");
 
     const [post, setPost] = React.useState();
     const [community, setCommunity] = React.useState();
+    const [commentData, setCommentData] = React.useState({userId: currentUser.userId, content: ""});
+    const toast = useToast();
+
+    function handleChange(event) {
+        const { value } = event.target;
+        setCommentData(prevValue => ({...prevValue, content: value}));
+    }
+
+    async function handleSubmit() {
+        const accessToken = await refreshAccessToken();
+        const response = await createComment(postId, commentData, accessToken);
+        toast({
+            title: response.message,
+            status: response.isSuccess ? 'success' : 'error',
+            duration: 2000,
+            isClosable: true
+        });
+        if (response.isSuccess) {
+            setCommentData(prevState => ({...prevState, content: ""}));
+        }
+    }
 
     React.useEffect(() => {
         async function getCommunity() {
@@ -39,9 +64,24 @@ function PostViewPage() {
                         <Heading size={'lg'} my={5}>Comments:</Heading>
                         <Divider bgColor={'#343E5B'} />
                         <InputGroup mt={5}>
-                            <Input placeholder='Add a comment' size='md' borderRadius={'full'} colorScheme='teal' p={6} />
+                            <Input
+                                placeholder='Add a comment'
+                                size='md'
+                                borderRadius={'full'}
+                                colorScheme='teal'
+                                p={6}
+                                pr={'7%'}
+                                onChange={handleChange}
+                                value={commentData.content}
+                                style={{
+                                    minHeight: '50px',
+                                    maxHeight: '200px',
+                                    overflowY: 'auto',
+                                    resize: 'vertical'
+                                }}
+                            />
                             <InputRightElement mt={1} mr={1}>
-                                <IconButton icon={<IoSend />} borderRadius={'full'} colorScheme='teal' />
+                                <IconButton icon={<IoSend />} borderRadius={'full'} colorScheme='teal' onClick={handleSubmit} />
                             </InputRightElement>
                         </InputGroup>
                     </Box>
