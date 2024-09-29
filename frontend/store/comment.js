@@ -16,5 +16,14 @@ export const useCommentStore = create((set) => ({
         } catch (error) {
             console.log(error);
         }
+    },
+    fetchCommentCount: async (commentId) => {
+        try {
+            const response = await fetch(`http://localhost:3000/api/comment/count/${commentId}`);
+            const responseJSON = await response.json();
+            return responseJSON;
+        } catch (error) {
+            console.log(error);
+        }
     }
 }));

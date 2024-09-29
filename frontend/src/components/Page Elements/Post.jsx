@@ -34,13 +34,13 @@ function Post(props) {
         <Box w={'95%'} bgColor={'#2D384D'} borderRadius={10} p={5}>
             <HStack align={'flex-start'}>
                 <Box w={'7%'} align={'center'} mr={5} mt={2}>
-                    <UpvoteDownvote post={props.post} />
+                    <UpvoteDownvote post={props.post} voteArea={'post'} />
                     <Button
                         mt={3}
                         h={'10vh'}
                         borderTopRadius={'full'}
                         borderBottomRadius={'full'}
-                        w={'full'}
+                        maxW={'full'}
                         as={'a'}
                         href={`/post/${props.post.id}`}
                     >

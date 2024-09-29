@@ -10,18 +10,18 @@ export const usePostStore = create((set) => ({
             console.log(error);
         }
     },
-    fetchVoteCount: async (postId) => {
+    fetchVoteCount: async (postId, voteArea) => {
         try {
-            const response = await fetch(`http://localhost:3000/api/post/count/${postId}`);
+            const response = await fetch(`http://localhost:3000/api/${voteArea}/count/${postId}`);
             const responseJSON = await response.json();
             return responseJSON;
         } catch (error) {
             console.log(error);
         }
     },
-    votePost: async (userId, voteType, postId, token) => {
+    votePost: async (userId, voteType, postId, token, voteArea) => {
         try {
-            const response = await fetch(`http://localhost:3000/api/post/${voteType}/${postId}`, {
+            const response = await fetch(`http://localhost:3000/api/${voteArea}/${voteType}/${postId}`, {
                 method: 'POST',
                 body: JSON.stringify({userId: userId}),
                 headers: {
@@ -37,7 +37,7 @@ export const usePostStore = create((set) => ({
     },
     fetchVoteState: async (userId, voteArea, postId, token) => {
         try {
-            const response = await fetch(`http://localhost:3000/api/post/voteState/${postId}`, {
+            const response = await fetch(`http://localhost:3000/api/${voteArea}/voteState/${postId}`, {
                 method: 'POST',
                 body: JSON.stringify({userId: userId, voteArea: voteArea}),
                 headers: {
@@ -64,8 +64,7 @@ export const usePostStore = create((set) => ({
         try {
             const response = await fetch(`http://localhost:3000/api/comment/list/${postId}`);
             const responseJSON = await response.json();
-            console.log(responseJSON);
-            return parseInt(responseJSON);
+            return (responseJSON);
         } catch (error) {
             console.log(error);
         }

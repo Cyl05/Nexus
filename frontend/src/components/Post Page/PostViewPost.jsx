@@ -39,7 +39,7 @@ function PostViewPost(props) {
                 <Box w={'full'} bgColor={'black'} align={'center'} borderRadius={7}>
                     <Image src={props.post.image} />
                 </Box>
-                <UpvoteDownvote post={props.post} horizontalOrientation={true} />
+                <UpvoteDownvote post={props.post} horizontalOrientation={true} voteArea={'post'} />
             </VStack>
         </Box>
         : <div>Loading...</div>

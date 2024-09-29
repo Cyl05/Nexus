@@ -2,19 +2,20 @@ import React from 'react';
 import SideBar from '../components/Page Elements/SideBar.jsx';
 import MainContent from '../components/Page Elements/MainContent.jsx';
 import Navbar from "../components/Page Elements/Navbar.jsx";
-import { Box, Divider, Heading, HStack, IconButton, Input, InputGroup, InputRightElement, Text, Textarea, useToast } from '@chakra-ui/react';
+import { Box, Divider, Heading, HStack, IconButton, Input, InputGroup, InputRightElement, useToast } from '@chakra-ui/react';
 import { useParams } from 'react-router-dom';
 import { useCommunityStore } from '../../store/community.js';
 import { usePostStore } from '../../store/post.js';
-import CommunityDesc from '../components/Community Page/CommunityDesc.jsx';
-import PostViewPost from '../components/Community Page/PostViewPost.jsx';
-import { IoSend } from "react-icons/io5";
 import { useCommentStore } from '../../store/comment.js';
 import { useUserStore } from '../../store/user.js';
+import CommunityDesc from '../components/Community Page/CommunityDesc.jsx';
+import PostViewPost from '../components/Post Page/PostViewPost.jsx';
+import { IoSend } from "react-icons/io5";
+import Comment from '../components/Post Page/Comment.jsx';
 
 function PostViewPage() {
     const { fetchCommunity } = useCommunityStore();
-    const { fetchPost } = usePostStore();
+    const { fetchPost, fetchPostComments } = usePostStore();
     const { createComment } = useCommentStore();
     const { currentUser, refreshAccessToken } = useUserStore();
     const { postId } = useParams("");
@@ -22,6 +23,7 @@ function PostViewPage() {
     const [post, setPost] = React.useState();
     const [community, setCommunity] = React.useState();
     const [commentData, setCommentData] = React.useState({userId: currentUser.userId, content: ""});
+    const [comments, setComments] = React.useState([]);
     const toast = useToast();
 
     function handleChange(event) {
@@ -49,6 +51,8 @@ function PostViewPage() {
             setPost(response);
             const community = await fetchCommunity(response.community_id);
             setCommunity(community);
+            const commentsResponse = await fetchPostComments(postId);
+            setComments(commentsResponse.data);
         }
         getCommunity();
     }, []);
@@ -84,6 +88,9 @@ function PostViewPage() {
                                 <IconButton icon={<IoSend />} borderRadius={'full'} colorScheme='teal' onClick={handleSubmit} />
                             </InputRightElement>
                         </InputGroup>
+                        {comments.map(comment => (
+                            <Comment comment={comment} />
+                        ))}
                     </Box>
                     <CommunityDesc 
                         community={community} postView={true}
