@@ -1,14 +1,15 @@
 import { Box, Button, Heading, HStack, IconButton, Image, Text, VStack } from '@chakra-ui/react';
-import { TriangleUpIcon, TriangleDownIcon } from '@chakra-ui/icons';
 import React from 'react';
 import { useUserStore } from '../../../store/user.js';
 import { FaCommentAlt } from "react-icons/fa";
 import { usePostStore } from '../../../store/post.js';
 import UpvoteDownvote from '../Misc/UpvoteDownvote.jsx';
+import dayjs from "dayjs";
+import relativeTime from 'dayjs/plugin/relativeTime';
 
 function Post(props) {
+    dayjs.extend(relativeTime);
     const { getUserData } = useUserStore();
-    
     const { fetchCommentNumber } = usePostStore();
 
     const [user, setUser] = React.useState();
@@ -51,7 +52,10 @@ function Post(props) {
                     </Button>
                 </Box>
                 <Box>
-                    <Text color={'gray'}>Posted by <Heading size={'xs'} display={'inline'} color={'white'}>{user && user.username}</Heading></Text>
+                    <HStack>
+                        <Text color={'gray'}>Posted by <Heading size={'xs'} display={'inline'} color={'white'}>{user && user.username}</Heading></Text>
+                        <Text display={'inline'} fontSize={13} color={'gray'}>• {dayjs(props.post.posted_at).fromNow()}</Text>
+                    </HStack>
                     <Heading mb={4}>{props.post.post_title}</Heading>
                     <Text fontSize={20} ml={1} mb={3}>{props.post.post_content}</Text>
                     {props.post.image && <Image src={props.post.image} />}

@@ -3,8 +3,13 @@ import React from 'react';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import { useUserStore } from '../../../store/user.js';
 import UpvoteDownvote from '../Misc/UpvoteDownvote.jsx';
+import dayjs from "dayjs";
+import relativeTime from 'dayjs/plugin/relativeTime';
+import { useNavigate } from 'react-router-dom';
 
 function PostViewPost(props) {
+    dayjs.extend(relativeTime);
+    const navigate = useNavigate();
     const { getUserData } = useUserStore();
     const [user, setUser] = React.useState();
 
@@ -22,12 +27,15 @@ function PostViewPost(props) {
         props.community && props.post ?
         <Box bgColor={'#2D384D'} borderRadius={10} p={5}>
             <HStack align={'center'} mb={5}>
-                <IconButton icon={<ArrowBackIcon />} borderRadius={'full'} />
+                <IconButton icon={<ArrowBackIcon />} borderRadius={'full'} onClick={() => navigate(-1)} />
                 <HStack align={'center'} as={'a'} href={`/community/${props.community.id}`}>
                     <Image src={props.community.icon} w={10} h={10} borderRadius={'full'} border={'2px solid white'} />
                     <VStack align={'flex-start'} spacing={0}>
                         <Heading size={'sm'}> {props.community.name}</Heading>
-                        <Text>{user && user.username}</Text>
+                        <HStack>
+                            <Text>{user && user.username}</Text>
+                            <Text display={'inline'} fontSize={13} color={'gray'}>• {dayjs(props.post.posted_at).fromNow()}</Text>
+                        </HStack>
                     </VStack>
                 </HStack>
             </HStack>
