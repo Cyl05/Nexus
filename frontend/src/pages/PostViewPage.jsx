@@ -42,6 +42,7 @@ function PostViewPage() {
         });
         if (response.isSuccess) {
             setCommentData(prevState => ({...prevState, content: ""}));
+            window.location.reload();
         }
     }
 

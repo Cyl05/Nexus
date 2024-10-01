@@ -12,7 +12,7 @@ function WideButton(props) {
             variant='ghost'
             w={'80%'}
             mb={3}
-            justifyContent={'flex-start'}
+            justifyContent={props.center ? 'center' : 'flex-start'}
             fontSize={17}
             onClick={() => navigate(props.href)}
         >

@@ -9,12 +9,13 @@ async function createComment (req, res) {
     }
 
     try {
-        await db.query(
+        const response = await db.query(
             `INSERT INTO comments (user_id, content, post_id, created_at)
-            VALUES ($1, $2, $3, $4)`,
+            VALUES ($1, $2, $3, $4)
+            RETURNING *`,
             [userId, content, postId, new Date()]
         );
-        return res.status(200).json({ isSuccess: true, message: "Commented successfully!" });
+        return res.status(200).json({ isSuccess: true, message: "Commented successfully!", data: response.rows[0] });
     } catch (error) {
         console.log(error);
         return res.status(500).json({ isSuccess: false, message: "Internal Server Error" });

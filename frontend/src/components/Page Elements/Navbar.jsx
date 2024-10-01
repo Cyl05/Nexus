@@ -4,6 +4,7 @@ import { CgInfinity } from "react-icons/cg";
 import { useUserStore } from '../../../store/user.js';
 import { useNavigate } from 'react-router-dom';
 import { FaPlus } from "react-icons/fa6";
+import CreateButton from '../Misc/CreateButton.jsx';
 
 function Navbar() {
     const { currentUser, getUserData } = useUserStore();
@@ -48,7 +49,7 @@ function Navbar() {
                         {
                             user ?
                             <HStack spacing={'10px'}>
-                                <IconButton icon={<FaPlus />} borderRadius={'full'} variant={'outline'} colorScheme='teal'/>
+                                <CreateButton />
                                 <IconButton
                                     isRound={true}
                                     variant='solid'
