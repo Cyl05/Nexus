@@ -28,8 +28,8 @@ function CreateButton() {
             </PopoverTrigger>
             <PopoverContent>
                 <VStack spacing={0}>
-                    <WideButton icon={<IoPeopleSharp />} name={'Create a Community'} href={'/'} center={true} />
-                    <WideButton icon={<FaPlus />} name={'Create a Post'} href={'/'} center={true} />
+                    <WideButton icon={<IoPeopleSharp />} name={'Create a Community'} href={'/create/community'} center={true} />
+                    <WideButton icon={<FaPlus />} name={'Create a Post'} href={'/create/post'} center={true} />
                 </VStack>
             </PopoverContent>
         </Popover>

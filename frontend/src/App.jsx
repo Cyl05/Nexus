@@ -3,9 +3,11 @@ import RegisterPage from './pages/RegisterPage.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import HomePage from './pages/HomePage.jsx';
 import CommunityPage from './pages/CommunityPage.jsx';
+import PostViewPage from './pages/PostViewPage.jsx';
+import CommunityCreatePage from './pages/CommunityCreatePage.jsx';
+import PostCreatePage from './pages/PostCreatePage.jsx';
 import { Route, Routes } from "react-router-dom";
 import { Box } from "@chakra-ui/react";
-import PostViewPage from './pages/PostViewPage.jsx';
 
 
 function App() {
@@ -20,6 +22,8 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/community/:communityId" element={<CommunityPage />} />
         <Route path="/post/:postId" element={<PostViewPage />} />
+        <Route path="/create/community" element={<CommunityCreatePage />} />
+        <Route path="/create/post" element={<PostCreatePage />} />
       </Routes>
     </Box>
   )
