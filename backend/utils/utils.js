@@ -125,7 +125,7 @@ function getRandomColor() {
         "#E8C8D7",
         "#B9E6D2"
     ];
-    return Math.floor(Math.random() * pastelColors.length);
+    return pastelColors[Math.floor(Math.random() * pastelColors.length)];
 }
 
 export { createAccessToken, createRefreshToken, refreshAccessToken, isAuthenticated, votePost, getCount, getRandomColor };

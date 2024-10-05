@@ -3,8 +3,8 @@ import React from 'react';
 
 function FancyInput(props) {
     return (
-        <Box mb={3}>
-            <Heading size={'md'} as={'h5'}>{props.name}</Heading>
+        <Box mb={1}>
+            <Heading size={'md'} as={'h5'}>{props.head}</Heading>
             <InputGroup>
                 {props.icon &&
                     <InputLeftElement pointerEvents='none' my={4}>
@@ -13,8 +13,23 @@ function FancyInput(props) {
                 }
 
                 {props.textArea
-                    ? <Textarea placeholder={props.placeholder} my={4} resize={'vertical'} />
-                    : <Input placeholder={props.placeholder} size='md' my={4} />
+                    ? <Textarea
+                        name={props.name}
+                        placeholder={props.placeholder}
+                        my={4}
+                        resize={'vertical'}
+                        onChange={props.handleChange}
+                        value={props.value[props.name]}
+                    />
+
+                    : <Input
+                        name={props.name}
+                        placeholder={props.placeholder}
+                        size='md'
+                        my={4}
+                        onChange={props.handleChange}
+                        value={props.value[props.name]}
+                    />
                 }
 
             </InputGroup>
