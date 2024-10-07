@@ -8,8 +8,8 @@ function BannerInput(props) {
             <Heading size={'md'} as={'h5'}>Banner</Heading>
             <RadioGroup my={3} onChange={props.setValue} value={props.radioValue}>
                 <Stack direction='row'>
-                    <Radio value='2'>Color Code</Radio> 
-                    <Radio value='1'>Image</Radio>
+                    <Radio value='1'>Color Code</Radio> 
+                    <Radio value='2'>Image</Radio>
                 </Stack>
             </RadioGroup>
             <InputGroup>
@@ -18,8 +18,9 @@ function BannerInput(props) {
                 </InputLeftElement>
                 <Input
                     name={props.name}
-                    placeholder={props.radioValue === '1' ? "Enter Banner URL" : 'Enter Hex Code'}
+                    placeholder={props.radioValue === '1' ? 'Enter Hex Code' : "Enter Banner URL"}
                     size='md'
+                    maxLength={props.radioValue === '1' ? 7 : null}
                     onChange={props.handleChange}
                     value={props.value[props.name]}
                 />

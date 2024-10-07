@@ -27,6 +27,7 @@ function CommunityHeader(props) {
                 borderRadius={'full'}
                 border={'5px solid #3C4B67'}
                 src={props.community && props.community.icon}
+                objectFit={'cover'}
                 w={40}
                 h={40}
             />

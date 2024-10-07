@@ -17,7 +17,7 @@ async function getCommunity (req, res) {
 
 async function createCommunity (req, res) {
     let missingValue = false;
-    const { name, descTitle, desc } = req.body;
+    const { name, icon, descTitle, desc, userId, banner } = req.body;
     Object.entries(req.body).map(([key, value]) => {
         if (!value) {
             missingValue = true;
@@ -26,12 +26,12 @@ async function createCommunity (req, res) {
     if (missingValue) {
         return res.status(404).json({message: "Fill all mandatory fields"});
     } else {
-        await db.query(
+        const response = await db.query(
             `INSERT INTO communities (name, icon, description_title, description, created_by, banner)
-            VALUES ($1, $2, $3, $4, $5, $6)`,
-            [name, icon, descTitle, desc, req.session.user.id, getRandomColor()]
+            VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
+            [name, icon, descTitle, desc, userId, banner]
         );
-        res.json(Object.entries(req.body));
+        res.status(200).json({isSuccess: true, message: "Community Created Successfully", data: response.rows[0]});
     }
 }
 

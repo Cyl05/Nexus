@@ -39,7 +39,7 @@ function SideBar() {
 									? communitiesList.map((community) => {
 										return (
 											<HStack key={community.id} spacing={2}>
-												<Image src={community.icon} w={6} display={'inline'} borderRadius={'full'} />
+												<Image src={community.icon} w={6} display={'inline'} borderRadius={'full'} objectFit={'cover'} />
 												<LinkText url={`/community/${community.id}`} text={community.name} color='white' />
 											</HStack>
 										);

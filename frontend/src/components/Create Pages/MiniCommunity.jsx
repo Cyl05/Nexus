@@ -3,8 +3,7 @@ import { RxLoop } from "react-icons/rx";
 import React from 'react';
 
 function MiniCommunity(props) {
-    const [randomColor, setRandomColor] = React.useState();
-    const [joined, setJoined] = React.useState(false);
+    const [joined, setJoined] = React.useState(true);
 
     function getRandomColor() {
         const pastelColors = [
@@ -19,7 +18,7 @@ function MiniCommunity(props) {
             "#E8C8D7",
             "#B9E6D2"
         ];
-        setRandomColor(pastelColors[Math.floor(Math.random() * pastelColors.length)]);
+        props.setColor(pastelColors[Math.floor(Math.random() * pastelColors.length)]);
     }
 
     React.useEffect(() => {
@@ -45,7 +44,7 @@ function MiniCommunity(props) {
                         />
                 )
                 : <Box
-                    bgColor={props.input.banner.length === 0 ? randomColor : props.input.banner}
+                    bgColor={props.input.banner.length === 0 ? props.randomColor : props.input.banner}
                     w={'100%'}
                     h={'20vh'}
                     p={2}
@@ -84,22 +83,21 @@ function MiniCommunity(props) {
                     {props.input.name.length === 0 ? "Enter Name" : props.input.name}
                 </Text>
                 {
-                    joined 
+                    joined
                     ? <Button
-                        position={'relative'}
-                        top={'-21vh'}
-                        left={'18%'}
+                        w={'20%'}
                         borderRadius={'full'}
                         variant={'outline'}
                         colorScheme='white'
                         color={'white'}
-                        onClick={onOpen}
+                        onClick={() => setJoined(prevState => (!prevState))}
                     >Joined</Button> 
                     : <Button
                         w={'20%'}
                         borderRadius={'full'}
                         bgColor={'white'}
                         color={'#1A202C'}
+                        onClick={() => setJoined(prevState => (!prevState))}
                     >Join</Button>
                 }
 
