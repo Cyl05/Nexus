@@ -59,7 +59,6 @@ function CommunityHeader(props) {
                     variant={'outline'}
                     colorScheme='white'
                     color={'white'}
-                    // onClick={props.handleJoin}
                     onClick={onOpen}
                 >Joined</Button>
                 : <Button

@@ -8,8 +8,8 @@ function BannerInput(props) {
             <Heading size={'md'} as={'h5'}>Banner</Heading>
             <RadioGroup my={3} onChange={props.setValue} value={props.radioValue}>
                 <Stack direction='row'>
+                    <Radio value='2'>Color Code</Radio> 
                     <Radio value='1'>Image</Radio>
-                    <Radio value='2'>Color Code</Radio>
                 </Stack>
             </RadioGroup>
             <InputGroup>

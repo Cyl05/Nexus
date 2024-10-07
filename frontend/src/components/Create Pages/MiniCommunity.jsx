@@ -4,6 +4,7 @@ import React from 'react';
 
 function MiniCommunity(props) {
     const [randomColor, setRandomColor] = React.useState();
+    const [joined, setJoined] = React.useState(false);
 
     function getRandomColor() {
         const pastelColors = [
@@ -26,11 +27,11 @@ function MiniCommunity(props) {
     }, []);
 
     return (
-        <Box w={'40%'} h={'50vh'} border={'10px solid gray'} borderRadius={20} p={3} mr={0} boxShadow='dark-lg'>
+        <Box w={'full'} h={'50vh'} border={'10px solid #51555E'} borderRadius={20} p={3} mr={0} boxShadow='dark-lg'>
             {props.image
                 ? (
                     props.input.banner.length === 0
-                        ? 
+                        ?
                         <Box w={'100%'} h={'20vh'}>
                             <Center>
                                 <Heading size={'md'} mt={'6vh'}>Enter Image</Heading>
@@ -64,6 +65,7 @@ function MiniCommunity(props) {
                 src={props.input.icon.length === 0 ? 'https://i.postimg.cc/rsZJVfCH/unnamed.png' : props.input.icon}
                 w={'40'}
                 h={'40'}
+                objectFit='cover'
             />
             <VStack
                 position={'relative'}
@@ -81,12 +83,26 @@ function MiniCommunity(props) {
                 >
                     {props.input.name.length === 0 ? "Enter Name" : props.input.name}
                 </Text>
-                <Button
-                    w={'20%'}
-                    borderRadius={'full'}
-                    bgColor={'white'}
-                    color={'#1A202C'}
-                >Join</Button>
+                {
+                    joined 
+                    ? <Button
+                        position={'relative'}
+                        top={'-21vh'}
+                        left={'18%'}
+                        borderRadius={'full'}
+                        variant={'outline'}
+                        colorScheme='white'
+                        color={'white'}
+                        onClick={onOpen}
+                    >Joined</Button> 
+                    : <Button
+                        w={'20%'}
+                        borderRadius={'full'}
+                        bgColor={'white'}
+                        color={'#1A202C'}
+                    >Join</Button>
+                }
+
             </VStack>
         </Box>
     )

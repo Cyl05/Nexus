@@ -2,7 +2,7 @@ import React from 'react';
 import Navbar from '../components/Page Elements/Navbar';
 import SideBar from '../components/Page Elements/SideBar';
 import MainContent from '../components/Page Elements/MainContent';
-import { Box, Divider, Heading, HStack, Text } from '@chakra-ui/react';
+import { Box, Button, Divider, Heading, HStack, Text, VStack } from '@chakra-ui/react';
 import { FaImage } from 'react-icons/fa6';
 import { MdFormatPaint, MdTextSnippet, MdTitle } from "react-icons/md";
 import FancyInput from '../components/Input Fields/FancyInput';
@@ -35,8 +35,8 @@ function CreatePage() {
                 <Box h={'100vh'} m={'auto'} p={5} mr={0}>
                     <Heading>Create a Community:</Heading>
                     <Divider bgColor={'#343E5B'} my={5} />
-                    <HStack justify={'space-between'} spacing={0}>
-                        <Box w={'56%'} h={'50vh'} px={3}>
+                    <HStack justify={'space-between'} align={'flex-start'} spacing={0}>
+                        <Box w={'56%'} px={3}>
                             <FancyInput
                                 head={'Name*'}
                                 placeholder={'Community Name'}
@@ -77,7 +77,15 @@ function CreatePage() {
                                 value={input}
                             />
                         </Box>
-                        <MiniCommunity input={input} image={value === '1' ? true : false} />
+                        <VStack w={'40%'}>
+                            <MiniCommunity input={input} image={value === '1' ? true : false} />
+                            <Box w={'full'} my={7} border={'3px solid #51555E'} borderRadius={10} p={5}>
+                                <Text color={'gray'} textAlign={'center'}>
+                                    A default icon and banner will be assigned to your community if not uploaded
+                                </Text>
+                                <Button colorScheme='teal' my={3} mx={'auto'} display={'block'}>Create Community</Button>
+                            </Box>
+                        </VStack>
                     </HStack>
                 </Box>
             </MainContent>
