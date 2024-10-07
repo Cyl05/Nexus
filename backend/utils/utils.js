@@ -112,20 +112,4 @@ async function getCount(voteArea, areaId) {
     }
 }
 
-function getRandomColor() {
-    const pastelColors = [
-        "#FFD1DC",
-        "#B5E0CD",
-        "#F2B4C9",
-        "#E5C3D7",
-        "#F6E3C3",
-        "#B0D4B5",
-        "#F4D1D8",
-        "#D9E6B9",
-        "#E8C8D7",
-        "#B9E6D2"
-    ];
-    return pastelColors[Math.floor(Math.random() * pastelColors.length)];
-}
-
-export { createAccessToken, createRefreshToken, refreshAccessToken, isAuthenticated, votePost, getCount, getRandomColor };
+export { createAccessToken, createRefreshToken, refreshAccessToken, isAuthenticated, votePost, getCount };

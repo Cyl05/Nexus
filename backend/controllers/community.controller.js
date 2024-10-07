@@ -1,5 +1,4 @@
 import { db } from "../server.js";
-import { getRandomColor } from "../utils/utils.js";
 
 async function getCommunity (req, res) {
     let communityId = req.params.communityId;

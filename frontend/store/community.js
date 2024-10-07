@@ -1,4 +1,3 @@
-import { randomColor } from "@chakra-ui/theme-tools";
 import { create } from "zustand";
 
 export const useCommunityStore = create((set) => ({
