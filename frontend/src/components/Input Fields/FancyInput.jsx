@@ -20,6 +20,7 @@ function FancyInput(props) {
                         resize={'vertical'}
                         onChange={props.handleChange}
                         value={props.value[props.name]}
+                        w={props.w && props.w}
                     />
 
                     : <Input
@@ -29,6 +30,7 @@ function FancyInput(props) {
                         my={4}
                         onChange={props.handleChange}
                         value={props.value[props.name]}
+                        w={props.w && props.w}
                     />
                 }
 
