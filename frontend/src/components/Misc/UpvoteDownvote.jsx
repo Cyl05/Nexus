@@ -33,25 +33,19 @@ function UpvoteDownvote(props) {
             if (voteType === "upvote") {
                 if (voteState) {
                     setVotes(prevState => prevState - 1);
-                    console.log("a");
                 } else if (voteState === false) {
                     setVotes(prevState => prevState + 2);
-                    console.log("b");
                 } else {
                     setVotes(prevState => prevState + 1);
-                    console.log("c");
                 }
                 setVoteState(prevState => (prevState ? null : true));
             } else {
                 if (voteState === false) {
                     setVotes(prevState => prevState + 1);
-                    console.log("1");
                 } else if (voteState === true) {
                     setVotes(prevState => prevState - 2);
-                    console.log("2");
                 } else {
                     setVotes(prevState => prevState - 1);
-                    console.log("3");
                 }
                 setVoteState(prevState => (prevState === false ? null : false));
             }

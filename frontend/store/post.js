@@ -68,5 +68,23 @@ export const usePostStore = create((set) => ({
         } catch (error) {
             console.log(error);
         }
+    },
+    createPost: async (userId, token, data, communityId) => {
+        try {
+            data.userId = userId;
+            data.communityId = communityId;
+            const response = await fetch(`http://localhost:3000/api/post/create`, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-access-token': token
+                }
+            })
+            const responseJSON = await response.json();
+            return responseJSON;
+        } catch (error) {
+            console.log(error);
+        }
     }
 }));

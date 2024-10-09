@@ -79,7 +79,6 @@ export const useCommunityStore = create((set) => ({
                 }
             })
             const responseJSON = await response.json();
-            console.log(responseJSON);
             return responseJSON;
         } catch (error) {
             console.log(error);

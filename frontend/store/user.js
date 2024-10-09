@@ -48,7 +48,6 @@ export const useUserStore = create((set) => ({
             }
         });
         const response_data = await response.json();
-        console.log(response_data);
         return response_data;
     },
     loginUser: async(userData) => {

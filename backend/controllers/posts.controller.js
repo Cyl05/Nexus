@@ -2,20 +2,17 @@ import { db } from "../server.js";
 import { votePost, getCount } from "../utils/utils.js";
 
 async function createPost(req, res) {
-    const { postTitle, postContent, image, communityId } = req.body;
-    if (!postTitle, !postContent, !communityId) {
-        return res.status(400).json({ message: "Please provide all mandatory fields" });
-    }
+    const { title, body, image, communityId, userId } = req.body;
     try {
-        await db.query(
-            `INSERT INTO posts (post_title, post_content, image, author_name, community_id, posted_at)
-            VALUES ($1, $2, $3, $4, $5, $6)`,
-            [postTitle, postContent, image, req.session.user.username, communityId, new Date()]
+        const response = await db.query(
+            `INSERT INTO posts (post_title, post_content, image, author_id, community_id, posted_at)
+            VALUES ($1, $2, $3, $4, $5, $6) RETURNING *`,
+            [title, body, image, userId, communityId, new Date()]
         );
-        return res.status(200).json({ message: "Post created successfully!" });
+        return res.status(200).json({ isSuccess: true, message: "Post created successfully!", data: response.rows[0] });
     } catch (error) {
         console.log(error);
-        return res.status(500).json({ message: "Internal Server Error" });
+        return res.status(500).json({ isSuccess: false, message: "Internal Server Error" });
     }
 }
 

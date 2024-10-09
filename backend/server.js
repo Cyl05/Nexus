@@ -29,11 +29,6 @@ app.use(express.json());
 
 app.use("/api", routes);
 
-// app.get("/", async (req, res) => {
-//     const response = await db.query("SELECT * FROM users");
-//     res.json(response.rows);
-// });
-
 app.post('/getSession', isAuthenticated, (req, res) => {
     // res.json(req.session.user);
     const accessToken = req.body.accessToken;
