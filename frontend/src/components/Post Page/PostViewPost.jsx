@@ -11,13 +11,12 @@ function PostViewPost(props) {
     dayjs.extend(relativeTime);
     const navigate = useNavigate();
     const { getUserData } = useUserStore();
-    const [user, setUser] = React.useState();
 
     React.useEffect(() => {
         async function getUser () {
             if (props.post) {
                 const userData =  await getUserData(props.post.author_id);
-                setUser(userData);
+                props.setUser(userData);
             }
         }
         getUser();
@@ -29,11 +28,11 @@ function PostViewPost(props) {
             <HStack align={'center'} mb={5}>
                 <IconButton icon={<ArrowBackIcon />} borderRadius={'full'} onClick={() => navigate(-1)} />
                 <HStack align={'center'} as={'a'} href={`/community/${props.community.id}`}>
-                    <Image src={props.community.icon} w={10} h={10} borderRadius={'full'} border={'2px solid white'} />
+                    <Image src={props.community.icon} w={10} h={10} borderRadius={'full'} border={'2px solid white'} objectFit={'cover'} />
                     <VStack align={'flex-start'} spacing={0}>
                         <Heading size={'sm'}> {props.community.name}</Heading>
                         <HStack>
-                            <Text>{user && user.username}</Text>
+                            <Text>{props.user && props.user.username}</Text>
                             <Text display={'inline'} fontSize={13} color={'gray'}>• {dayjs(props.post.posted_at).fromNow()}</Text>
                         </HStack>
                     </VStack>

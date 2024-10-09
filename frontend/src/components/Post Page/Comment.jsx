@@ -12,18 +12,15 @@ function Comment(props) {
     const { fetchCommentCount } = useCommentStore();
 
     const [user, setUser] = React.useState();
+    console.log(props.op);
 
     React.useEffect(() => {
         async function getUser() {
             const response = await getUserData(props.comment.user_id);
             setUser(response);
         }
-
-        async function getCommentVoteCount() {
-            const response = await fetchCommentCount(props.comment.id);
-        }
+        
         if (props.comment) {
-            getCommentVoteCount();
             getUser();
         }
     }, [props.comment]);
@@ -35,6 +32,7 @@ function Comment(props) {
                 <Image src={user.profile_picture} w={8} borderRadius={'full'} />
                 <HStack>
                     <Heading size={'sm'}>{user.username}</Heading>
+                    { props.op ? <Text color={'#00FFFF'} fontSize={'sm'}>OP</Text> : null }
                     <Text display={'inline'} fontSize={13} color={'gray'}>• {dayjs(props.comment.created_at).fromNow()}</Text>
                 </HStack>
             </HStack>

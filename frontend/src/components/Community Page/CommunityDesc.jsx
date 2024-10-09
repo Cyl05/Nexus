@@ -22,7 +22,14 @@ function CommunityDesc(props) {
             <Box w={'95%'} bgColor={'#0F131A'} borderRadius={10} p={5}>
                 {props.postView &&
                     <HStack align={'center'} mb={5} as={'a'} href={`/community/${(props.community && props.community.id)}`}>
-                        <Image src={props.community && props.community.icon} w={12} h={12} borderRadius={'full'} border={'2px solid white'} />
+                        <Image
+                            src={props.community && props.community.icon}
+                            w={12}
+                            h={12}
+                            borderRadius={'full'}
+                            border={'2px solid white'}
+                            objectFit={'cover'}
+                        />
                         <Heading size={'md'}>{props.community && props.community.name}</Heading>
                     </HStack>
                 }

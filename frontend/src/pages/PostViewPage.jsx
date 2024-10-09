@@ -24,6 +24,7 @@ function PostViewPage() {
     const [community, setCommunity] = React.useState();
     const [commentData, setCommentData] = React.useState({userId: currentUser.userId, content: ""});
     const [comments, setComments] = React.useState([]);
+    const [user, setUser] = React.useState();
     const toast = useToast();
 
     function handleChange(event) {
@@ -65,7 +66,7 @@ function PostViewPage() {
             <MainContent>
                 <HStack spacing={0} align={'flex-start'}>
                     <Box w={'95%'}>
-                        <PostViewPost community={community} post={post} />
+                        <PostViewPost community={community} post={post} user={user} setUser={setUser} />
                         <Heading size={'lg'} my={5}>Comments:</Heading>
                         <Divider bgColor={'#343E5B'} />
                         <InputGroup mt={5}>
@@ -90,7 +91,7 @@ function PostViewPage() {
                             </InputRightElement>
                         </InputGroup>
                         {comments.map(comment => (
-                            <Comment comment={comment} />
+                            <Comment comment={comment} key={comment.id} op={comment.user_id === user.id ? true : false}  />
                         ))}
                     </Box>
                     <CommunityDesc 
