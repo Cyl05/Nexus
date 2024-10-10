@@ -2,14 +2,12 @@ import { Box, Heading, HStack, Image, Text } from '@chakra-ui/react';
 import React from 'react';
 import UpvoteDownvote from '../Misc/UpvoteDownvote.jsx';
 import { useUserStore } from '../../../store/user.js';
-import { useCommentStore } from '../../../store/comment.js';
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
 
 function Comment(props) {
     dayjs.extend(relativeTime);
     const { getUserData } = useUserStore();
-    const { fetchCommentCount } = useCommentStore();
 
     const [user, setUser] = React.useState();
     console.log(props.op);

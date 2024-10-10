@@ -83,5 +83,28 @@ export const useCommunityStore = create((set) => ({
         } catch (error) {
             console.log(error);
         }
+    },
+    editCommunity: async (communityId, data, token, banner) => {
+        try {
+            if (!data.banner) {
+                data.banner = banner;
+            }
+            if (!data.icon) {
+                data.icon = 'https://i.postimg.cc/rsZJVfCH/unnamed.png';
+            }
+
+            const response = await fetch(`http://localhost:3000/api/community/edit/${communityId}`, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    "Content-Type": 'application/json',
+                    "x-access-token": token
+                }
+            });
+            const responseJSON = await response.json();
+            return responseJSON;
+        } catch (error) {
+            console.log(error);
+        }
     }
 }));

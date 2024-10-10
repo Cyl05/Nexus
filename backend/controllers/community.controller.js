@@ -37,17 +37,17 @@ async function createCommunity (req, res) {
 async function editCommunity (req, res) {
     try {
         const communityId = req.params.communityId;
-        const { name, icon, descTitle, desc } = req.body.name;
+        const { name, icon, descTitle, desc, banner } = req.body;
         const response = await db.query(
             `UPDATE communities SET 
-            name=$1, icon=$2, description_title=$3, description=$4, edited_at=$5, 
-            WHERE id=$6 RETURNING *`,
-            [name, icon, descTitle, desc, new Date(), communityId]
+            name=$1, icon=$2,  description_title=$3, description=$4, edited_at=$5, banner = $6
+            WHERE id=$7 RETURNING *`,
+            [name, icon, descTitle, desc, new Date(), banner, communityId]
         );
-        res.status(200).json({message: "Updated community", data: response.rows});
+        res.status(200).json({ isSuccess: true, message: "Updated community", data: response.rows[0]});
     } catch (error) {
         console.log(error);
-        res.status(500).json({message: "Internal Server Error"});
+        res.status(500).json({isSuccess: false, message: "Internal Server Error"});
     }
 }
 

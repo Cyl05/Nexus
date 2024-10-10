@@ -8,6 +8,7 @@ import CommunityCreatePage from './pages/CommunityCreatePage.jsx';
 import PostCreatePage from './pages/PostCreatePage.jsx';
 import { Route, Routes } from "react-router-dom";
 import { Box } from "@chakra-ui/react";
+import EditCommunityPage from './pages/EditCommunityPage.jsx';
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
         <Route path="/post/:postId" element={<PostViewPage />} />
         <Route path="/create/community" element={<CommunityCreatePage />} />
         <Route path="/create/post" element={<PostCreatePage />} />
+        <Route path="/community/:communityId/edit" element={<EditCommunityPage />} />
       </Routes>
     </Box>
   )

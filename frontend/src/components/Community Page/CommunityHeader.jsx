@@ -1,10 +1,14 @@
-import { Box, Button, HStack, Image, Text, useDisclosure, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay } from '@chakra-ui/react';
+import { Box, Button, HStack, Image, Text, useDisclosure, Modal, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, IconButton } from '@chakra-ui/react';
 import React from 'react';
 import { FaPlus } from "react-icons/fa6";
+import { MdEdit } from "react-icons/md";
+import { useUserStore } from '../../../store/user';
+import { useNavigate } from 'react-router-dom';
 
 function CommunityHeader(props) {
-
+    const { currentUser } = useUserStore();
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const navigate = useNavigate();
 
     return (
         <Box h={'40vh'}>
@@ -47,9 +51,21 @@ function CommunityHeader(props) {
                 >
                     {props.community && props.community.name}
                 </Text>
-                <Button leftIcon={<FaPlus />} colorScheme='teal' variant={'outline'} borderRadius={'20px'}>
-                    Create
-                </Button>
+                <HStack>
+                    <Button leftIcon={<FaPlus />} colorScheme='teal' variant={'outline'} borderRadius={'20px'}>
+                        Create
+                    </Button>
+                    {
+                        props.community && props.community.created_by === currentUser.userId
+                        ? <IconButton
+                            icon={<MdEdit />}
+                            colorScheme='teal'
+                            borderRadius={'full'}
+                            onClick={() => navigate(`/community/${props.community.id}/edit`)}
+                        />
+                        : null
+                    }
+                </HStack>
             </HStack>
             {props.membership
                 ? <Button
