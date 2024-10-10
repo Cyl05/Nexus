@@ -63,8 +63,6 @@ function Navbar() {
                             :
                             <Button colorScheme='teal' borderRadius={'20px'} onClick={() => navigate("/login")}>Login</Button>
                         }
-                        
-                        
                     </HStack>
                 </Box>
             </HStack>

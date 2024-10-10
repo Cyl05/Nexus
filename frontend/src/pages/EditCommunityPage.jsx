@@ -29,9 +29,14 @@ function EditCommunityPage() {
     const [randomColor, setRandomColor] = React.useState();
 
     const { fetchCommunity, editCommunity } = useCommunityStore();
-    const { refreshAccessToken } = useUserStore();
+    const { currentUser, refreshAccessToken } = useUserStore();
 
     React.useEffect(() => {
+        function checkUser(community) {
+            if (community.created_by !== currentUser.userId) {
+                navigate(`/community/${community.id}`);
+            }
+        }
         function setRadio(banner) {
             if (banner.includes('http')) {
                 setValue('2');
@@ -49,6 +54,7 @@ function EditCommunityPage() {
                 desc: response. description
             });
             setRadio(response.banner);
+            checkUser(response);
         }
         getCommunity();
     }, []);
