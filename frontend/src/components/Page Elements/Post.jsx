@@ -20,8 +20,10 @@ function Post(props) {
     const [saved, setSaved] = React.useState(false);
 
     React.useEffect(() => {
+        console.log(props.post);
         async function getUser() {
             const userData = await getUserData(props.post.author_id);
+            // console.log("AA" + props.post.author_id);
             setUser(userData);
         }
 

@@ -9,6 +9,7 @@ import {
     showUserCommunities,
     getPosts,
     getComments,
+    getSavedPosts,
     getUser,
     refreshToken,
     saveUnsavePost,
@@ -24,6 +25,7 @@ router.get("/login", getLogin);
 router.get("/logout", getLogout);
 router.get("/posts/:userId", getPosts);
 router.get("/comments/:userId", getComments);
+router.get("/savedposts/:userId", getSavedPosts);
 router.post("/login", loginUser);
 router.post("/register", registerUser);
 router.post("/join/:communityId", isAuthenticated, joinCommunity);

@@ -167,6 +167,20 @@ async function getComments(req, res) {
 	}
 }
 
+async function getSavedPosts(req, res) {
+	const { userId } = req.params;
+	try {
+		const response = await db.query(
+			"SELECT s.post_id, p.* FROM saved_posts s JOIN posts p ON s.post_id = p.id WHERE s.user_id = $1", 
+			[userId]
+		);
+		res.status(200).json({isSuccess: true, message: "Retrieved saved posts", data: response.rows});
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({ isSuccess: false, message: "Internal Server Error" });
+	}
+}
+
 async function refreshToken(req, res) {
 	const { refreshToken } = req.body;
 
@@ -227,6 +241,7 @@ export {
 	showUserCommunities,
 	getPosts,
 	getComments,
+	getSavedPosts,
 	refreshToken,
 	saveUnsavePost,
 	savePostStatus

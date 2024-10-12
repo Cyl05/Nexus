@@ -109,6 +109,15 @@ export const useUserStore = create((set) => ({
             console.log(error);
         }
     },
+    getUserSavedPosts: async (userId) => {
+        try {
+            const response = await fetch(`http://localhost:3000/api/user/savedposts/${userId}`);
+            const responseJSON = await response.json();
+            return responseJSON.data;
+        } catch (error) {
+            console.log(error);
+        }
+    },
     savePost: async (postId, userId, token) => {
         try {
             const response = await fetch(`http://localhost:3000/api/user/save/${postId}`, {
