@@ -108,5 +108,21 @@ export const useUserStore = create((set) => ({
         } catch (error) {
             console.log(error);
         }
+    },
+    savePost: async (postId, userId, token) => {
+        try {
+            const response = await fetch(`http://localhost:3000/api/user/save/${postId}`, {
+                method: 'POST',
+                body: JSON.stringify({userId: userId}),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-access-token': token
+                }
+            });
+            const responseJSON = await response.json();
+            return responseJSON.data;
+        } catch (error) {
+            console.log(error);
+        }
     }
 }));

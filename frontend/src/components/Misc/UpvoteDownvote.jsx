@@ -62,7 +62,11 @@ function UpvoteDownvote(props) {
                 borderLeftRadius={props.horizontalOrientation ? 'full' : null}
                 onClick={() => handleVote("upvote", props.post.id)}
             />
-            <Box bgColor={'#3D485B'} p={2}><Text color={voteState ? "red.500" : (voteState === false ? "blue.500" : null)}>{votes}</Text></Box>
+            <Box bgColor={'#3D485B'} p={2}>
+                <Text color={voteState ? "red.500" : (voteState === false ? "blue.500" : null)}>
+                    {votes}
+                </Text>
+            </Box>
             <IconButton
                 minW={!props.horizontalOrientation ? 'full' : null}
                 icon={<TriangleDownIcon color={voteState === false ? "blue.500" : null} />}

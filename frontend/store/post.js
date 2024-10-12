@@ -86,5 +86,17 @@ export const usePostStore = create((set) => ({
         } catch (error) {
             console.log(error);
         }
+    },
+    savePostStatus: async (postId, userId) => {
+        if (!userId) {
+            return false;
+        }
+        try {
+            const response = await fetch(`http://localhost:3000/api/user/savestatus/${postId}/${userId}`);
+            const responseJSON = await response.json();
+            return responseJSON.data;
+        } catch (error) {
+            console.log(error);
+        }
     }
 }));

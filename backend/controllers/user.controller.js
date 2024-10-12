@@ -11,7 +11,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 env.config({
-  path: `${__dirname}/../../.env`
+	path: `${__dirname}/../../.env`
 });
 
 async function getUser(req, res) {
@@ -19,12 +19,12 @@ async function getUser(req, res) {
 	try {
 		const response = await db.query("SELECT * FROM users WHERE id=$1", [id]);
 		if (response.rows.length === 0) {
-			return res.status(404).json({isSuccess: false, message: "User not found"});
+			return res.status(404).json({ isSuccess: false, message: "User not found" });
 		}
-		return res.status(200).json({isSuccess: true, message: "User found", data: response.rows[0]});
+		return res.status(200).json({ isSuccess: true, message: "User found", data: response.rows[0] });
 	} catch (error) {
 		console.log(error);
-		return res.status(500).json({isSuccess: false, message: "Internal Server Error"});
+		return res.status(500).json({ isSuccess: false, message: "Internal Server Error" });
 	}
 }
 
@@ -62,7 +62,7 @@ async function loginUser(req, res) {
 				const accessToken = createAccessToken(id);
 				const refreshToken = createRefreshToken(id);
 
-				res.status(200).json({ isSuccess: true, message: "Logging in...", accessToken: accessToken, refreshToken: refreshToken});
+				res.status(200).json({ isSuccess: true, message: "Logging in...", accessToken: accessToken, refreshToken: refreshToken });
 			}
 			// if password does not match
 			else {
@@ -86,7 +86,7 @@ async function registerUser(req, res) {
 					res.status(500).json({ message: "Internal server error" });
 				} else {
 					const response = await db.query(
-						"INSERT INTO users (username, password, bio) VALUES ($1, $2) RETURNING *", 
+						"INSERT INTO users (username, password, bio) VALUES ($1, $2) RETURNING *",
 						[username, hash, `Hi, I am ${username}`]
 					);
 					const user = response.rows[0];
@@ -104,85 +104,119 @@ async function registerUser(req, res) {
 	}
 }
 
-async function joinCommunity (req, res) {
+async function joinCommunity(req, res) {
 	try {
 		const communityId = req.params.communityId;
 		const userId = req.body.userId;
 		await db.query("INSERT INTO user_communities (user_id, community_id) VALUES ($1, $2)", [userId, communityId]);
-		res.status(200).json({message: "Joined community successfully"});
+		res.status(200).json({ message: "Joined community successfully" });
 	} catch (error) {
 		if (error.detail.includes("already exists")) {
-			return res.status(400).json({message: "You are already part of this community"});
+			return res.status(400).json({ message: "You are already part of this community" });
 		}
 		console.log(error);
-		res.status(500).json({message: "Internal Server error"});
+		res.status(500).json({ message: "Internal Server error" });
 	}
 }
 
-async function leaveCommunity (req, res) {
+async function leaveCommunity(req, res) {
 	try {
 		const communityId = req.params.communityId;
 		const userId = req.body.userId;
 		await db.query("DELETE FROM user_communities WHERE user_id = $1 AND community_id = $2", [userId, communityId]);
-		res.status(200).json({message: "Left community successfully"});
+		res.status(200).json({ message: "Left community successfully" });
 	} catch (error) {
 		if (error.detail.includes("already exists")) {
-			return res.status(400).json({message: "You are already part of this community"});
+			return res.status(400).json({ message: "You are already part of this community" });
 		}
 		console.log(error);
-		res.status(500).json({message: "Internal Server error"});
+		res.status(500).json({ message: "Internal Server error" });
 	}
 }
 
-async function showUserCommunities (req, res) {
+async function showUserCommunities(req, res) {
 	try {
 		const userId = req.body.userId;
 		const response = await db.query("SELECT c.id, c.name, c.icon FROM communities c INNER JOIN user_communities uc ON c.id = uc.community_id WHERE uc.user_id = $1;", [userId]);
-		res.status(200).json({message: "Retrieved communities successfully", data: response.rows});
+		res.status(200).json({ message: "Retrieved communities successfully", data: response.rows });
 	} catch (error) {
 		console.log(error);
-		res.status(500).json({message: "Internal Server Error"});
+		res.status(500).json({ message: "Internal Server Error" });
 	}
 }
 
-async function getPosts (req, res) {
+async function getPosts(req, res) {
 	const { userId } = req.params;
 	try {
 		const response = await db.query("SELECT * FROM posts WHERE author_id=$1", [userId]);
-		return res.status(200).json({isSuccess: true, message: "Retrieved all posts", data: response.rows});
+		return res.status(200).json({ isSuccess: true, message: "Retrieved all posts", data: response.rows });
 	} catch (error) {
 		console.log(error);
-        return res.status(500).json({isSuccess: false, message: "Internal Server Error"});
+		return res.status(500).json({ isSuccess: false, message: "Internal Server Error" });
 	}
 }
 
-async function getComments (req, res) {
+async function getComments(req, res) {
 	const { userId } = req.params;
 	try {
 		const response = await db.query("SELECT * FROM comments WHERE user_id=$1", [userId]);
-		return res.status(200).json({isSuccess: true, message: "Retrieved all comments", data: response.rows});
+		return res.status(200).json({ isSuccess: true, message: "Retrieved all comments", data: response.rows });
 	} catch (error) {
 		console.log(error);
-        return res.status(500).json({isSuccess: false, message: "Internal Server Error"});
+		return res.status(500).json({ isSuccess: false, message: "Internal Server Error" });
 	}
 }
 
-async function refreshToken (req, res) {
+async function refreshToken(req, res) {
 	const { refreshToken } = req.body;
-  
-  try {
-    const newAccessToken = await refreshAccessToken(refreshToken);
-	if (newAccessToken) {
-    	res.json({ accessToken: newAccessToken });
-	} else {
-		res.status(401).json({isSuccess: false, message: "Failed to fetch user"});
+
+	try {
+		const newAccessToken = await refreshAccessToken(refreshToken);
+		if (newAccessToken) {
+			res.json({ accessToken: newAccessToken });
+		} else {
+			res.status(401).json({ isSuccess: false, message: "Failed to fetch user" });
+		}
+	} catch (err) {
+		res.status(401).json({ error: 'Failed to refresh token' });
 	}
-  } catch (err) {
-    res.status(401).json({ error: 'Failed to refresh token' });
-  }
 }
 
-export { 
+async function saveUnsavePost(req, res) {
+	const { postId } = req.params;
+	const { userId } = req.body;
+	console.log(req.body);
+	try {
+		const response = await db.query("SELECT * FROM saved_posts WHERE post_id=$1 AND user_id=$2", [postId, userId]);
+		if (response.rows.length !== 0) {
+			await db.query("DELETE FROM saved_posts WHERE post_id=$1 AND user_id=$2", [postId, userId]);
+			res.status(200).json({isSuccess: true, message: "Post Unsaved", data: false});
+		} else {
+			await db.query("INSERT INTO saved_posts (post_id, user_id) VALUES ($1, $2)", [postId, userId]);
+			res.status(200).json({isSuccess: true, message: "Post Saved", data: true});
+		}
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({ isSuccess: false, message: "Internal Server Error" });
+	}
+}
+
+async function savePostStatus (req, res) {
+	const { userId, postId } = req.params;
+	try {
+		const response = await db.query("SELECT * FROM saved_posts WHERE user_id=$1 AND post_id=$2", [userId, postId]);
+		if (response.rows.length !== 0) {
+			res.status(200).json({isSuccess: true, message: "Post is saved", data: true});
+		} else {
+			res.status(200).json({isSuccess: true, message: "Post is not saved", data: false});
+		}
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({ isSuccess: false, message: "Internal Server Error" });
+	}
+}
+
+export {
 	getUser,
 	getLogin,
 	getLogout,
@@ -193,5 +227,7 @@ export {
 	showUserCommunities,
 	getPosts,
 	getComments,
-	refreshToken
+	refreshToken,
+	saveUnsavePost,
+	savePostStatus
 };
