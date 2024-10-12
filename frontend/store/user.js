@@ -90,5 +90,23 @@ export const useUserStore = create((set) => ({
         } catch (error) {
             console.log(error);
         }
+    },
+    getUserPosts: async (userId) => {
+        try {
+            const response = await fetch(`http://localhost:3000/api/user/posts/${userId}`);
+            const responseJSON = await response.json();
+            return responseJSON.data;
+        } catch (error) {
+            console.log(error);
+        }
+    },
+    getUserComments: async (userId) => {
+        try {
+            const response = await fetch(`http://localhost:3000/api/user/comments/${userId}`);
+            const responseJSON = await response.json();
+            return responseJSON.data;
+        } catch (error) {
+            console.log(error);
+        }
     }
 }));

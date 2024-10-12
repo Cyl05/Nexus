@@ -28,8 +28,8 @@ function SideBar() {
 			<Center>
 				<Flex direction={'column'} w={'100%'}>
 					<Flex direction={'column'} w={'80%'} borderBottom={'2px solid #343E5B'} mt={4} mx={'auto'}>
-						<WideButton name="Home" href="/" icon=<FaHome /> />
-						<WideButton name="Create" href="" icon=<FaPlus /> />
+						<WideButton name="Home" href="/" icon=<FaHome /> margin={3} />
+						<WideButton name="Create" href="" icon=<FaPlus /> margin={3} />
 					</Flex>
 					<Box w={'100%'} mt={4} mx={'auto'} px={12}>
 						<Flex direction={'column'} w={'100%'}>

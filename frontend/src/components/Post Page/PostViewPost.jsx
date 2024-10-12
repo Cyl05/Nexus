@@ -32,7 +32,7 @@ function PostViewPost(props) {
                     <VStack align={'flex-start'} spacing={0}>
                         <Heading size={'sm'}> {props.community.name}</Heading>
                         <HStack>
-                            <Text>{props.user && props.user.username}</Text>
+                            <Text>{props.user && props.user.display_name}</Text>
                             <Text display={'inline'} fontSize={13} color={'gray'}>• {dayjs(props.post.posted_at).fromNow()}</Text>
                         </HStack>
                     </VStack>

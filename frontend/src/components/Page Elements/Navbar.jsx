@@ -5,6 +5,7 @@ import { useUserStore } from '../../../store/user.js';
 import { useNavigate } from 'react-router-dom';
 import { FaPlus } from "react-icons/fa6";
 import CreateButton from '../Misc/CreateButton.jsx';
+import UserProfileButton from '../Misc/UserProfileButton.jsx';
 
 function Navbar() {
     const { currentUser, getUserData } = useUserStore();
@@ -50,15 +51,7 @@ function Navbar() {
                             user ?
                             <HStack spacing={'10px'}>
                                 <CreateButton />
-                                <IconButton
-                                    isRound={true}
-                                    variant='solid'
-                                    aria-label='Done'
-                                    fontSize='20px'
-                                    backgroundImage={user ? user.profile_picture : null}
-                                    bgSize="cover"
-                                    bgPos="center"
-                                />
+                                <UserProfileButton user={user} />
                             </HStack>
                             :
                             <Button colorScheme='teal' borderRadius={'20px'} onClick={() => navigate("/login")}>Login</Button>

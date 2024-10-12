@@ -85,13 +85,12 @@ async function registerUser(req, res) {
 					console.log(err);
 					res.status(500).json({ message: "Internal server error" });
 				} else {
-					const response = await db.query("INSERT INTO users (username, password) VALUES ($1, $2) RETURNING *", [username, hash]);
+					const response = await db.query(
+						"INSERT INTO users (username, password, bio) VALUES ($1, $2) RETURNING *", 
+						[username, hash, `Hi, I am ${username}`]
+					);
 					const user = response.rows[0];
 					const { id } = user;
-
-					// const token = jwt.sign({id}, process.env.JWT_SECRET, {
-					// 	expiresIn: 300
-					// });
 
 					const accessToken = createAccessToken(id);
 					const refreshToken = createRefreshToken(id);
@@ -147,12 +146,24 @@ async function showUserCommunities (req, res) {
 }
 
 async function getPosts (req, res) {
+	const { userId } = req.params;
 	try {
-		const response = await db.query("SELECT * FROM posts WHERE author_name=$1", [req.session.user.username]);
-		return res.status(200).json({message: "Retrieved all posts", data: response.rows});
+		const response = await db.query("SELECT * FROM posts WHERE author_id=$1", [userId]);
+		return res.status(200).json({isSuccess: true, message: "Retrieved all posts", data: response.rows});
 	} catch (error) {
 		console.log(error);
-        return res.status(500).json({message: "Internal Server Error"});
+        return res.status(500).json({isSuccess: false, message: "Internal Server Error"});
+	}
+}
+
+async function getComments (req, res) {
+	const { userId } = req.params;
+	try {
+		const response = await db.query("SELECT * FROM comments WHERE user_id=$1", [userId]);
+		return res.status(200).json({isSuccess: true, message: "Retrieved all comments", data: response.rows});
+	} catch (error) {
+		console.log(error);
+        return res.status(500).json({isSuccess: false, message: "Internal Server Error"});
 	}
 }
 
@@ -171,4 +182,16 @@ async function refreshToken (req, res) {
   }
 }
 
-export { getUser, getLogin, getLogout, loginUser, registerUser, joinCommunity, leaveCommunity, showUserCommunities, getPosts, refreshToken };
+export { 
+	getUser,
+	getLogin,
+	getLogout,
+	loginUser,
+	registerUser,
+	joinCommunity,
+	leaveCommunity,
+	showUserCommunities,
+	getPosts,
+	getComments,
+	refreshToken
+};

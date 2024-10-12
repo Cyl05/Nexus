@@ -26,11 +26,23 @@ function CreateButton() {
             <PopoverTrigger>
                 <IconButton icon={<FaPlus />} borderRadius={'full'} colorScheme='teal' />
             </PopoverTrigger>
-            <PopoverContent>
-                <VStack spacing={0}>
-                    <WideButton icon={<IoPeopleSharp />} name={'Create a Community'} href={'/create/community'} center={true} />
-                    <WideButton icon={<FaPlus />} name={'Create a Post'} href={'/create/post'} center={true} />
-                </VStack>
+            <PopoverContent p={0} w={'300px'}>
+                <WideButton
+                    icon={<IoPeopleSharp />}
+                    name={'Create a Community'}
+                    href={'/create/community'}
+                    margin={0}
+                    width={'full'}
+                    center={false}
+                />
+                <WideButton
+                    icon={<FaPlus />}
+                    name={'Create a Post'}
+                    href={'/create/post'}
+                    margin={0}
+                    width={'full'}
+                    center={false}
+                />
             </PopoverContent>
         </Popover>
     )
