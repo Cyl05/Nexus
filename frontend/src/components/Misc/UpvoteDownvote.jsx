@@ -56,19 +56,19 @@ function UpvoteDownvote(props) {
     return (
         <Box display={'flex'} flexDirection={props.horizontalOrientation ? 'row' : 'column'}>
             <IconButton
-                minW={!props.horizontalOrientation ? 'full' : null}
+                w={!props.horizontalOrientation ? '45px' : null}
                 icon={<TriangleUpIcon color={voteState ? "red.500" : null} />}
                 borderTopRadius={props.horizontalOrientation ? null : 'full'}
                 borderLeftRadius={props.horizontalOrientation ? 'full' : null}
                 onClick={() => handleVote("upvote", props.post.id)}
             />
-            <Box bgColor={'#3D485B'} p={2}>
+            <Box bgColor={'#3D485B'} p={2} w={!props.horizontalOrientation ? '45px': null}>
                 <Text color={voteState ? "red.500" : (voteState === false ? "blue.500" : null)}>
                     {votes}
                 </Text>
             </Box>
             <IconButton
-                minW={!props.horizontalOrientation ? 'full' : null}
+                w={!props.horizontalOrientation ? '45px' : null}
                 icon={<TriangleDownIcon color={voteState === false ? "blue.500" : null} />}
                 borderBottomRadius={props.horizontalOrientation ? null : 'full'}
                 borderRightRadius={props.horizontalOrientation ? 'full' : null}

@@ -5,7 +5,7 @@ import Post from '../../Page Elements/Post.jsx';
 import Comment from '../../Post Page/Comment.jsx';
 
 function UserTabs(props) {
-    const { getUserPosts, getUserComments, getUserSavedPosts } = useUserStore();
+    const { currentUser, getUserPosts, getUserComments, getUserSavedPosts } = useUserStore();
 
     const [posts, setPosts] = React.useState();
     const [comments, setComments] = React.useState();
@@ -36,15 +36,20 @@ function UserTabs(props) {
             <TabList>
                 <Tab>Posts</Tab>
                 <Tab onClick={getComments}>Comments</Tab>
-                <Tab onClick={getSavedPosts}>Saved</Tab>
+                {currentUser.userId === props.user.id ? <Tab onClick={getSavedPosts}>Saved</Tab> : null}
             </TabList>
 
             <TabPanels>
                 <TabPanel>
                     <VStack>
-                        {posts && posts.map(post => {
-                            return <Post key={post.id} communityId={post.community_id} post={post} w={'full'} />
-                        })}
+                        {posts && 
+                            (posts.length === 0 
+                                ? <Text>No posts to display</Text>
+                                : posts.map(post => {
+                                    return <Post key={post.id} communityId={post.community_id} post={post} w={'full'} />
+                                })
+                            )
+                        }
                     </VStack>
                 </TabPanel>
                 <TabPanel>
