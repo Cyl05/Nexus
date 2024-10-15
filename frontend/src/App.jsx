@@ -10,6 +10,7 @@ import { Route, Routes } from "react-router-dom";
 import { Box } from "@chakra-ui/react";
 import EditCommunityPage from './pages/EditCommunityPage.jsx';
 import UserPage from './pages/UserPage.jsx';
+import EditUserPage from './pages/EditUserPage.jsx';
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
         <Route path="/create/post" element={<PostCreatePage />} />
         <Route path="/community/:communityId/edit" element={<EditCommunityPage />} />
         <Route path="/user/:userId" element={<UserPage />} />
+        <Route path="/user/:userId/edit" element={<EditUserPage />} />
       </Routes>
     </Box>
   )

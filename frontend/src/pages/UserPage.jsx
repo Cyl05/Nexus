@@ -2,10 +2,15 @@ import React from 'react';
 import Navbar from '../components/Page Elements/Navbar.jsx';
 import Sidebar from '../components/Page Elements/SideBar.jsx';
 import MainContent from '../components/Page Elements/MainContent.jsx';
-import { Box, Heading, HStack, Image, Text, VStack } from '@chakra-ui/react';
+import { Box, Divider, Heading, HStack, Image, Text, VStack } from '@chakra-ui/react';
 import { useParams } from 'react-router-dom';
 import { useUserStore } from '../../store/user.js';
 import UserTabs from '../components/PageComponents/Profile Pages/UserTabs.jsx';
+import WideButton from '../components/Misc/WideButton.jsx';
+import { FaEdit, FaUser } from 'react-icons/fa';
+import { FaShield } from 'react-icons/fa6';
+import { IoLogOut } from 'react-icons/io5';
+import { TiUserDelete } from "react-icons/ti";
 
 function UserPage() {
     const { userId } = useParams();
@@ -31,8 +36,8 @@ function UserPage() {
             <Sidebar />
             <MainContent>
                 <HStack align={'flex-start'}>
-                    <Box w={'70%'}>
-                        <Box w={'70%'} h={'100vh'} display={'block'} mx={'auto'} mt={5}>
+                    <Box w={'70%'} borderRight={'2px solid #3c4b67'}>
+                        <Box w={'70%'} display={'block'} mx={'auto'} mt={5}>
                             <HStack spacing={4}>
                                 <Image src={user.profile_picture} w={12} borderRadius={'full'} />
                                 <VStack spacing={0} align={'flex-start'}>
@@ -47,7 +52,37 @@ function UserPage() {
                             <UserTabs user={user} />
                         </Box>
                     </Box>
-                    <Box w={'30%'} bgColor={'green'} h={'20vh'}></Box>
+                    <Box w={'30%'} mt={5}>
+                        <WideButton
+                            icon={<FaUser />}
+                            name={'Profile'}
+                            width={'full'}
+                            margin={1}
+                            active={true}
+                        />
+                        <WideButton
+                            icon={<FaEdit />}
+                            name={'Edit Profile'}
+                            width={'full'}
+                            margin={1}
+                            href={`/user/${userId}/edit`}
+                        />
+                        <WideButton icon={<FaShield />} name={'Security'} width={'full'} margin={1} />
+                        <WideButton 
+                            icon={<IoLogOut />}
+                            name={'Log Out'}
+                            color={'red.500'}
+                            width={'full'}
+                            margin={1}
+                        />
+                        <WideButton
+                            icon={<TiUserDelete />} 
+                            name={'Delete Account'} 
+                            color={'red.500'} 
+                            width={'full'} 
+                            margin={1} 
+                        />
+                    </Box>
                 </HStack>
             </MainContent>
         </Box>

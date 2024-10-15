@@ -1,4 +1,4 @@
-import { Button, Icon } from '@chakra-ui/react';
+import { Button, Icon, Text } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
 import React from 'react';
 
@@ -14,7 +14,10 @@ function WideButton(props) {
             mb={props.margin}
             justifyContent={props.center ? 'center' : 'flex-start'}
             fontSize={17}
-            onClick={() => navigate(props.href)}
+            borderLeft={props.active ? '5px solid teal' : '5px solid #1A202C'}
+            color={props.color}
+            as={'a'}
+            href={props.href}
         >
             {props.name}
         </Button>

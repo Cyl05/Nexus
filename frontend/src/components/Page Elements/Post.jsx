@@ -37,7 +37,7 @@ function Post(props) {
             setCommunity(response);
         }
 
-        getCommunity(props.communityId);
+        (props.communityId ? getCommunity(props.communityId) : null)
         numberOfComments();
         getUser();
     }, []);
