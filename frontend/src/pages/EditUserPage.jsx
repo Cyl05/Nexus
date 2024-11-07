@@ -4,6 +4,7 @@ import SideBar from '../components/Page Elements/SideBar';
 import MainContent from '../components/Page Elements/MainContent';
 import { Box, Button, Divider, Heading, HStack, Image, VStack } from '@chakra-ui/react';
 import WideButton from '../components/Misc/WideButton';
+import FancyInput from '../components/Input Fields/FancyInput.jsx';
 import { FaShield, FaUser } from 'react-icons/fa6';
 import { FaEdit } from 'react-icons/fa';
 import { TiUserDelete } from 'react-icons/ti';
@@ -35,12 +36,17 @@ function EditUserPage() {
                     <Box w={'70%'} borderRight={'2px solid #3c4b67'} p={5} h={'100vh'}>
                         <Heading>Edit Profile</Heading>
                         <Divider bgColor={'#3c4b67'} my={5} />
-                        <HStack>
-                            <VStack>
-                                <Image src={user.profile_picture} w={40} borderRadius={10} />
-                                <Button variant={'outline'} colorScheme='teal' borderRadius={'full'}>Change Picture</Button>
-                            </VStack>
-                        </HStack>
+                        <Box px={5}>
+                            <HStack>
+                                <VStack>
+                                    <Image src={user.profile_picture} w={40} borderRadius={10} />
+                                    <Button variant={'outline'} colorScheme='teal' borderRadius={'full'}>Upload Picture</Button>
+                                </VStack>
+                                <Box>
+                                    {/* <FancyInput head={} /> */}
+                                </Box>
+                            </HStack>
+                        </Box>
                     </Box>
                     <Box w={'30%'} mt={5}>
                         <WideButton

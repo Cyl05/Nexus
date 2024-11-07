@@ -46,7 +46,7 @@ function UserPage() {
                                 </VStack>
                             </HStack>
                             <Box bgColor={'#2D384D'} w={'full'} my={5} borderRadius={10} py={5} px={8}>
-                                <Text fontSize={20} fontWeight={'700'} mb={3}>BIO</Text>
+                                <Text fontSize={20} fontWeight={'700'} mb={3}>Bio</Text>
                                 <Text my={3}>{user.bio}</Text>
                             </Box>
                             <UserTabs user={user} />
