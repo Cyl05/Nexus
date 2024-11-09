@@ -146,10 +146,21 @@ export const useUserStore = create((set) => ({
                 }
             });
             const responseJSON = await response.json();
-            console.log(responseJSON);
             return responseJSON;
         } catch (error) {
             console.log(error);
         }
+    },
+    changePassword: async (userId, input, token) => {
+        const response = await fetch(`http://localhost:3000/api/user/changepassword/${userId}`, {
+            method: 'POST',
+            body: JSON.stringify({data: input}),
+            headers: {
+                'Content-Type': 'application/json',
+                'x-access-token': token
+            }
+        });
+        const responseJSON = await response.json();
+        return responseJSON;
     }
 }));

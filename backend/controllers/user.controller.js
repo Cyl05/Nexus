@@ -72,6 +72,27 @@ async function loginUser(req, res) {
 	});
 }
 
+async function changePassword(req, res) {
+	const { data } = req.body;
+	const { userId } = req.params;
+	const response = await db.query("SELECT * FROM users WHERE id=$1", [userId]);
+	const { password: hash } = response.rows[0];
+	bcrypt.compare(data.old_pwd, hash, async (err, result) => {
+		if (err) {
+			res.status(500).json({ isSuccess: false, message: "Internal Server Error" });
+			console.log(err);
+		} else {
+			if (result) {
+				const newHash = await bcrypt.hash(data.new_pwd, saltRounds);
+				const newResponse = await db.query("UPDATE users SET password=$1 WHERE id=$2 RETURNING *", [newHash, userId]);
+				res.status(200).json({ isSuccess: true, message: "Password Changed successully" });
+			} else {
+				res.status(401).json({ isSuccess: false, message: "Wrong password" });
+			}
+		}
+	});
+}
+
 async function registerUser(req, res) {
 	const { username, password } = req.body;
 	try {
@@ -171,10 +192,10 @@ async function getSavedPosts(req, res) {
 	const { userId } = req.params;
 	try {
 		const response = await db.query(
-			"SELECT s.post_id, p.* FROM saved_posts s JOIN posts p ON s.post_id = p.id WHERE s.user_id = $1", 
+			"SELECT s.post_id, p.* FROM saved_posts s JOIN posts p ON s.post_id = p.id WHERE s.user_id = $1",
 			[userId]
 		);
-		res.status(200).json({isSuccess: true, message: "Retrieved saved posts", data: response.rows});
+		res.status(200).json({ isSuccess: true, message: "Retrieved saved posts", data: response.rows });
 	} catch (error) {
 		console.log(error);
 		return res.status(500).json({ isSuccess: false, message: "Internal Server Error" });
@@ -204,10 +225,10 @@ async function saveUnsavePost(req, res) {
 		const response = await db.query("SELECT * FROM saved_posts WHERE post_id=$1 AND user_id=$2", [postId, userId]);
 		if (response.rows.length !== 0) {
 			await db.query("DELETE FROM saved_posts WHERE post_id=$1 AND user_id=$2", [postId, userId]);
-			res.status(200).json({isSuccess: true, message: "Post Unsaved", data: false});
+			res.status(200).json({ isSuccess: true, message: "Post Unsaved", data: false });
 		} else {
 			await db.query("INSERT INTO saved_posts (post_id, user_id) VALUES ($1, $2)", [postId, userId]);
-			res.status(200).json({isSuccess: true, message: "Post Saved", data: true});
+			res.status(200).json({ isSuccess: true, message: "Post Saved", data: true });
 		}
 	} catch (error) {
 		console.log(error);
@@ -215,14 +236,14 @@ async function saveUnsavePost(req, res) {
 	}
 }
 
-async function savePostStatus (req, res) {
+async function savePostStatus(req, res) {
 	const { userId, postId } = req.params;
 	try {
 		const response = await db.query("SELECT * FROM saved_posts WHERE user_id=$1 AND post_id=$2", [userId, postId]);
 		if (response.rows.length !== 0) {
-			res.status(200).json({isSuccess: true, message: "Post is saved", data: true});
+			res.status(200).json({ isSuccess: true, message: "Post is saved", data: true });
 		} else {
-			res.status(200).json({isSuccess: true, message: "Post is not saved", data: false});
+			res.status(200).json({ isSuccess: true, message: "Post is not saved", data: false });
 		}
 	} catch (error) {
 		console.log(error);
@@ -240,10 +261,10 @@ async function editUser(req, res) {
 			WHERE id=$5 RETURNING *`,
 			[user.display_name, user.profile_picture, user.username, user.bio, userId]
 		);
-		return res.status(200).json({isSuccess: true, message: "Saved changes successfully", data: response.rows[0]});
+		return res.status(200).json({ isSuccess: true, message: "Saved changes successfully", data: response.rows[0] });
 	} catch (error) {
 		console.log(error);
-		return res.status(500).json({isSuccess: false, message: "Internal Server Error"});
+		return res.status(500).json({ isSuccess: false, message: "Internal Server Error" });
 	}
 }
 
@@ -252,6 +273,7 @@ export {
 	getLogin,
 	getLogout,
 	loginUser,
+	changePassword,
 	registerUser,
 	joinCommunity,
 	leaveCommunity,

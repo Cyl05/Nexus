@@ -27,6 +27,7 @@ import { FaEdit } from 'react-icons/fa';
 import { useNavigate, useParams } from 'react-router-dom';
 import { IoLogOut } from 'react-icons/io5';
 import { useUserStore } from '../../store/user';
+import VerticalTabs from '../components/PageComponents/Profile Pages/VerticalTabs.jsx';
 
 function EditUserPage() {
     const { userId } = useParams();
@@ -122,30 +123,7 @@ function EditUserPage() {
                             </HStack>
                         </Box>
                     </Box>
-                    <Box w={'30%'} mt={5}>
-                        <WideButton
-                            icon={<FaUser />}
-                            name={'Profile'}
-                            width={'full'}
-                            margin={1}
-                            href={`/user/${userId}`}
-                        />
-                        <WideButton
-                            icon={<FaEdit />}
-                            name={'Edit Profile'}
-                            width={'full'}
-                            margin={1}
-                            active={true}
-                        />
-                        <WideButton icon={<FaShield />} name={'Security'} width={'full'} margin={1} />
-                        <WideButton
-                            icon={<IoLogOut />}
-                            name={'Log Out'}
-                            color={'red.500'}
-                            width={'full'}
-                            margin={1}
-                        />
-                    </Box>
+                    <VerticalTabs active={2} userId={userId} />
                 </HStack>
             </MainContent>
             <Modal isOpen={isOpen} onClose={onClose}>

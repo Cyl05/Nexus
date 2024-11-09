@@ -3,6 +3,7 @@ import {
     getLogin,
     getLogout,
     loginUser,
+    changePassword,
     registerUser,
     joinCommunity,
     leaveCommunity,
@@ -29,6 +30,7 @@ router.get("/comments/:userId", getComments);
 router.get("/savedposts/:userId", getSavedPosts);
 router.post("/login", loginUser);
 router.post("/register", registerUser);
+router.post("/changepassword/:userId", isAuthenticated, changePassword);
 router.post("/join/:communityId", isAuthenticated, joinCommunity);
 router.post("/leave/:communityId", isAuthenticated, leaveCommunity);
 router.post("/communities", isAuthenticated, showUserCommunities);

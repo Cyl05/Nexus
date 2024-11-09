@@ -11,6 +11,7 @@ import { Box } from "@chakra-ui/react";
 import EditCommunityPage from './pages/EditCommunityPage.jsx';
 import UserPage from './pages/UserPage.jsx';
 import EditUserPage from './pages/EditUserPage.jsx';
+import SecurityPage from './pages/SecurityPage.jsx';
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
         <Route path="/community/:communityId/edit" element={<EditCommunityPage />} />
         <Route path="/user/:userId" element={<UserPage />} />
         <Route path="/user/:userId/edit" element={<EditUserPage />} />
+        <Route path="/user/:userId/security" element={<SecurityPage />} />
       </Routes>
     </Box>
   )

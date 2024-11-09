@@ -7,13 +7,15 @@ function PasswordField(props) {
     const handleClick = () => setShow(!show);
 
     return (
-        <InputGroup w={'70%'}>
+        <InputGroup w={props.full ? 'full' : '70%'}>
+            {props.icon ? 
             <InputLeftElement>
                 <FaLock />
             </InputLeftElement>
+            : null}
             <Input
                 name={props.name}
-                variant={'flushed'}
+                variant={props.variant}
                 pr='4.5rem'
                 type={show ? 'text' : 'password'}
                 placeholder={props.placeholder}
