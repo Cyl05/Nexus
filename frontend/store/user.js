@@ -133,5 +133,23 @@ export const useUserStore = create((set) => ({
         } catch (error) {
             console.log(error);
         }
+    },
+    editUser: async (userId, user, token) => {
+        console.log(user);
+        try {
+            const response = await fetch(`http://localhost:3000/api/user/edit/${userId}`, {
+                method: 'POST',
+                body: JSON.stringify({user: user}),
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-access-token': token
+                }
+            });
+            const responseJSON = await response.json();
+            console.log(responseJSON);
+            return responseJSON;
+        } catch (error) {
+            console.log(error);
+        }
     }
 }));

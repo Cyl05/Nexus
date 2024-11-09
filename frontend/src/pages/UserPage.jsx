@@ -75,13 +75,6 @@ function UserPage() {
                             width={'full'}
                             margin={1}
                         />
-                        <WideButton
-                            icon={<TiUserDelete />} 
-                            name={'Delete Account'} 
-                            color={'red.500'} 
-                            width={'full'} 
-                            margin={1} 
-                        />
                     </Box>
                 </HStack>
             </MainContent>

@@ -86,8 +86,8 @@ async function registerUser(req, res) {
 					res.status(500).json({ message: "Internal server error" });
 				} else {
 					const response = await db.query(
-						"INSERT INTO users (username, password, bio) VALUES ($1, $2) RETURNING *",
-						[username, hash, `Hi, I am ${username}`]
+						"INSERT INTO users (username, password, bio, display_name) VALUES ($1, $2, $3) RETURNING *",
+						[username, hash, `Hi, I am ${username}`, username]
 					);
 					const user = response.rows[0];
 					const { id } = user;
@@ -230,6 +230,23 @@ async function savePostStatus (req, res) {
 	}
 }
 
+async function editUser(req, res) {
+	const { userId } = req.params;
+	const { user } = req.body;
+	try {
+		const response = await db.query(
+			`UPDATE users
+			SET display_name=$1, profile_picture=$2, username=$3, bio=$4
+			WHERE id=$5 RETURNING *`,
+			[user.display_name, user.profile_picture, user.username, user.bio, userId]
+		);
+		return res.status(200).json({isSuccess: true, message: "Saved changes successfully", data: response.rows[0]});
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({isSuccess: false, message: "Internal Server Error"});
+	}
+}
+
 export {
 	getUser,
 	getLogin,
@@ -244,5 +261,6 @@ export {
 	getSavedPosts,
 	refreshToken,
 	saveUnsavePost,
-	savePostStatus
+	savePostStatus,
+	editUser
 };

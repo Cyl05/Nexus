@@ -13,7 +13,8 @@ import {
     getUser,
     refreshToken,
     saveUnsavePost,
-    savePostStatus
+    savePostStatus,
+    editUser
 } from "../controllers/user.controller.js";
 import { isAuthenticated } from "../utils/utils.js";
 
@@ -33,6 +34,7 @@ router.post("/leave/:communityId", isAuthenticated, leaveCommunity);
 router.post("/communities", isAuthenticated, showUserCommunities);
 router.post("/refreshToken", refreshToken);
 router.post("/save/:postId", isAuthenticated, saveUnsavePost);
+router.post("/edit/:userId", isAuthenticated, editUser);
 router.get("/savestatus/:postId/:userId", savePostStatus);
 
 export default router;
