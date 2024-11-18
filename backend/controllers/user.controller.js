@@ -43,7 +43,7 @@ function getLogout(req, res) {
 
 async function loginUser(req, res) {
 	const { username, password } = req.body;
-	const response = await db.query("SELECT * FROM users WHERE username=$1", [username]);
+	const response = await db.query("SELECT * FROM users WHERE username=$1 AND is_deleted = FALSE", [username]);
 
 	// if invalid username is given
 	if (response.rows.length === 0) {
@@ -268,6 +268,20 @@ async function editUser(req, res) {
 	}
 }
 
+async function deleteUser(req, res) {
+	const { userId } = req.params;
+	const { user } = req.body;
+	try {
+		if (userId === user.id) {
+			await db.query("UPDATE users SET is_deleted = TRUE WHERE id = $1", [userId]);
+			return res.status(200).json({ isSuccess: true, message: "Account deleted" });
+		}
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({ isSuccess: false, message: "Internal Server Error" });
+	}
+}
+
 export {
 	getUser,
 	getLogin,
@@ -284,5 +298,6 @@ export {
 	refreshToken,
 	saveUnsavePost,
 	savePostStatus,
-	editUser
+	editUser,
+	deleteUser
 };

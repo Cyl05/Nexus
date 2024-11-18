@@ -1,36 +1,34 @@
 import {
     Box,
+    Button,
     HStack,
-    Text,
-    VStack,
     Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalFooter,
     ModalBody,
     ModalCloseButton,
+    ModalContent,
+    ModalFooter,
+    ModalHeader,
+    ModalOverlay,
+    Text,
     useDisclosure,
-    Button,
     useToast,
+    VStack
 } from '@chakra-ui/react';
 import React from 'react';
+import { useUserStore } from '../../../store/user';
 import { MdArrowForwardIos } from 'react-icons/md';
-import FancyInput from '../../Input Fields/FancyInput';
-import PasswordField from '../../Input Fields/PasswordField';
-import { useUserStore } from '../../../../store/user';
+import InputField from '../Input Fields/InputField.jsx';
 
-function SecurityOption(props) {
+function DeleteAccount(props) {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { refreshAccessToken, changePassword } = useUserStore();
+    const { currentUser, refreshAccessToken } = useUserStore();
     const toast = useToast();
 
     const [hover, setHover] = React.useState(false);
     const [input, setInput] = React.useState({
-        old_pwd: "",
-        new_pwd: "",
-        verify_pwd: ""
+        verification: ""
     });
+    console.log(currentUser);
 
     function handleChange(event) {
         const { name, value } = event.target;
@@ -42,29 +40,22 @@ function SecurityOption(props) {
 
     async function handleSubmit() {
         const accessToken = await refreshAccessToken();
-        if (!input.new_pwd || !input.verify_pwd || !input.old_pwd) {
+        if (!input.verification) {
             toast({
                 title: "Fill all fields",
                 status: "error",
                 duration: 2000,
                 isClosable: true
             });
-        } else if (input.new_pwd !== input.verify_pwd) {
+        } else if (input.verification !== props.verification) {
             toast({
-                title: "Passwords do not match",
+                title: "Text does not match",
                 status: "error",
                 duration: 2000,
                 isClosable: true
             });
         } else {
-            const response = await changePassword(props.userId, input, accessToken);
-            toast({
-                title: response.message,
-                status: (response.isSuccess ? 'success' : 'error'),
-                duration: 2000,
-                isClosable: true
-            });
-            onClose
+            
         }
     }
 
@@ -78,7 +69,7 @@ function SecurityOption(props) {
         >
             <HStack justify={'space-between'} align={'center'}>
                 <VStack align={'flex-start'} spacing={-1}>
-                    <Text fontWeight={500}>Change Password</Text>
+                    <Text fontWeight={500}>Delete Account</Text>
                     <Text color={'gray.400'} fontSize={13}>Change password of your account</Text>
                 </VStack>
                 <Box
@@ -93,33 +84,23 @@ function SecurityOption(props) {
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay />
                 <ModalContent>
-                    <ModalHeader>Modal Title</ModalHeader>
+                    <ModalHeader>Delete Account</ModalHeader>
                     <ModalCloseButton />
                     <ModalBody>
-                        <VStack spacing={5}>
-                            <PasswordField 
-                                name={'old_pwd'} 
-                                placeholder={'Old Password'}
+                        <VStack spacing={5} align={'flex-start'}>
+                            <Text color={'#A0AEC0'} display={'inline'}>
+                                Type in the words
+                                <Text fontWeight={600} color={'white'} display={'inline'} mx={1.5}>
+                                    "Confirm"
+                                </Text> 
+                                to confirm account deletion
+                            </Text>
+                            <InputField
+                                name={'verification'}
+                                placeholder={'Verify'}
                                 handleChange={handleChange}
-                                inputValue={input.old_pwd}
+                                value={input.verification}
                                 full={true}
-                                icon={false}
-                            />
-                            <PasswordField 
-                                name={'new_pwd'} 
-                                placeholder={'New Password'}
-                                handleChange={handleChange}
-                                inputValue={input.new_pwd}
-                                full={true}
-                                icon={false}
-                            />
-                            <PasswordField 
-                                name={'verify_pwd'} 
-                                placeholder={'Verify Password'}
-                                handleChange={handleChange}
-                                inputValue={input.verify_pwd}
-                                full={true}
-                                icon={false}
                             />
                         </VStack>
                     </ModalBody>
@@ -136,4 +117,4 @@ function SecurityOption(props) {
     )
 }
 
-export default SecurityOption;
+export default DeleteAccount;

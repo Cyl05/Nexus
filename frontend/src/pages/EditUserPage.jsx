@@ -20,14 +20,9 @@ import {
     ModalCloseButton,
     useDisclosure,
 } from '@chakra-ui/react';
-import WideButton from '../components/Misc/WideButton';
 import FancyInput from '../components/Input Fields/FancyInput.jsx';
-import { FaShield, FaUser } from 'react-icons/fa6';
-import { FaEdit } from 'react-icons/fa';
-import { useNavigate, useParams } from 'react-router-dom';
-import { IoLogOut } from 'react-icons/io5';
 import { useUserStore } from '../../store/user';
-import VerticalTabs from '../components/PageComponents/Profile Pages/VerticalTabs.jsx';
+import VerticalTabs from '../components/User Pages/VerticalTabs.jsx';
 
 function EditUserPage() {
     const { userId } = useParams();

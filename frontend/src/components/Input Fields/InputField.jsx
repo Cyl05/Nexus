@@ -4,10 +4,12 @@ import { FaUser } from 'react-icons/fa'
 
 function InputField(props) {
     return (
-        <InputGroup w="70%">
+        <InputGroup w={props.full ? 'full' : '70%'}>
+            {props.icon ?
             <InputLeftElement>
                 <FaUser />
             </InputLeftElement>
+            : null}
             <Input
                 name={props.name}
                 variant={'flushed'}

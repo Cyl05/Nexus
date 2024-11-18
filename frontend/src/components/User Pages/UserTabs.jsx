@@ -1,8 +1,8 @@
 import { Tab, TabList, TabPanel, TabPanels, Tabs, VStack } from '@chakra-ui/react';
 import React from 'react';
-import { useUserStore } from '../../../../store/user.js';
-import Post from '../../Page Elements/Post.jsx';
-import Comment from '../../Post Page/Comment.jsx';
+import { useUserStore } from '../../../store/user.js';
+import Post from '../Page Elements/Post.jsx';
+import Comment from '../Post Page/Comment.jsx';
 
 function UserTabs(props) {
     const { currentUser, getUserPosts, getUserComments, getUserSavedPosts } = useUserStore();

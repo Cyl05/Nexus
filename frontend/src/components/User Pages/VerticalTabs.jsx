@@ -1,6 +1,6 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
-import WideButton from '../../Misc/WideButton';
+import WideButton from '../Misc/WideButton';
 import { FaEdit, FaUser } from 'react-icons/fa';
 import { FaShield } from 'react-icons/fa6';
 import { IoLogOut } from 'react-icons/io5';

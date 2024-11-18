@@ -5,12 +5,8 @@ import MainContent from '../components/Page Elements/MainContent.jsx';
 import { Box, Divider, Heading, HStack, Image, Text, VStack } from '@chakra-ui/react';
 import { useParams } from 'react-router-dom';
 import { useUserStore } from '../../store/user.js';
-import UserTabs from '../components/PageComponents/Profile Pages/UserTabs.jsx';
-import WideButton from '../components/Misc/WideButton.jsx';
-import { FaEdit, FaUser } from 'react-icons/fa';
-import { FaShield } from 'react-icons/fa6';
-import { IoLogOut } from 'react-icons/io5';
-import { TiUserDelete } from "react-icons/ti";
+import UserTabs from '../components/User Pages/UserTabs.jsx';
+import VerticalTabs from '../components/User Pages/VerticalTabs.jsx';
 
 function UserPage() {
     const { userId } = useParams();
@@ -52,30 +48,7 @@ function UserPage() {
                             <UserTabs user={user} />
                         </Box>
                     </Box>
-                    <Box w={'30%'} mt={5}>
-                        <WideButton
-                            icon={<FaUser />}
-                            name={'Profile'}
-                            width={'full'}
-                            margin={1}
-                            active={true}
-                        />
-                        <WideButton
-                            icon={<FaEdit />}
-                            name={'Edit Profile'}
-                            width={'full'}
-                            margin={1}
-                            href={`/user/${userId}/edit`}
-                        />
-                        <WideButton icon={<FaShield />} name={'Security'} width={'full'} margin={1} />
-                        <WideButton 
-                            icon={<IoLogOut />}
-                            name={'Log Out'}
-                            color={'red.500'}
-                            width={'full'}
-                            margin={1}
-                        />
-                    </Box>
+                    <VerticalTabs active={1} userId={userId} />
                 </HStack>
             </MainContent>
         </Box>
