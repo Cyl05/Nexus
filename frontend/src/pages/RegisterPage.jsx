@@ -86,6 +86,7 @@ function RegisterPage() {
                             handleChange={handleChange}
                             inputValue={userInput.password}
                             variant={'flushed'}
+                            icon={true}
                         />
                         <PasswordField
                             name="confirmPassword"
@@ -93,6 +94,7 @@ function RegisterPage() {
                             handleChange={handleChange}
                             inputValue={userInput.confirmPassword}
                             variant={'flushed'}
+                            icon={true}
                         />
                         <Button colorScheme='teal' mt={4} onClick={handleSubmit}>
                             Submit

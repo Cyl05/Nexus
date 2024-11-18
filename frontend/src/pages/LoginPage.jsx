@@ -72,6 +72,7 @@ function LoginPage() {
                             handleChange={handleChange}
                             inputValue={userInput.password}
                             variant={'flushed'}
+                            icon={true}
                         />
                         <Button colorScheme='teal' mt={4} onClick={handleSubmit}>
                             Submit
