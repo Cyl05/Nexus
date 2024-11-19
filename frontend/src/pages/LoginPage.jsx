@@ -65,6 +65,7 @@ function LoginPage() {
                             placeholder="Enter username"
                             handleChange={handleChange}
                             inputValue={userInput.username}
+                            icon={true}
                         />
                         <PasswordField
                             name="password"

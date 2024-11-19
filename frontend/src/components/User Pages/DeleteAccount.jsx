@@ -18,17 +18,19 @@ import React from 'react';
 import { useUserStore } from '../../../store/user';
 import { MdArrowForwardIos } from 'react-icons/md';
 import InputField from '../Input Fields/InputField.jsx';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function DeleteAccount(props) {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { currentUser, refreshAccessToken } = useUserStore();
+    const { currentUser, refreshAccessToken, deleteAccount } = useUserStore();
+    const { userId } = useParams();
     const toast = useToast();
+    const navigate = useNavigate();
 
     const [hover, setHover] = React.useState(false);
     const [input, setInput] = React.useState({
         verification: ""
     });
-    console.log(currentUser);
 
     function handleChange(event) {
         const { name, value } = event.target;
@@ -55,7 +57,15 @@ function DeleteAccount(props) {
                 isClosable: true
             });
         } else {
-            
+            const response = await deleteAccount(userId, currentUser.userId, accessToken);
+            console.log(response);
+            toast({
+                title: response.message,
+                status: (response.isSuccess ? 'success' : 'error'),
+                duration: 2000,
+                isClosable: true
+            });
+            navigate("/");
         }
     }
 
@@ -106,8 +116,8 @@ function DeleteAccount(props) {
                     </ModalBody>
 
                     <ModalFooter>
-                        <Button colorScheme='teal' mr={3} borderRadius={'full'} onClick={handleSubmit}>
-                            Save
+                        <Button colorScheme='red' mr={3} borderRadius={'full'} onClick={handleSubmit}>
+                            Delete
                         </Button>
                         <Button variant='ghost' borderRadius={'full'} onClick={onClose}>Cancel</Button>
                     </ModalFooter>

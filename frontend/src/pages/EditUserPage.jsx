@@ -23,6 +23,7 @@ import {
 import FancyInput from '../components/Input Fields/FancyInput.jsx';
 import { useUserStore } from '../../store/user';
 import VerticalTabs from '../components/User Pages/VerticalTabs.jsx';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function EditUserPage() {
     const { userId } = useParams();
@@ -81,8 +82,10 @@ function EditUserPage() {
                         <Box px={5}>
                             <HStack spacing={5} mb={5}>
                                 <VStack>
-                                    <Image src={user.profile_picture} w={40} borderRadius={10} />
-                                    <Button variant={'outline'} colorScheme='teal' borderRadius={'full'}>Upload Picture</Button>
+                                    <Image src={user.profile_picture} w={40} borderRadius={10} h={40} objectFit={'cover'} />
+                                    <Button variant={'outline'} colorScheme='teal' borderRadius={'full'} onClick={onOpen}>
+                                        Upload Picture
+                                    </Button>
                                 </VStack>
                                 <Box w={'70%'}>
                                     <FancyInput
@@ -114,7 +117,6 @@ function EditUserPage() {
                             />
                             <HStack>
                                 <Button colorScheme='teal' borderRadius={'full'} onClick={handleSubmit}>Save</Button>
-                                <Button onClick={onOpen}>Open Modal</Button>
                             </HStack>
                         </Box>
                     </Box>

@@ -162,5 +162,17 @@ export const useUserStore = create((set) => ({
         });
         const responseJSON = await response.json();
         return responseJSON;
+    },
+    deleteAccount: async (userId, currentUserId, token) => {
+        const response = await fetch(`http://localhost:3000/api/user/delete/${userId}`, {
+            method: 'POST',
+            body: JSON.stringify({currentUserId: currentUserId}),
+            headers: {
+                'Content-Type': 'application/json',
+                'x-access-token': token
+            }
+        });
+        const responseJSON = await response.json();
+        return responseJSON;
     }
 }));

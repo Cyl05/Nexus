@@ -270,9 +270,9 @@ async function editUser(req, res) {
 
 async function deleteUser(req, res) {
 	const { userId } = req.params;
-	const { user } = req.body;
+	const { currentUserId } = req.body;
 	try {
-		if (userId === user.id) {
+		if (userId == currentUserId) {
 			await db.query("UPDATE users SET is_deleted = TRUE WHERE id = $1", [userId]);
 			return res.status(200).json({ isSuccess: true, message: "Account deleted" });
 		}
