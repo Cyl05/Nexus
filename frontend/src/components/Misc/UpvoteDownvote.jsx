@@ -18,9 +18,11 @@ function UpvoteDownvote(props) {
         }
 
         async function getVoteState() {
-            const accessToken = await refreshAccessToken();
-            const response = await fetchVoteState(currentUser.userId, props.voteArea, props.post.id, accessToken);
-            setVoteState(response ? response.vote_type: null);
+            if (currentUser) {
+                const accessToken = await refreshAccessToken();
+                const response = await fetchVoteState(currentUser.userId, props.voteArea, props.post.id, accessToken);
+                setVoteState(response ? response.vote_type: null);
+            }
         }
         getVotes();
         getVoteState();

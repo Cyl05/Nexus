@@ -6,6 +6,11 @@ import { FaShield } from 'react-icons/fa6';
 import { IoLogOut } from 'react-icons/io5';
 
 function VerticalTabs(props) {
+
+    function handleClick() {
+        console.log("A");
+    }
+
     return (
         <Box w={'30%'} mt={5}>
             <WideButton
@@ -31,14 +36,6 @@ function VerticalTabs(props) {
                 margin={1}
                 href={`/user/${props.userId}/security`}
                 active={props.active == 3 ? true : false}
-            />
-            <WideButton
-                icon={<IoLogOut />}
-                name={'Log Out'}
-                color={'red.500'}
-                width={'full'}
-                margin={1}
-                active={props.active == 4 ? true : false}
             />
         </Box>
     )

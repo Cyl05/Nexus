@@ -11,19 +11,32 @@ import React from 'react';
 import Navbar from '../components/Page Elements/Navbar';
 import SideBar from '../components/Page Elements/SideBar';
 import MainContent from '../components/Page Elements/MainContent';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import VerticalTabs from '../components/User Pages/VerticalTabs';
 import { useUserStore } from '../../store/user';
-import { MdArrowForwardIos } from 'react-icons/md';
 import ChangePassword from '../components/User Pages/ChangePassword';
 import DeleteAccount from '../components/User Pages/DeleteAccount';
 
 function SecurityPage() {
     const { userId } = useParams();
     const { currentUser } = useUserStore();
-    const [hover, setHover] = React.useState(false);
+    const navigate = useNavigate();
+
+    const [correctUser, setCorrectUser] = React.useState(true);
+
+    function redirect() {
+        if (currentUser.userId != userId) {
+            setCorrectUser(false);
+            navigate(-1);
+        }
+    }
+
+    React.useEffect(() => {
+        redirect();
+    }, []);
 
     return (
+        correctUser &&
         <Box>
             <Navbar />
             <SideBar />
@@ -34,7 +47,7 @@ function SecurityPage() {
                         <Divider bgColor={'#3c4b67'} my={5} />
                         <Box px={5} w={'full'}>
                             <ChangePassword userId={userId} />
-                            <DeleteAccount verification={"Confirm"} />
+                            <DeleteAccount verification={"CONFIRM"} />
                         </Box>
                     </Box>
                     <VerticalTabs active={3} userId={userId} />

@@ -27,12 +27,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 function EditUserPage() {
     const { userId } = useParams();
-    const { getUserData, editUser, refreshAccessToken } = useUserStore();
+    const { currentUser, getUserData, editUser, refreshAccessToken } = useUserStore();
     const { isOpen, onOpen, onClose } = useDisclosure();
     const toast = useToast();
     const navigate = useNavigate();
 
     const [user, setUser] = React.useState();
+    const [correctUser, setCorrectUser] = React.useState(true);
 
     function handleChange(event) {
         const { name, value } = event.target;
@@ -60,17 +61,25 @@ function EditUserPage() {
         }
     }
 
+    function redirect() {
+        if (currentUser.userId != userId) {
+            setCorrectUser(false);
+            navigate(-1);
+        }
+    }
+
     React.useEffect(() => {
         async function getUser() {
             const response = await getUserData(userId);
             setUser(response);
             console.log(response);
         }
+        redirect();
         getUser();
     }, []);
 
     return (
-        user &&
+        user && correctUser &&
         <Box>
             <Navbar />
             <SideBar />

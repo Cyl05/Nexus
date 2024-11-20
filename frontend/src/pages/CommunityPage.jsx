@@ -22,9 +22,9 @@ function CommunityPage() {
 	React.useEffect(() => {
 		async function getCommunity() {
 			const accessToken = await refreshAccessToken();
+			const response = await fetchCommunity(communityId);
+			setCommunity(response);
 			if (currentUser && accessToken) {
-				const response = await fetchCommunity(communityId);
-				setCommunity(response);
 				const membershipResult = await checkMembership(currentUser.userId, communityId, accessToken);
 				if (membershipResult.member) {
 					setMembership(true);

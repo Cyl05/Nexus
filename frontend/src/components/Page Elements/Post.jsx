@@ -20,7 +20,6 @@ function Post(props) {
     const [saved, setSaved] = React.useState(false);
 
     React.useEffect(() => {
-        console.log(props.post);
         async function getUser() {
             const userData = await getUserData(props.post.author_id);
             // console.log("AA" + props.post.author_id);
@@ -43,14 +42,18 @@ function Post(props) {
     }, []);
 
     async function getSaveState() {
-        const response = await savePostStatus(props.post.id, currentUser.userId);
-        setSaved(response);
+        if (currentUser) {
+            const response = await savePostStatus(props.post.id, currentUser.userId);
+            setSaved(response);
+        }
     }
 
     async function handleSave() {
-        const accessToken = await refreshAccessToken();
-        const response = await savePost(props.post.id, currentUser.userId, accessToken);
-        setSaved(response);
+        if (currentUser) {
+            const accessToken = await refreshAccessToken();
+            const response = await savePost(props.post.id, currentUser.userId, accessToken);
+            setSaved(response);
+        }
     }
 
     if (user) {

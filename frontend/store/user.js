@@ -62,17 +62,20 @@ export const useUserStore = create((set) => ({
         return response_data;
     },
     refreshAccessToken: async () => {
-        const refreshToken = JSON.parse(localStorage.getItem("refreshToken"));
-        const response = await fetch('http://localhost:3000/api/user/refreshToken', {
-            method: 'POST',
-            body: JSON.stringify(refreshToken),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-        const responseJSON = await response.json();
-        localStorage.setItem('accessToken', JSON.stringify({accessToken: responseJSON.accessToken}));
-        return responseJSON.accessToken;
+        let refreshToken = localStorage.getItem("refreshToken");
+        if (refreshToken) {
+            const refreshToken = JSON.parse(localStorage.getItem("refreshToken"));
+            const response = await fetch('http://localhost:3000/api/user/refreshToken', {
+                method: 'POST',
+                body: JSON.stringify(refreshToken),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const responseJSON = await response.json();
+            localStorage.setItem('accessToken', JSON.stringify({accessToken: responseJSON.accessToken}));
+            return responseJSON.accessToken;
+        }
     },
     joinCommunity: async (userId, communityId, token, membership) => {
         const action = membership ? "leave" : "join";
@@ -174,5 +177,10 @@ export const useUserStore = create((set) => ({
         });
         const responseJSON = await response.json();
         return responseJSON;
+    },
+    logoutUser: () => {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        localStorage.removeItem("user");
     }
 }));

@@ -22,7 +22,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 function DeleteAccount(props) {
     const { isOpen, onOpen, onClose } = useDisclosure();
-    const { currentUser, refreshAccessToken, deleteAccount } = useUserStore();
+    const { currentUser, refreshAccessToken, deleteAccount, logoutUser } = useUserStore();
     const { userId } = useParams();
     const toast = useToast();
     const navigate = useNavigate();
@@ -65,6 +65,7 @@ function DeleteAccount(props) {
                 duration: 2000,
                 isClosable: true
             });
+            logoutUser();
             navigate("/");
         }
     }
@@ -79,7 +80,7 @@ function DeleteAccount(props) {
         >
             <HStack justify={'space-between'} align={'center'}>
                 <VStack align={'flex-start'} spacing={-1}>
-                    <Text fontWeight={500}>Delete Account</Text>
+                    <Text fontWeight={500} color={'#E53E3E'}>Delete Account</Text>
                     <Text color={'gray.400'} fontSize={13}>Change password of your account</Text>
                 </VStack>
                 <Box
@@ -101,7 +102,7 @@ function DeleteAccount(props) {
                             <Text color={'#A0AEC0'} display={'inline'}>
                                 Type in the words
                                 <Text fontWeight={600} color={'white'} display={'inline'} mx={1.5}>
-                                    "Confirm"
+                                    "CONFIRM"
                                 </Text> 
                                 to confirm account deletion
                             </Text>

@@ -10,7 +10,7 @@ import VerticalTabs from '../components/User Pages/VerticalTabs.jsx';
 
 function UserPage() {
     const { userId } = useParams();
-    const { getUserData } = useUserStore();
+    const { currentUser, getUserData } = useUserStore();
 
     const [user, setUser] = React.useState();
     const [comments, setComments] = React.useState();
@@ -35,7 +35,14 @@ function UserPage() {
                     <Box w={'70%'} borderRight={'2px solid #3c4b67'}>
                         <Box w={'70%'} display={'block'} mx={'auto'} mt={5}>
                             <HStack spacing={4}>
-                                <Image src={user.profile_picture} w={12} borderRadius={'full'} />
+                                <Image
+                                    src={user.profile_picture} 
+                                    w={12}
+                                    borderRadius={'full'}
+                                    border={'2px solid #A0AEC0'}
+                                    objectFit={'cover'}
+                                    h={12}
+                                />    
                                 <VStack spacing={0} align={'flex-start'}>
                                     <Heading size={'lg'}>{user.display_name}</Heading>
                                     <Text color={'gray'}>@{user.username}</Text>
@@ -48,7 +55,7 @@ function UserPage() {
                             <UserTabs user={user} />
                         </Box>
                     </Box>
-                    <VerticalTabs active={1} userId={userId} />
+                    {currentUser.userId == user.id ? <VerticalTabs active={1} userId={userId} /> : <></>}
                 </HStack>
             </MainContent>
         </Box>

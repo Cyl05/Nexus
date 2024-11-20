@@ -56,7 +56,7 @@ function CommunityHeader(props) {
                         Create
                     </Button>
                     {
-                        props.community && props.community.created_by === currentUser.userId
+                        (props.community && currentUser) && props.community.created_by === currentUser.userId
                         ? <IconButton
                             icon={<MdEdit />}
                             colorScheme='teal'
