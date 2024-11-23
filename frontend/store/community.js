@@ -106,5 +106,21 @@ export const useCommunityStore = create((set) => ({
         } catch (error) {
             console.log(error);
         }
+    },
+    search: async(query) => {
+        try {
+            const response = await fetch(`http://localhost:3000/api/misc/search`, {
+                method: 'POST',
+                body: JSON.stringify(data),
+                headers: {
+                    "Content-type": 'application/json',
+                }
+            })
+            const responseJSON = await response.json();
+            console.log(responseJSON);
+            return responseJSON;
+        } catch (error) {
+            console.log(error);
+        }
     }
 }));

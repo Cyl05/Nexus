@@ -6,6 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaPlus } from "react-icons/fa6";
 import CreateButton from '../Misc/CreateButton.jsx';
 import UserProfileButton from '../Misc/UserProfileButton.jsx';
+import SearchBar from './SearchBar.jsx';
 
 function Navbar() {
     const { currentUser, getUserData } = useUserStore();
@@ -38,13 +39,14 @@ function Navbar() {
             maxW={'100%'}
             zIndex={1000}
         >
-            <HStack justifyContent={"space-between"}>
+            <HStack justifyContent={"space-between"} align={'flex-start'}>
                 <Box>
                     <HStack>
                         <Icon as={CgInfinity} color={"#00FFFF"} boxSize={9} />
                         <Text fontSize={"xl"} fontWeight={"bold"} fontFamily={"Reddit Sans"}>Nexus</Text>
                     </HStack>
                 </Box>
+                <SearchBar />
                 <Box>
                     <HStack spacing={'10px'}>
                         {
