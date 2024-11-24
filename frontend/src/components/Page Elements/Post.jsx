@@ -1,4 +1,4 @@
-import { Box, Button, Heading, HStack, IconButton, Image, Text, VStack } from '@chakra-ui/react';
+import { Box, Button, Heading, HStack, IconButton, Image, Text, textDecoration, VStack } from '@chakra-ui/react';
 import React from 'react';
 import { useUserStore } from '../../../store/user.js';
 import { FaBookmark, FaCommentAlt, FaRegBookmark } from "react-icons/fa";
@@ -103,7 +103,14 @@ function Post(props) {
                             : <HStack>
                                 <Text color={'gray'}>
                                     Posted by &nbsp;
-                                    <Heading size={'xs'} display={'inline'} color={'white'}>
+                                    <Heading
+                                        size={'xs'} 
+                                        display={'inline'} 
+                                        color={'white'} 
+                                        as={user && 'a'} 
+                                        href={user && `/user/${user.id}`}
+                                        _hover={{ textDecoration: 'underline' }}
+                                    >
                                         {user && user.display_name}
                                     </Heading>
                                 </Text>
