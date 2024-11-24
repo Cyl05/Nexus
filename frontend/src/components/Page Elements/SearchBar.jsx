@@ -1,17 +1,29 @@
-import { Box, Input, InputGroup, InputLeftElement } from '@chakra-ui/react';
+import { Box, Input, InputGroup, InputLeftElement, Text } from '@chakra-ui/react';
 import React from 'react';
 import { FaSearch } from 'react-icons/fa';
-import { useUserStore } from '../../../store/user.js';
+import { useCommunityStore } from '../../../store/community.js';
+import debounce from 'lodash.debounce';
+import SearchResult from '../Misc/SearchResult.jsx';
 
 function SearchBar() {
     const [searchResults, setSearchResults] = React.useState();
+    const [searchQuery, setSearchQuery] = React.useState("");
 
-    const { search } = useUserStore();
+    const { search } = useCommunityStore();
+
+    const performSearch = debounce( async (query) => {
+        if (query) {
+            const response = await search(query);
+            setSearchResults(response.data);
+        } else {
+            setSearchResults();
+        }
+    }, 500);
 
     function handleChange(event) {
-        if (event.target.value == 'x') {
-            // search
-        }
+        const { value } = event.target;
+        setSearchQuery(value);
+        performSearch(value);
     }
 
     return (
@@ -29,12 +41,21 @@ function SearchBar() {
             </InputGroup>
             <Box
                 w={'100%'}
-                h={'10vh'}
+                // h={'10vh'}
                 zIndex={100}
                 mt={2}
                 borderRadius={10}
-                bgColor={'#161C27'}
-                display={searchResults ? 'block' : 'none'}>
+                bgColor={'#0F131A'}
+                display={searchResults ? 'block' : 'none'}
+                border={'1px solid #3B3E44'}
+                p={5}
+            >
+                {/* <SearchResult  /> */}
+                {
+                    searchResults &&
+                    searchResults.map((result) => (<SearchResult community={result} />))
+                }
+                {/* { searchResults && searchResults.map((result) => (<Text>{result.name}</Text>)) } */}
             </Box>
         </Box>
     )
