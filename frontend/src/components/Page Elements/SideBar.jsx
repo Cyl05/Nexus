@@ -38,7 +38,7 @@ function SideBar() {
 						<WideButton name="Home" href="/" icon=<FaHome /> margin={3} />
 						<WideButton name="Create" href="" icon=<FaPlus /> margin={3} />
 					</Flex>
-					<Box w={'100%'} mt={4} mx={'auto'} px={12}>
+					<Box w={'100%'} mt={4} mx={'auto'} px={10}>
 						<Flex direction={'column'} w={'100%'}>
 							<Heading as={'h1'} fontSize={18} color={'#7D8BB5'}>COMMUNITIES</Heading>
 							<VStack align={'flex-start'} mt={4} spacing={3}>
@@ -53,7 +53,7 @@ function SideBar() {
 						</Flex>
 					</Box>
 					<Divider bgColor={'#343E5B'} w={'80%'} mx={'auto'} mt={4} border={'2px solid #343E5B'} />
-					<Box w={'100%'} h={'10vh'} mx={'auto'} mt={2} px={12}>
+					<Box w={'100%'} h={'10vh'} mx={'auto'} mt={2} px={10}>
 						<Heading as={'h1'} fontSize={18} color={'#7D8BB5'} my={4}>HISTORY</Heading>
 						<VStack align={'flex-start'}>
 							{

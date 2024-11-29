@@ -1,7 +1,8 @@
-import { HStack, Image } from '@chakra-ui/react';
+import { Box, HStack, Image, Text } from '@chakra-ui/react';
 import React from 'react';
 import LinkText from './LinkText';
 import { useCommunityStore } from '../../../store/community.js';
+import { useTheme } from '@emotion/react';
 
 function CommunityButton(props) {
     const [community, setCommunity] = React.useState();
@@ -19,10 +20,20 @@ function CommunityButton(props) {
 
     return (
         community &&
-        <HStack key={community.id} spacing={2}>
-            <Image src={community.icon} w={6} h={6} display={'inline'} borderRadius={'full'} objectFit={'cover'} />
-            <LinkText url={`/community/${community.id}`} text={community.name} color='white' />
-        </HStack>
+        <Box 
+            w={'100%'} 
+            p={2} 
+            as='a'
+            borderRadius={10} 
+            cursor={'pointer'} 
+            _hover={{ bg: 'rgba(255, 255, 255, 0.1)' }}
+            href={`/community/${community.id}`}
+        >
+            <HStack>
+                <Image src={community.icon} w={6} h={6} display={'inline'} borderRadius={'full'} objectFit={'cover'} />
+                <Text display={'inline'}>{community.name}</Text>
+            </HStack>
+        </Box>
     )
 }
 
