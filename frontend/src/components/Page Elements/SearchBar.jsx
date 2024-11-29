@@ -50,12 +50,10 @@ function SearchBar() {
                 border={'1px solid #3B3E44'}
                 p={5}
             >
-                {/* <SearchResult  /> */}
                 {
                     searchResults &&
                     searchResults.map((result) => (<SearchResult community={result} />))
                 }
-                {/* { searchResults && searchResults.map((result) => (<Text>{result.name}</Text>)) } */}
             </Box>
         </Box>
     )

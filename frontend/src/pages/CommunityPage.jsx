@@ -30,12 +30,32 @@ function CommunityPage() {
 					setMembership(true);
 				}
 			}
+			manageHistory(response);
 		}
 
 		async function getPosts() {
 			const response = await fetchCommunityPosts(communityId);
 			setPostsList(response);
 		}
+
+		function manageHistory(comm) {
+			const history = JSON.parse(localStorage.getItem("history"));
+			if (!history) {
+				localStorage.setItem("history", JSON.stringify({history: [comm.id]}));
+			} else {
+				const { history: histList } = history;
+				if (histList.includes(comm.id)) {
+					const index = histList.indexOf(comm.id);
+					histList.splice(index, 1);
+				}
+				histList.unshift(comm.id);
+				if (histList.length > 5) {
+					histList.pop();
+				}
+				localStorage.setItem("history", JSON.stringify({history: histList}));
+			}
+		}
+
 		getPosts();
 		getCommunity();
 	}, []);

@@ -9,7 +9,6 @@ function SearchResult(props) {
 
     React.useEffect(() => {
         async function fetchSize() {
-            console.log(props.community.id);
             const response = await fetchCommunitySize(props.community.id);
             setCommunitySize(response);
         }

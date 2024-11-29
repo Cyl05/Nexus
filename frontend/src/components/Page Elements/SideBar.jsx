@@ -1,23 +1,30 @@
 import React, { useState } from 'react';
-import { Box, Center, Flex, Heading, HStack, Image, Text, VStack } from "@chakra-ui/react";
+import { Box, Center, Divider, Flex, Heading, HStack, Image, Text, VStack } from "@chakra-ui/react";
 import WideButton from '../Misc/WideButton';
 import { FaHome, FaPlus } from "react-icons/fa";
 import { useUserStore } from '../../../store/user';
 import { useCommunityStore } from '../../../store/community';
 import LinkText from '../Misc/LinkText';
+import CommunityButton from '../Misc/CommunityButton';
 
 function SideBar() {
-	const [communitiesList, setCommunitiesList] = useState([]);
+	const [userCommunitiesList, setUserCommunitiesList] = useState([]);
+	const [historyList, setHistoryList] = useState();
+
 	const { currentUser, refreshAccessToken } = useUserStore();
-	const { fetchUserCommunities } = useCommunityStore();
+	const { fetchUserCommunities, fetchCommunity } = useCommunityStore();
 
 	React.useEffect(() => {
 		async function fetchCommunities() {
 			const accessToken = await refreshAccessToken();
 			if (currentUser && accessToken) {
 				const communitiesResponse = await fetchUserCommunities(currentUser.userId, accessToken);
-				setCommunitiesList(communitiesResponse.data);
+				setUserCommunitiesList(communitiesResponse.data);
 			}
+		}
+		const histList = JSON.parse(localStorage.getItem("history"));
+		if (histList) {
+			setHistoryList(histList.history);
 		}
 		fetchCommunities();
 	}, []);
@@ -36,17 +43,25 @@ function SideBar() {
 							<Heading as={'h1'} fontSize={18} color={'#7D8BB5'}>COMMUNITIES</Heading>
 							<VStack align={'flex-start'} mt={4} spacing={3}>
 								{currentUser
-									? communitiesList.map((community) => {
+									? userCommunitiesList.map((community) => {
 										return (
-											<HStack key={community.id} spacing={2}>
-												<Image src={community.icon} w={6} h={6} display={'inline'} borderRadius={'full'} objectFit={'cover'} />
-												<LinkText url={`/community/${community.id}`} text={community.name} color='white' />
-											</HStack>
+											<CommunityButton communityId={community.id} />
 										);
 									})
 									: <Text><LinkText url='/login' color='#81E6D9' text="Login" /> to view communities</Text>}
 							</VStack>
 						</Flex>
+					</Box>
+					<Divider bgColor={'#343E5B'} w={'80%'} mx={'auto'} mt={4} border={'2px solid #343E5B'} />
+					<Box w={'100%'} h={'10vh'} mx={'auto'} mt={2} px={12}>
+						<Heading as={'h1'} fontSize={18} color={'#7D8BB5'} my={4}>HISTORY</Heading>
+						<VStack align={'flex-start'}>
+							{
+								historyList 
+								? historyList.map((element) => (<CommunityButton communityId={element} key={element} />))
+								: <Text>No history to display</Text>
+							}
+						</VStack>
 					</Box>
 				</Flex>
 			</Center>
