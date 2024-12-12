@@ -182,5 +182,10 @@ export const useUserStore = create((set) => ({
         localStorage.removeItem("accessToken");
         localStorage.removeItem("refreshToken");
         localStorage.removeItem("user");
+    },
+    fetchTopCommunities: async (userId) => {
+        const response = await fetch(`http://localhost:3000/api/user/topCommunities/${userId}`);
+        const responseJSON = await response.json();
+        return responseJSON;
     }
 }));

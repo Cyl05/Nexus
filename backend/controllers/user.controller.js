@@ -282,6 +282,20 @@ async function deleteUser(req, res) {
 	}
 }
 
+async function getTopCommunities (req, res) {
+	const { userId } = req.params;
+	try {
+		const response = await db.query(
+			"SELECT community_id, COUNT(*) AS interactions FROM user_activity WHERE user_id = $1 GROUP BY community_id ORDER BY interactions DESC LIMIT 5",
+			[userId]
+		);
+		return res.status(200).json({ isSuccess: true, message: "Fetched top communities", data: response.rows });
+	} catch (error) {
+		console.log(error);
+		return res.status(500).json({ isSuccess: false, message: "Internal Server Error"});
+	}
+}
+
 export {
 	getUser,
 	getLogin,
@@ -299,5 +313,6 @@ export {
 	saveUnsavePost,
 	savePostStatus,
 	editUser,
-	deleteUser
+	deleteUser,
+	getTopCommunities
 };
