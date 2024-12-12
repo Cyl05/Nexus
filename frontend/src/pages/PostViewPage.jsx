@@ -34,7 +34,7 @@ function PostViewPage() {
 
     async function handleSubmit() {
         const accessToken = await refreshAccessToken();
-        const response = await createComment(postId, commentData, accessToken);
+        const response = await createComment(postId, commentData, accessToken, currentUser.userId, community.id);
         toast({
             title: response.message,
             status: response.isSuccess ? 'success' : 'error',

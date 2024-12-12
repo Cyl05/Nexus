@@ -13,8 +13,7 @@ async function searchQuery(req, res) {
 
 async function insertActivity (req, res) {
     const { userId, communityId, postId, intType } = req.body;
-    console.log(communityId);
-    if (intType === "upvote") {
+    if (intType === "upvote" || intType == "downvote") {
         try {
             const fetchResponse = await db.query(
                 "SELECT * FROM user_activity WHERE user_id = $1 AND community_id = $2 AND post_id = $3 AND interaction_type = $4",
@@ -34,7 +33,7 @@ async function insertActivity (req, res) {
     try {
         const response = await db.query(
             `INSERT INTO user_activity (user_id, community_id, post_id, interaction_type) VALUES ($1, $2, $3, $4) RETURNING *`,
-            [userId, communityId, postId, 'upvote']
+            [userId, communityId, postId, intType]
         );
         return res.status(200).json({ isSuccess: true, message: "Inserted activity", data: response.rows[0] });
     } catch (error) {
