@@ -53,7 +53,6 @@ function UpvoteDownvote(props) {
             }
         }
     }
-    
 
     return (
         <Box display={'flex'} flexDirection={props.horizontalOrientation ? 'row' : 'column'}>
