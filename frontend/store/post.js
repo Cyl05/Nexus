@@ -19,7 +19,8 @@ export const usePostStore = create((set) => ({
             console.log(error);
         }
     },
-    votePost: async (userId, voteType, postId, token, voteArea) => {
+    votePost: async (userId, voteType, postId, token, voteArea, communityId) => {
+        console.log(communityId);
         try {
             const response = await fetch(`http://localhost:3000/api/${voteArea}/${voteType}/${postId}`, {
                 method: 'POST',
@@ -29,6 +30,24 @@ export const usePostStore = create((set) => ({
                     'x-access-token': token
                 }
             });
+            if (voteType === "upvote") {
+                const activityResponse = await fetch(`http://localhost:3000/api/misc/insertActivity`, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        userId: userId,
+                        postId: postId,
+                        communityId: communityId,
+                        intType: "upvote"
+                    }), 
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'x-access-token': token
+                    }
+                });
+                const activityResponseJSON = await activityResponse.json();
+                console.log(activityResponseJSON);
+                return activityResponseJSON;
+            }
             const responseJSON = await response.json();
             return responseJSON;
         } catch (error) {

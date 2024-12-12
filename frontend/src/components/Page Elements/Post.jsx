@@ -22,7 +22,6 @@ function Post(props) {
     React.useEffect(() => {
         async function getUser() {
             const userData = await getUserData(props.post.author_id);
-            // console.log("AA" + props.post.author_id);
             setUser(userData);
         }
 
@@ -36,7 +35,7 @@ function Post(props) {
             setCommunity(response);
         }
 
-        (props.communityId ? getCommunity(props.communityId) : null)
+        (props.communityView ? null : getCommunity(props.communityId))
         numberOfComments();
         getUser();
     }, []);
@@ -66,7 +65,7 @@ function Post(props) {
             <HStack align={'flex-start'} justify={'space-between'}>
                 <HStack spacing={5}>
                     <Box w={'14%'} align={'center'} mr={5} mt={2}>
-                        <UpvoteDownvote post={props.post} voteArea={'post'} />
+                        <UpvoteDownvote post={props.post} voteArea={'post'} communityId={props.communityId} />
                         <Button
                             mt={3}
                             h={'10vh'}
@@ -98,16 +97,15 @@ function Post(props) {
 
                             </HStack>
                         }
-                        {props.communityId
-                            ? null
-                            : <HStack>
+                        {props.communityView
+                            ? <HStack>
                                 <Text color={'gray'}>
                                     Posted by &nbsp;
                                     <Heading
-                                        size={'xs'} 
-                                        display={'inline'} 
-                                        color={'white'} 
-                                        as={user && 'a'} 
+                                        size={'xs'}
+                                        display={'inline'}
+                                        color={'white'}
+                                        as={user && 'a'}
                                         href={user && `/user/${user.id}`}
                                         _hover={{ textDecoration: 'underline' }}
                                     >
@@ -116,6 +114,7 @@ function Post(props) {
                                 </Text>
                                 <Text display={'inline'} fontSize={13} color={'gray'}>• {dayjs(props.post.posted_at).fromNow()}</Text>
                             </HStack>
+                            : null
                         }
                         <Heading mb={4}>{props.post.post_title}</Heading>
                         <Text fontSize={20} ml={1} mb={3}>{props.post.post_content}</Text>

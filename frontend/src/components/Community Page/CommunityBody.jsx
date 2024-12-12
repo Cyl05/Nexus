@@ -30,7 +30,7 @@ function CommunityBody(props) {
                     <Divider ml={14} w={'90%'} bgColor={'#343E5B'} mb={5} />
                     <VStack spacing={5} w={'90%'} ml={14}>
                         {props.posts && props.posts.map( (post) => {
-                            return <Post key={post.id} post={post} community={props.community} />;
+                            return <Post key={post.id} post={post} community={props.community} communityView={true} />;
                         })}
                     </VStack>
                 </Box>

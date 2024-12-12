@@ -31,7 +31,7 @@ function UpvoteDownvote(props) {
     async function handleVote(voteType, postId) {
         const accessToken = await refreshAccessToken();
         if (currentUser && accessToken) {
-            await votePost(currentUser.userId, voteType, postId, accessToken, props.voteArea);
+            await votePost(currentUser.userId, voteType, postId, accessToken, props.voteArea, props.communityId);
             if (voteType === "upvote") {
                 if (voteState) {
                     setVotes(prevState => prevState - 1);
