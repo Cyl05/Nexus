@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 import env from "dotenv";
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
-import { createAccessToken, createRefreshToken, refreshAccessToken } from "../utils/utils.js";
+import { createAccessToken, createRefreshToken, getTopPosts, refreshAccessToken } from "../utils/utils.js";
 
 const saltRounds = 10;
 
@@ -289,7 +289,12 @@ async function getTopCommunities (req, res) {
 			"SELECT community_id, COUNT(*) AS interactions FROM user_activity WHERE user_id = $1 GROUP BY community_id ORDER BY interactions DESC LIMIT 5",
 			[userId]
 		);
-		return res.status(200).json({ isSuccess: true, message: "Fetched top communities", data: response.rows });
+		let topCommsIds = [], i = 0;
+		for (i = 0; i < response.rows.length; i++) {
+			topCommsIds.push(response.rows[i].community_id);
+		}
+		const topPosts = await getTopPosts(topCommsIds);
+		return res.status(200).json({ isSuccess: true, message: "Fetched top communities", data: topPosts });
 	} catch (error) {
 		console.log(error);
 		return res.status(500).json({ isSuccess: false, message: "Internal Server Error"});

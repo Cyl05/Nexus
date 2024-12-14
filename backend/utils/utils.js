@@ -113,4 +113,12 @@ async function getCount(voteArea, areaId) {
     }
 }
 
-export { createAccessToken, createRefreshToken, refreshAccessToken, isAuthenticated, votePost, getCount };
+async function getTopPosts(topCommunityIds) {
+    const response = await db.query(
+        "SELECT * FROM posts WHERE community_id = ANY($1::INT[]) ORDER BY RANDOM() LIMIT 10",
+        [topCommunityIds]
+    );
+    return response.rows;
+}
+
+export { createAccessToken, createRefreshToken, refreshAccessToken, isAuthenticated, votePost, getCount, getTopPosts };

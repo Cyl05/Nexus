@@ -4,19 +4,21 @@ import { useUserStore } from '../../store/user.js';
 import SideBar from '../components/Page Elements/SideBar.jsx';
 import MainContent from '../components/Page Elements/MainContent.jsx';
 import { Box, Heading } from '@chakra-ui/react';
+import Post from '../components/Page Elements/Post.jsx';
 
 function HomePage() {
     const { currentUser, fetchTopCommunities } = useUserStore();
 
-    const [topCommunities, setTopCommunities] = React.useState();
+    const [topPosts, setTopPosts] = React.useState();
 
     React.useEffect(() => {
         async function fetchTopComms() {
-            const topComms = await fetchTopCommunities(currentUser.userId);
-            setTopCommunities(topComms);
+            const topPost = await fetchTopCommunities(currentUser.userId);
+            setTopPosts(topPost.data);
         }
         fetchTopComms();
     }, []);
+
 
     return (
         <Box>
@@ -24,7 +26,9 @@ function HomePage() {
             <SideBar />
             <MainContent>
                 <Box>
-                    <Heading>Hello</Heading>
+                    {topPosts && topPosts.map((post) => (
+                        <Post key={post.id} post={post} communityId={post.community_id} communityView={false} />
+                    ))}
                 </Box>
             </MainContent>
         </Box>
