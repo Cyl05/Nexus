@@ -64,7 +64,7 @@ function UpvoteDownvote(props) {
                 onClick={() => handleVote("upvote", props.post.id)}
             />
             <Box bgColor={'#3D485B'} p={2} w={!props.horizontalOrientation ? '45px': null}>
-                <Text color={voteState ? "red.500" : (voteState === false ? "blue.500" : null)}>
+                <Text color={voteState ? "red.500" : (voteState === false ? "blue.500" : null)} align={'center'}>
                     {votes}
                 </Text>
             </Box>

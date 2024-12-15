@@ -6,6 +6,7 @@ import UpvoteDownvote from '../Misc/UpvoteDownvote.jsx';
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useNavigate } from 'react-router-dom';
+import PostHeader from '../Misc/PostHeader.jsx';
 
 function PostViewPost(props) {
     dayjs.extend(relativeTime);
@@ -27,30 +28,9 @@ function PostViewPost(props) {
         <Box bgColor={'#2D384D'} borderRadius={10} p={5}>
             <HStack align={'center'} mb={5}>
                 <IconButton icon={<ArrowBackIcon />} borderRadius={'full'} onClick={() => navigate(-1)} />
-                <HStack align={'center'}>
-                    <Image src={props.community.icon} w={10} h={10} borderRadius={'full'} border={'2px solid white'} objectFit={'cover'} />
-                    <VStack align={'flex-start'} spacing={0}>
-                        <Heading
-                            size={'sm'}
-                            as={props.community && 'a'}
-                            href={props.community && `/community/${props.community.id}`}
-                            _hover={{ textDecoration: 'underline' }}
-                        > 
-                            {props.community && props.community.name}
-                        </Heading>
-                        <HStack>
-                            <Text
-                                as={props.user && 'a'}
-                                href={props.user &&  `/user/${props.user.id}`}
-                                _hover = {{ textDecoration: 'underline' }}
-                            >
-                                {props.user && props.user.display_name}
-                            </Text>
-                            <Text display={'inline'} fontSize={13} color={'gray'}>• {dayjs(props.post.posted_at).fromNow()}</Text>
-                        </HStack>
-                    </VStack>
-                </HStack>
+                <PostHeader community={props.community} post={props.post} communityView={false} user={props.user} />
             </HStack>
+            
             <VStack align={'flex-start'} spacing={4}>
                 <Heading>{props.post.post_title}</Heading>
                 <Text>

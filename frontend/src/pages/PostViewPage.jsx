@@ -64,7 +64,7 @@ function PostViewPage() {
             <Navbar />
             <SideBar />
             <MainContent>
-                <HStack spacing={0} align={'flex-start'}>
+                <HStack spacing={0} align={'flex-start'} p={5}>
                     <Box w={'95%'}>
                         <PostViewPost community={community} post={post} user={user} setUser={setUser} />
                         <Heading size={'lg'} my={5}>Comments:</Heading>

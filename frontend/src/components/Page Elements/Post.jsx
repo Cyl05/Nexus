@@ -7,6 +7,7 @@ import UpvoteDownvote from '../Misc/UpvoteDownvote.jsx';
 import dayjs from "dayjs";
 import relativeTime from 'dayjs/plugin/relativeTime';
 import { useCommunityStore } from '../../../store/community.js';
+import PostHeader from '../Misc/PostHeader.jsx';
 
 function Post(props) {
     dayjs.extend(relativeTime);
@@ -35,7 +36,7 @@ function Post(props) {
             setCommunity(response);
         }
 
-        (props.communityView ? null : getCommunity(props.communityId))
+        getCommunity(props.communityId)
         numberOfComments();
         getUser();
     }, []);
@@ -64,7 +65,7 @@ function Post(props) {
         <Box w={props.w ? props.w : '95%'} bgColor={'#2D384D'} borderRadius={10} p={5}>
             <HStack align={'flex-start'} justify={'space-between'}>
                 <HStack spacing={5}>
-                    <Box w={'14%'} align={'center'} mr={5} mt={2}>
+                    <Box w={'14%'} mr={5} mt={2}>
                         <UpvoteDownvote post={props.post} voteArea={'post'} communityId={props.communityId} />
                         <Button
                             mt={3}
@@ -81,41 +82,8 @@ function Post(props) {
                             </VStack>
                         </Button>
                     </Box>
-                    <Box>
-                        {
-                            community &&
-                            <HStack mb={3}>
-                                <Image src={community && community.icon} w={10} h={10} borderRadius={'full'} border={'2px solid white'} objectFit={'cover'} />
-                                <Heading
-                                    size="sm"
-                                    as="a"
-                                    href={`/community/${community.id}`}
-                                    _hover={{ textDecoration: 'underline' }}
-                                >
-                                    {community && community.name}
-                                </Heading>
-
-                            </HStack>
-                        }
-                        {props.communityView
-                            ? <HStack>
-                                <Text color={'gray'}>
-                                    Posted by &nbsp;
-                                    <Heading
-                                        size={'xs'}
-                                        display={'inline'}
-                                        color={'white'}
-                                        as={user && 'a'}
-                                        href={user && `/user/${user.id}`}
-                                        _hover={{ textDecoration: 'underline' }}
-                                    >
-                                        {user && user.display_name}
-                                    </Heading>
-                                </Text>
-                                <Text display={'inline'} fontSize={13} color={'gray'}>• {dayjs(props.post.posted_at).fromNow()}</Text>
-                            </HStack>
-                            : null
-                        }
+                    <Box w={'full'}>
+                        {community && <PostHeader community={community} post={props.post} communityView={props.communityView} user={user && user} />}
                         <Heading mb={4}>{props.post.post_title}</Heading>
                         <Text fontSize={20} ml={1} mb={3}>{props.post.post_content}</Text>
                         {props.post.image && <Image src={props.post.image} />}
