@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
-import { Box, Center, Divider, Flex, Heading, HStack, Image, Text, VStack } from "@chakra-ui/react";
+import { Box, Center, Divider, Flex, Heading, Text, VStack } from "@chakra-ui/react";
 import WideButton from '../Misc/WideButton';
 import { FaHome, FaPlus } from "react-icons/fa";
 import { useUserStore } from '../../../store/user';
 import { useCommunityStore } from '../../../store/community';
 import LinkText from '../Misc/LinkText';
 import CommunityButton from '../Misc/CommunityButton';
+import { useNavigate } from 'react-router-dom';
 
 function SideBar() {
 	const [userCommunitiesList, setUserCommunitiesList] = useState([]);
 	const [historyList, setHistoryList] = useState();
 
-	const { currentUser, refreshAccessToken } = useUserStore();
+	const { currentUser, refreshAccessToken, logoutUser } = useUserStore();
 	const { fetchUserCommunities, fetchCommunity } = useCommunityStore();
+	const navigate = useNavigate();
 
 	React.useEffect(() => {
 		async function fetchCommunities() {
@@ -20,11 +22,15 @@ function SideBar() {
 			if (currentUser && accessToken) {
 				const communitiesResponse = await fetchUserCommunities(currentUser.userId, accessToken);
 				setUserCommunitiesList(communitiesResponse.data);
+			} else {
+				navigate('/login');
+				logoutUser();
 			}
 		}
 		const histList = JSON.parse(localStorage.getItem("history"));
 		if (histList) {
 			setHistoryList(histList.history);
+
 		}
 		fetchCommunities();
 	}, []);
