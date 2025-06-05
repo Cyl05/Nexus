@@ -107,7 +107,7 @@ async function registerUser(req, res) {
 					res.status(500).json({ message: "Internal server error" });
 				} else {
 					const response = await db.query(
-						"INSERT INTO users (username, password, bio, display_name) VALUES ($1, $2, $3) RETURNING *",
+						"INSERT INTO users (username, password, bio, display_name) VALUES ($1, $2, $3, $4) RETURNING *",
 						[username, hash, `Hi, I am ${username}`, username]
 					);
 					const user = response.rows[0];

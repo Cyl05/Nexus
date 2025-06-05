@@ -82,7 +82,7 @@ function LoginPage() {
                     </VStack>
                 </Box>
                 <Image
-                    src={'../../public/RegisterPageArt.png'}
+                    src={'/RegisterPageArt.png'}
                     w={'50%'}
                     h={'full'}
                     objectFit={'cover'}

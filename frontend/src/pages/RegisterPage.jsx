@@ -53,6 +53,7 @@ function RegisterPage() {
                     password: "",
                     confirmPassword: ""
                 });
+                console.log("Registeration success");
                 await fetchUser(response.accessToken, response.refreshToken);
                 navigate('/');
             }
@@ -63,7 +64,7 @@ function RegisterPage() {
         <AbsoluteCenter minW={'70%'} h={'80vh'} bgColor={'#2D374D'} borderRadius={'20px'} boxShadow={'dark-lg'}>
             <HStack h={'full'} justify={'space-between'}>
                 <Image
-                    src={'../../public/RegisterPageArt.png'}
+                    src={'/RegisterPageArt.png'}
                     w={'50%'}
                     h={'full'}
                     objectFit={'cover'}
